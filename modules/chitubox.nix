@@ -1,39 +1,26 @@
-{ stdenv
-, lib
-, fetchzip
-, alsa-lib
-, autoPatchelfHook
-, gst_all_1
-, libpulseaudio
-, qtbase
-, pkgs
-, openssl_1_1
-}:
+{ pkgs ? import <nixpkgs> { }, qtbase, wrapQtAppsHook }:
+with pkgs;
 
-stdenv.mkDerivation (finalAttrs: {
+stdenv.mkDerivation rec {
   pname = "chitubox";
+
   version = "1.9.5";
 
   src = fetchzip {
-    url = "https://sac.chitubox.com/software/download.do?softwareId=17839&softwareVersionId=v${finalAttrs.version}&fileName=CHITUBOX_V${finalAttrs.version}.tar.gz";
-    stripRoot = false;
+    url = "https://sac.chitubox.com/software/download.do?softwareId=17839&softwareVersionId=v${version}&fileName=CHITUBOX_V${version}.tar.gz";
     hash = "sha256-eTg6C4lnOwACbt7V5uTXpQWE1iIUyhdg4VyCJUtSn8E=";
+    stripRoot=false;
   };
 
-  #dontStrip = true;
+  #dontWrapQtApps = true;
 
-  nativeBuildInputs = [
-    autoPatchelfHook
-  ];
+  nativeBuildInputs = [ autoPatchelfHook wrapQtAppsHook ];
 
-  runtimeDependencies = [ "/nix/store/3cvbzm2qviq00h97cmc9234ikwiyw5r2-openssl-1.1.1v/lib "];
-
-  buildInputs = [
+  buildInputs = [ 
+    libpulseaudio
     alsa-lib
     gst_all_1.gst-plugins-base
-    libpulseaudio
-    pkgs.makeWrapper
-  ] ++ qtbase.buildInputs ++ qtbase.propagatedBuildInputs;
+  ];
 
   buildPhase = ''
     mkdir -p bin
@@ -59,10 +46,6 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     mkdir -p $out
     mv * $out/
-
-    wrapProgram $out/bin/chitubox \
-      --unset QT_PLUGIN_PATH \
-      --unset QML2_IMPORT_PATH 
   '';
 
   meta = {
@@ -73,7 +56,6 @@ stdenv.mkDerivation (finalAttrs: {
       shortName = "ChiTuBox";
       url = "https://www.chitubox.com";
     };
-		platforms = [ "x86_64-linux" ];
   };
-})
+}
 

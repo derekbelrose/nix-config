@@ -13,6 +13,10 @@ let
     '';
   }; 
 
+  nixos.config = {
+    allowUnfree = true;
+  }; 
+
   configure-gtk = pkgs.writeTextFile {
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
@@ -32,15 +36,13 @@ in
 {
   nixpkgs.config.allowUnfree = true;
   
-  # nixpkgs.overlays = [
-  #   (import (builtins.fetchTarball {
+  # nixpkgs.overlays = [ #   (import (builtins.fetchTarball {
   #     url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
   #   }))
   # ];
 
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
     ];
   
   hardware.system76.enableAll = true;
@@ -75,18 +77,13 @@ in
 
   #boot.supportedFilesystems = [ "zfs" ];
 
-  networking.hostId = "b7527247";
-  networking.nat.enable = true;
-  networking.nat.internalInterfaces = ["ve-+"];
-  networking.nat.externalInterface = "enp3s0";
-
-  networking.hostName = "emeritus"; # Define your hostname.
-  #networking.extraHosts = "100.105.177.118 bitwarden.belrose.io";
+ #networking.extraHosts = "100.105.177.118 bitwarden.belrose.io";
 
   # Set your time zone.
   time.timeZone = "America/New_York";
 
 
+  services.avizo.enable = true;
   # Enable Avahi
   services.avahi = {
 	nssmdns4 = true;
@@ -100,6 +97,7 @@ in
 	};
   };
 
+  services.fwupd.enable = true;
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -125,7 +123,7 @@ in
 
   services.dbus.enable = true;
 
-  services.upower.enable = lib.mkForce false;
+  services.upower.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -160,6 +158,8 @@ in
       du-dust
       file
       tree
+      htop
+      pulseaudio
     ];
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland
@@ -204,7 +204,7 @@ in
     };
 
     podman = {
-      enable = true;
+      enable = false;
       dockerCompat = false;
       defaultNetwork.settings.dns_enabled = true;
     };
@@ -212,6 +212,7 @@ in
   
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    makemkv
     distrobox
     wget
     firefox
@@ -238,7 +239,10 @@ in
     btop
     sof-firmware
     tmux
-	ollama
+    ollama
+    flatpak
+    foot
+    nix-direnv
   ];
 
   fonts.packages = with pkgs; [
@@ -289,6 +293,7 @@ in
     interval = "monthly";
     fileSystems = [ "/" ]; 
   };
+
 
 
   security.rtkit.enable = true;
