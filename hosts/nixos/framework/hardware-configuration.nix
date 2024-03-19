@@ -2,7 +2,7 @@
 
 {
 	imports = 
-		[ (modulesPath + "./installer/scan/not-detected.nix")
+		[ (modulesPath + "/installer/scan/not-detected.nix")
 		];
 
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod"];
@@ -49,7 +49,7 @@
 	networking.useDHCP = lib.mkDefault true;
 	
 	nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-	hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRistributableFirmware;
+	hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;

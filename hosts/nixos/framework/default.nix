@@ -1,4 +1,4 @@
-{ lib, config, pkgs, unstablePkgs, nixos-hardware, ... }:
+{ lib, config, pkgs, nixos-hardware, ... }:
 
 {
 	imports =
@@ -17,8 +17,6 @@
 			packages = with pkgs; [
 				just
 				vim
-
-				unstablePkgs.vscode
 			];
 		};
 
