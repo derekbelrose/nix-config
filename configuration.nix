@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   dbus-sway-environment = pkgs.writeTextFile {
     name = "dbus-sway-environment";
     destination = "/bin/dbus-sway-environment";
@@ -11,11 +14,11 @@ let
       systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
       systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
     '';
-  }; 
+  };
 
   nixos.config = {
     allowUnfree = true;
-  }; 
+  };
 
   configure-gtk = pkgs.writeTextFile {
     name = "configure-gtk";
@@ -30,36 +33,33 @@ let
       gsettings set $gnome_schema gtk-theme 'Dracula'
     '';
   };
-
-
-in
-{
+in {
   nixpkgs.config.allowUnfree = true;
-  
+
   # nixpkgs.overlays = [ #   (import (builtins.fetchTarball {
   #     url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
   #   }))
   # ];
 
-  imports =
-    [ # Include the results of the hardware scan.
-    ];
-  
+  imports = [
+    # Include the results of the hardware scan.
+  ];
+
   hardware.system76.enableAll = true;
   hardware.keyboard.zsa.enable = true;
   hardware.enableAllFirmware = true;
-  nix.settings.experimental-features = [ "flakes" "nix-command" ];
+  nix.settings.experimental-features = ["flakes" "nix-command"];
 
   environment.sessionVariables = rec {
-	XDG_CONFIG_HOME = "$HOME/.config";
-	XDG_DATA_HOME = "$HOME/.local/share";
-	XDG_STATE_HOME = "$HOME/.local/state";
-        XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+    XDG_CACHE_HOME = "$HOME/.cache";
 
- 	XDG_BIN_HOME = "$HOME/.local/bin";
-	PATH = [
-		"${XDG_BIN_HOME}"
-	];
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    PATH = [
+      "${XDG_BIN_HOME}"
+    ];
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -68,33 +68,31 @@ in
   boot.kernelPackages = pkgs.linuxPackages_latest;
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
-#  boot.extraModprobeConfig = ''
-#   options snd-intel-dspcfg dsp_driver=1
-#   options v4l2loopback-dc width=320 height=240
-#  '';
-#  boot.extraModProbeConfig = ''
-#  '';
+  #  boot.extraModprobeConfig = ''
+  #   options snd-intel-dspcfg dsp_driver=1
+  #   options v4l2loopback-dc width=320 height=240
+  #  '';
+  #  boot.extraModProbeConfig = ''
+  #  '';
 
   #boot.supportedFilesystems = [ "zfs" ];
 
- #networking.extraHosts = "100.105.177.118 bitwarden.belrose.io";
+  #networking.extraHosts = "100.105.177.118 bitwarden.belrose.io";
 
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-
-  services.avizo.enable = true;
   # Enable Avahi
   services.avahi = {
-	nssmdns4 = true;
-	enable = true;
-	ipv4 = true;
-	ipv6 = true;
-	publish = {
-		enable = true;
-		addresses = true;
-		workstation = true;
-	};
+    nssmdns4 = true;
+    enable = true;
+    ipv4 = true;
+    ipv6 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+    };
   };
 
   services.fwupd.enable = true;
@@ -102,15 +100,21 @@ in
   services.xserver.enable = true;
 
   # Enable the Plasma Desktop Environment.
-  services.xserver.desktopManager.plasma5.enable = false;
+  services.desktopManager.plasma6.enable = true;
 
   services.xserver.displayManager.gdm = {
-    enable = true;
-    wayland = true;
+    enable = false;
+    wayland = false;
   };
 
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+
+
   services.udev.extraRules = ''
-	SUBSYSTEM="usb",ATTRS{idProduct}=="ea60",ATTRS{idVendor}=="10c4",GROUP="plugdev",TAG+="uaccess"
+    SUBSYSTEM="usb",ATTRS{idProduct}=="ea60",ATTRS{idVendor}=="10c4",GROUP="plugdev",TAG+="uaccess"
   '';
 
   services.pipewire = {
@@ -129,7 +133,7 @@ in
     enable = true;
     wlr.enable = true;
     # gtk portal needed to make gtk apps happy
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
   # enable sway window manager
@@ -137,6 +141,8 @@ in
     enable = true;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
+      corrupter
+      mpg123
       swaylock
       swayidle
       wl-clipboard
@@ -172,10 +178,10 @@ in
 
   services.tailscale.enable = true;
   programs.waybar.enable = true;
-  
+
   services.emacs = {
-        enable = true;
-#        package = pkgs.emacs-pgtk;
+    enable = true;
+    #        package = pkgs.emacs-pgtk;
   };
 
   # Enable CUPS to print documents.
@@ -187,8 +193,8 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.derek = {
     isNormalUser = true;
-#    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
-    extraGroups = [ "wheel" "dialout" "docker" ]; # Enable ‘sudo’ for the user.
+    #    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["networkmanager" "wheel" "dialout" "docker" "video"]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
     ];
   };
@@ -209,9 +215,11 @@ in
       defaultNetwork.settings.dns_enabled = true;
     };
   };
-  
+
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #orca-slicer
+    bambu-studio
     makemkv
     distrobox
     wget
@@ -221,7 +229,7 @@ in
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme  # default gnome cursors
+    gnome3.adwaita-icon-theme # default gnome cursors
     jq
     redshift
     psmisc
@@ -243,37 +251,39 @@ in
     flatpak
     foot
     nix-direnv
+    just
   ];
 
   fonts.packages = with pkgs; [
-	source-code-pro
-	source-sans-pro
-	source-serif-pro
-	font-awesome
-	ibm-plex
-	jetbrains-mono
-	fira-code
-	fira-code-symbols
-	fira
-	nerdfonts
-	powerline-fonts
+    source-code-pro
+    source-sans-pro
+    source-serif-pro
+    font-awesome
+    ibm-plex
+    jetbrains-mono
+    fira-code
+    fira-code-symbols
+    fira
+    nerdfonts
+    powerline-fonts
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-   programs.gnupg.agent = {
-     enable = true;
-     enableSSHSupport = true;
-   };
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryPackage = lib.mkForce pkgs.pinentry-qt;
+  };
 
   programs.mosh.enable = true;
 
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [
-	thunar-archive-plugin
-	thunar-volman
+      thunar-archive-plugin
+      thunar-volman
     ];
   };
 
@@ -287,18 +297,15 @@ in
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
-
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
-    fileSystems = [ "/" ]; 
+    fileSystems = ["/"];
   };
-
-
 
   security.rtkit.enable = true;
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [22];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -308,7 +315,6 @@ in
   # accidentally delete configuration.nix.
   system.copySystemConfiguration = false;
 
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
@@ -317,6 +323,4 @@ in
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
 
   system.stateVersion = "23.05"; # Did you read the comment?
-
 }
-
