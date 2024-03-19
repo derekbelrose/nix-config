@@ -13,10 +13,12 @@
 		inputs = { inherit nixpkgs; };
 
 		genPkgs = system: import nixpkgs { inherit system; config.allowUnfree = true; };
+		genUnstablePkgs = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
 
 		nixosSystem = system: hostname: username:
 			let
 				pkgs = genPkgs system;
+				unstablePkgs = genUnstablePkgs system;
 			in
 				nixpkgs.lib.nixosSystem {
 					inherit system;
@@ -28,7 +30,6 @@
 
 					modules = [
 						./hosts/nixos/${hostname}
-
 						#./hosts/common/nixos-common.nix
 					];
 				};
