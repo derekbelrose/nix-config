@@ -1,8 +1,8 @@
-{ unstablePkgs, ... }:
+{ nixos-hardware, ... }:
 
 {
 	imports = 
 	[
-#		"${unstablePkgs}/nixos/modules/services/desktop-managers/plasma6.nix}"
+		nixos-hardware.nixosModules.framework-13th-gen-intel		
 	];
 }

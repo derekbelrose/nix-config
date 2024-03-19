@@ -6,13 +6,14 @@
 		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
 		nixos-hardware.url = "github:NixOS/nixos-hardware";
+		nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
   };
 
 	outputs = inputs@{ self
 		, nixpkgs, nixpkgs-unstable
 		, nixos-hardware, ... }:
   let
-		inputs = { inherit nixpkgs nixpkgs-unstable nixos-hardware; };
+		inputs = { inherit nixpkgs nixpkgs-unstable; };
 
 		genPkgs = system: import nixpkgs { inherit system; config.allowUnfree = true; };
 		genUnstablePkgs = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
