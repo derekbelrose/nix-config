@@ -4,13 +4,15 @@
   inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
 		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+		nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
 	outputs = inputs@{ self
 		, nixpkgs, nixpkgs-unstable
 		, nixos-hardware, ... }:
   let
-		inputs = { inherit nixpkgs; };
+		inputs = { inherit nixpkgs nixpkgs-unstable nixos-hardware; };
 
 		genPkgs = system: import nixpkgs { inherit system; config.allowUnfree = true; };
 		genUnstablePkgs = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
@@ -23,9 +25,9 @@
 				nixpkgs.lib.nixosSystem {
 					inherit system;
 					specialArgs = {
-						inherit pkgs;
+						inherit pkgs unstablePkgs;
 
-						customArgs = { inherit system hostname username pkgs; };	
+						customArgs = { inherit system hostname username pkgs unstablePkgs; };	
 					};	
 
 					modules = [

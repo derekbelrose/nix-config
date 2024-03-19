@@ -4,6 +4,7 @@
 	imports =
 		[
 			./hardware-configuration.nix
+			./framework.nix
 		];
 
 		boot.loader.systemd-boot.enable = true;
@@ -48,7 +49,6 @@
 
 		services.xserver.enable = true;
 
-		services.desktopManager.plasma6.enable = true;
 		services.xserver.displayManager.gdm.enable = true;
 		services.xserver.displayManager.gdm.wayland = true;
 
@@ -57,12 +57,16 @@
 			variant = "";
 		};
 
+		xdg.portal.enable = true;
+		xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-kde ];
+		xdg.portal.config.common.default = "*";
+
 		virtualisation.libvirtd.enable = true;
 		virtualisation.spiceUSBRedirection.enable = true;
 		virtualisation = {
 			docker = {
 				enable = true;
-				autoPrunt = {
+				autoPrune = {
 					enable = true;
 					dates = "weekly";
 				};
