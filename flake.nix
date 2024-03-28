@@ -5,8 +5,7 @@
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
 		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-		nixos-hardware.url = "github:NixOS/nixos-hardware";
-		nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
+		nixos-hardware.url = "github:NixOS/nixos-hardware?ref=1e679b9";
   };
 
 	outputs = inputs@{ self
@@ -26,7 +25,7 @@
 				nixpkgs.lib.nixosSystem {
 					inherit system;
 					specialArgs = {
-						inherit pkgs unstablePkgs;
+						inherit pkgs unstablePkgs nixos-hardware;
 
 						customArgs = { inherit system hostname username pkgs unstablePkgs; };	
 					};	
