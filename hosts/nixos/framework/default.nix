@@ -4,6 +4,8 @@
 	imports =
 		[
 			./hardware-configuration.nix
+			./../../common/common-packages.nix
+			./../../common/nixos-common.nix
 			../../../modules/sway.nix
 			specialArgs.nixos-hardware.nixosModules.framework-13th-gen-intel
 		];
@@ -23,10 +25,11 @@
 		users.users.derek = { 		
 			isNormalUser = true;
 			extraGroups = [ "networkmanager" "wheel" "video" "dialout" "uinput" ];
-			packages = with specialArgs.pkgs; [
+			packages = with pkgs; [
 				just
 				vim
 				firefox
+				todoist-electron
 			];
 		};
 
@@ -223,6 +226,21 @@
 	    ];
 	  };
 	
+	  fonts.packages = with pkgs; [
+	    source-code-pro
+	    source-sans-pro
+	    source-serif-pro
+	    font-awesome
+	    ibm-plex
+	    jetbrains-mono
+	    fira-code
+	    fira-code-symbols
+	    fira
+	    nerdfonts
+	    powerline-fonts
+	  ];
+
+
 	  hardware.bluetooth.enable = true;
 	  hardware.bluetooth.powerOnBoot = true;
 
