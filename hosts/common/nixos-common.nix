@@ -27,4 +27,10 @@ in
 	environment.systemPackages = with pkgs; [
 		pavucontrol		
 	];
+
+	programs.gnupg.agent = {
+		enable = true;
+		pinentryFlavor = "qt";
+		enableSSHSupport = true;
+	};
 }
