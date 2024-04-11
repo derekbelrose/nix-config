@@ -48,7 +48,7 @@ in
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
       unstablePkgs.corrupter
-			waybar
+	  waybar
       mpg123
       swaylock
       swayidle
@@ -71,8 +71,8 @@ in
       tree
       htop
       pulseaudio
-			dbus-sway-environment
-			configure-gtk
+      dbus-sway-environment
+      configure-gtk
     ];
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland

@@ -32,14 +32,14 @@
 
 					modules = [
 						./hosts/nixos/${hostname}
-						#./hosts/common/nixos-common.nix
+						./hosts/common/nixos-common.nix
 					];
 				};
 
   in {
 		nixosConfigurations = {
 			framework = nixosSystem "x86_64-linux" "framework" "derek";
-			#emeritus = nixosSystem "x86_64-linux" "emeritus" "derek";
+			emeritus = nixosSystem "x86_64-linux" "emeritus" "derek";
 		};
   };
 }
