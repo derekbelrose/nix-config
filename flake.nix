@@ -2,36 +2,44 @@
   description = "Derek's System Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:nixos/nixos-hardware/master";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+		nixos-hardware.url = "github:NixOS/nixos-hardware?ref=1e679b9";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixos-hardware,
-    ...
-  }: let
-    lib = nixpkgs.lib;
+	outputs = inputs@{ self
+		, nixpkgs, nixpkgs-unstable
+		, nixos-hardware, ... }:
+  let
+		inputs = { inherit nixpkgs nixpkgs-unstable; };
+
+		genPkgs = system: import nixpkgs { inherit system; config.allowUnfree = true; };
+		genUnstablePkgs = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+
+		nixosSystem = system: hostname: username:
+			let
+				pkgs = genPkgs system;
+				unstablePkgs = genUnstablePkgs system;
+			in
+				nixpkgs.lib.nixosSystem {
+					inherit system;
+					specialArgs = {
+						inherit pkgs unstablePkgs nixos-hardware;
+
+						customArgs = { inherit system hostname username pkgs unstablePkgs; };	
+					};	
+
+					modules = [
+						./hosts/nixos/${hostname}
+						./hosts/common/nixos-common.nix
+					];
+				};
+
   in {
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-    nixosConfigurations = {
-      emeritus = lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./systems/thelio-hardware.nix
-          ./configuration.nix
-        ];
-      };
-      framework = lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-	  nixos-hardware.nixosModules.framework-13th-gen-intel
-          ./configuration.nix
-          ./systems/framework-hardware.nix
-        ];
-      };
-    };
+		nixosConfigurations = {
+			framework = nixosSystem "x86_64-linux" "framework" "derek";
+			emeritus = nixosSystem "x86_64-linux" "emeritus" "derek";
+		};
   };
 }

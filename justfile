@@ -40,7 +40,8 @@ update:
   nix flake update
 
 
+generations := "+5d"
 # Garbage collect old OS generations and remove stale packages from the nix store
-gc generations="5":
-  nix-env --delete-generations {{generations}}
-  nix-store --gc
+gc generations:
+  sudo nix-env --delete-generations -p /nix/var/nix/profiles/system {{generations}}
+  sudo nix-store --gc

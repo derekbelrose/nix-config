@@ -15,6 +15,7 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/18694165-78d3-4b43-8866-17026ed0ffa4";
     fsType = "btrfs";
@@ -96,6 +97,12 @@
 
   environment.systemPackages = with pkgs; [
     brightnessctl
+    vulkan-tools
+    gpu-viewer
+    libGL
+    clinfo
+    wayland-utils
+    glxinfo
     (vivaldi.override {
       proprietaryCodecs = true;
       enableWidevine = false;
@@ -106,12 +113,6 @@
     polkit
     lxqt.lxqt-policykit
     handbrake
-    vulkan-tools
-    gpu-viewer
-    clinfo
-    wayland-utils
-    glxinfo
-    libGL
   ];
 
   services.power-profiles-daemon.enable = lib.mkForce false;
@@ -127,7 +128,7 @@
       governor = "powersave";
       turbo = "never";
     };
-    charger = {
+    CHARGER = {
       governor = "performance";
       turbo = "auto";
     };
