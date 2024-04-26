@@ -41,7 +41,7 @@
 
 					modules = [
 						./hosts/nixos/${hostname}
-						#./hosts/common/nixos-common.nix
+						./hosts/common/nixos-common.nix
 					];
 				};
 

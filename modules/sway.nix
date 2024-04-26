@@ -48,7 +48,7 @@ in
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
       unstablePkgs.corrupter
-			waybar
+	  waybar
       mpg123
       swaylock
       swayidle
