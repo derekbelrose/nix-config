@@ -3,11 +3,11 @@
 {
 	imports =
 		[
+			specialArgs.nixos-hardware.nixosModules.framework-13th-gen-intel
 			./hardware-configuration.nix
 			./../../common/common-packages.nix
 			./../../common/nixos-common.nix
-			../../../modules/sway.nix
-			specialArgs.nixos-hardware.nixosModules.framework-13th-gen-intel
+#			../../../modules/sway.nix
 		];
 
   	nix.settings.experimental-features = ["flakes" "nix-command"];
@@ -22,9 +22,9 @@
 	  networking.nat.enable = true;
 
 
-		users.users.derek = { 		
+		users.users.${customArgs.username} = { 		
 			isNormalUser = true;
-			extraGroups = [ "networkmanager" "wheel" "video" "dialout" "uinput" ];
+			extraGroups = [ "networkmanager" "wheel" "video" "dialout" "uinput" "render" ];
 			packages = with pkgs; [
 				just
 				vim
@@ -55,16 +55,22 @@
 
 		services.xserver.enable = true;
 
-		services.xserver.displayManager.gdm.enable = true;
-		services.xserver.displayManager.gdm.wayland = true;
+		services.xserver.displayManager = {
+			gdm = {
+				enable = true;
+				wayland = true;
+			};
+			sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
+		};
 
+		services.xserver.desktopManager.gnome.enable = true;
 		services.xserver.xkb = {
 			layout = "us";
 			variant = "";
 		};
 
 		xdg.portal = {
-			extraPortals = [ pkgs.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
+			#extraPortals = [ pkgs.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
 			config.common.default = "*";
 			wlr.enable = true;
 			enable = true;
@@ -119,6 +125,9 @@
 		};
 
   	environment.systemPackages = with pkgs; [
+			gnome.gnome-settings-daemon
+			gnomeExtensions.appindicator
+			unstablePkgs.bambu-studio
 			git
 	    gpu-viewer
 	    brightnessctl
@@ -138,6 +147,7 @@
 	    polkit
 	    lxqt.lxqt-policykit
 	    handbrake
+			mesa_drivers
 		];
 
 	  services.power-profiles-daemon.enable = lib.mkForce false;

@@ -58,7 +58,6 @@ in
       mako
       slurp
       alacritty
-      xdg-desktop-portal
       rofi-wayland
       wofi
       bemenu
@@ -73,6 +72,7 @@ in
       pulseaudio
 			dbus-sway-environment
 			configure-gtk
+			jq
     ];
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland

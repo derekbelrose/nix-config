@@ -19,6 +19,8 @@ in
 		};
 	};
 
+	services.avahi.nssmdns = true;
+
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.config.permittedInsecurePackages = [
 
