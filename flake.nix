@@ -54,10 +54,10 @@
 		};
 
     # Devshell for bootstrapping; acessible via 'nix develop' or 'nix-shell' (legacy)
-    #devShells = libx.forAllSystems (system:
-    #  let pkgs = nixpkgs.legacyPackages.${system};
-    #  in import ./shell.nix { inherit pkgs; }
-    #);
+    devShells = libx.forAllSystems (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      in import ./shell.nix { inherit pkgs; }
+    );
 
 
     # nix fmt
