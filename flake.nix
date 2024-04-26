@@ -2,38 +2,41 @@
   description = "Derek's System Flake";
 
   inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+		#nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+		nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+		nixpkgs-master.url = "github:NixOS/nixpkgs";
 
 		nixos-hardware.url = "github:NixOS/nixos-hardware?ref=1e679b9";
+		nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
     nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
     nix-formatter-pack.inputs.nixpkgs.follows = "nixpkgs";
   };
 
 	outputs = inputs@{ self
-		, nixpkgs, nixpkgs-unstable
-		, nixos-hardware, nix-formatter-pack, ... }:
+		, nixpkgs, nixpkgs-unstable, nixpkgs-master
+		, nixpkgs-wayland, nixos-hardware, nix-formatter-pack, ... }:
   let
-		inherit (self) outputs;
+		inherit (self) outputs system;
 		stateVersion = "23.11";
 
-		inputs = { inherit nixpkgs nixpkgs-unstable; };
+		inputs = { inherit nixpkgs nixpkgs-unstable nixos-hardware nixpkgs-wayland;};
 
 		genPkgs = system: import nixpkgs { inherit system; config.allowUnfree = true; };
 		genUnstablePkgs = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+		genMasterPkgs = system: import nixpkgs-master { inherit system; config.allowUnfree = true; };
 
 		nixosSystem = system: hostname: username:
 			let
 				pkgs = genPkgs system;
 				unstablePkgs = genUnstablePkgs system;
-			in
+				masterPkgs = genMasterPkgs system;
+			in 
 				nixpkgs.lib.nixosSystem {
 					inherit system;
 					specialArgs = {
-						inherit pkgs unstablePkgs nixos-hardware;
-
-						customArgs = { inherit system hostname username pkgs unstablePkgs; };	
+						inherit inputs system outputs hostname username stateVersion pkgs unstablePkgs masterPkgs;
 					};	
 
 					modules = [
@@ -51,10 +54,11 @@
 		};
 
     # Devshell for bootstrapping; acessible via 'nix develop' or 'nix-shell' (legacy)
-    devShells = libx.forAllSystems (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      in import ./shell.nix { inherit pkgs; }
-    );
+    #devShells = libx.forAllSystems (system:
+    #  let pkgs = nixpkgs.legacyPackages.${system};
+    #  in import ./shell.nix { inherit pkgs; }
+    #);
+
 
     # nix fmt
     formatter = libx.forAllSystems (system:
@@ -73,9 +77,9 @@
     overlays = import ./overlays { inherit inputs; };
 
     # Custom packages; acessible via 'nix build', 'nix shell', etc
-    packages = libx.forAllSystems (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      in import ./pkgs { inherit pkgs; }
-    );
+    #packages = libx.forAllSystems (system:
+    #  let pkgs = nixpkgs.legacyPackages.${system};
+    #  in import ./pkgs { inherit pkgs; }
+    #);
   };
 }

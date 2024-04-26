@@ -1,18 +1,36 @@
-{ lib, pkgs, unstablePkgs, specialArgs, customArgs, ... }:
-
+{ outputs, inputs, lib, pkgs, unstablePkgs, masterPkgs, specialArgs, username, hostname, ... }:
+let
+	system = specialArgs.system;
+	overlay-unstable = final: prev: {
+		unstable = import inputs.nixpkgs-unstable {
+			inherit system;
+			config.allowUnfree = true;
+		};
+	};
+in
 {
 	imports =
 		[
-			specialArgs.nixos-hardware.nixosModules.framework-13th-gen-intel
+			inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
 			./hardware-configuration.nix
 			./../../common/common-packages.nix
 			./../../common/nixos-common.nix
-#			../../../modules/sway.nix
+			../../../modules/sway.nix
 		];
 
   	nix.settings.experimental-features = ["flakes" "nix-command"];
+		nix.settings = {
+ 			trusted-public-keys = [
+ 			  "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+ 			  "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+ 			];
+ 			substituters = [
+ 			  "https://cache.nixos.org"
+ 			  "https://nixpkgs-wayland.cachix.org"
+ 			];
+		};
 
-  	networking.hostName = customArgs.hostname; # Define your hostname.
+  	networking.hostName = hostname; # Define your hostname.
 
 		boot.loader.systemd-boot.enable = true;
 		boot.loader.efi.canTouchEfiVariables = true;
@@ -22,18 +40,25 @@
 	  networking.nat.enable = true;
 
 
-		users.users.${customArgs.username} = { 		
+		users.users.${username} = { 		
 			isNormalUser = true;
 			extraGroups = [ "networkmanager" "wheel" "video" "dialout" "uinput" "render" ];
 			packages = with pkgs; [
 				just
 				vim
 				firefox
-				todoist-electron
+				#todoist-electron
 			];
 		};
 
-    environment.sessionVariables = {LIBVA_DRIVER_NAME = "iHD";};
+		boot.binfmt.registrations.appimage = {
+		  wrapInterpreterInShell = false;
+		  interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+		  recognitionType = "magic";
+		  offset = 0;
+		  mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+		  magicOrExtension = ''\x7fELF....AI\x02'';
+		};
 
 		systemd.services.systemd-udevd.restartIfChanged = false;
 		systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
@@ -60,6 +85,9 @@
 				enable = true;
 				wayland = true;
 			};
+		};
+
+		services.displayManager = {
 			sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
 		};
 
@@ -74,6 +102,10 @@
 			config.common.default = "*";
 			wlr.enable = true;
 			enable = true;
+		};
+
+		nixpkgs = {
+			overlays = [ overlay-unstable inputs.nixpkgs-wayland.overlay];
 		};
 
 		virtualisation.libvirtd.enable = true;
@@ -91,7 +123,7 @@
 	  services.printing.enable = true;
 
 		services.avahi = {
-	    nssmdns = true;
+	    nssmdns4 = true;
 	    enable = true;
 	    ipv4 = true;
 	    ipv6 = true;
@@ -111,44 +143,55 @@
 
 		nixpkgs.config.packageOverrides = pkgs: {
  	  	intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
+			bambu-studio = pkgs.unstable.bambu-studio.override { mesa = pkgs.unstable.mesa; };	
 			steam = pkgs.steam.override {
 				extraPkgs = pkgs: with pkgs; [
 					gamescope
 					mangohud
 				];
 			};
-		};
+		};#
 
 		programs.steam = {
 			enable = true;
 			gamescopeSession.enable = true;
 		};
 
-  	environment.systemPackages = with pkgs; [
-			gnome.gnome-settings-daemon
-			gnomeExtensions.appindicator
-			unstablePkgs.bambu-studio
-			git
-	    gpu-viewer
-	    brightnessctl
-	    vulkan-tools
-	    gpu-viewer
-	    libGL
-	    clinfo
-	    wayland-utils
-	    glxinfo
-	    (vivaldi.override {
-	      proprietaryCodecs = true;
-	      enableWidevine = false;
-	    })
-	    vivaldi-ffmpeg-codecs
-	    widevine-cdm
-	    avizo
-	    polkit
-	    lxqt.lxqt-policykit
-	    handbrake
-			mesa_drivers
-		];
+		environment = {
+    	sessionVariables = {LIBVA_DRIVER_NAME = "iHD";};
+
+    	defaultPackages = with pkgs; lib.mkForce [
+    	  coreutils-full
+    	  micro
+    	]; 
+
+  		systemPackages = with pkgs; [
+				vim
+				gnome.gnome-settings-daemon
+				gnomeExtensions.appindicator
+				git
+	  	  gpu-viewer
+	  	  brightnessctl
+	  	  vulkan-tools
+	  	  #libGL
+	  	  clinfo
+	  	  wayland-utils
+	  	  glxinfo
+	  	  #(vivaldi.override {
+	  	  #  proprietaryCodecs = true;
+	  	  #  enableWidevine = false;
+	  	  #})
+	  	  #vivaldi-ffmpeg-codecs
+	  	  widevine-cdm
+	  	  avizo
+	  	  polkit
+	  	  lxqt.lxqt-policykit
+	  	  #handbrake
+				direnv
+				fractal
+				bambu-studio
+			];
+		};
 
 	  services.power-profiles-daemon.enable = lib.mkForce false;
 	  services.udev.extraRules = ''
@@ -204,8 +247,9 @@
 	  systemd.services.systemd-logind.environment = {
 		SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK = "1";
 	  };
+
 	  security.polkit.enable = true;
-	  security.polkit.adminIdentities = [ "unix-user:${customArgs.username}" "unix-group:admin" ];
+	  security.polkit.adminIdentities = [ "unix-user:${username}" "unix-group:admin" ];
 	
 	  services.fwupd.package = (import (builtins.fetchTarball {
 	    url = "https://github.com/NixOS/nixpkgs/archive/bb2009ca185d97813e75736c2b8d1d8bb81bde05.tar.gz";
