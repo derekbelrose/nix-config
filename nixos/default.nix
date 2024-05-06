@@ -59,7 +59,7 @@ in
   };
 
   console = {
-    font = "${pkgs.tamzen}/share/consolefonts/TamzenForPowerlinx10x20.psf";
+    font = "${pkgs.tamzen}/share/consolefonts/TamzenForPowerline10x20.psf";
     keyMap = "us";
     packages = with pkgs; [ tamzen ];
   };
