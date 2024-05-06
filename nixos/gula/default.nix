@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
       ./disk-config.nix
+			../_mixins/configs/server.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

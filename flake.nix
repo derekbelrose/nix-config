@@ -43,6 +43,12 @@
           username = "derek";
           platform = "x86_64-linux";
         };
+
+				gula = libx.mkHost {
+					hostname = "gula";
+					username = "derek";
+					platform = "x86_64-linux";
+				};
       };
 
       devShells = libx.forAllSystems (
