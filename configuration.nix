@@ -1,9 +1,9 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config
+, pkgs
+, lib
+, ...
+}:
+let
   dbus-sway-environment = pkgs.writeTextFile {
     name = "dbus-sway-environment";
     destination = "/bin/dbus-sway-environment";
@@ -16,24 +16,23 @@
     '';
   };
 
-  nixos.config = {
-    allowUnfree = true;
-  };
-
   configure-gtk = pkgs.writeTextFile {
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Dracula'
-    '';
+    text =
+      let
+        schema = pkgs.gsettings-desktop-schemas;
+        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+      in
+      ''
+        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+        gnome_schema=org.gnome.desktop.interface
+        gsettings set $gnome_schema gtk-theme 'Dracula'
+      '';
   };
-in {
+in
+{
   nixpkgs.config.allowUnfree = true;
 
   # nixpkgs.overlays = [ #   (import (builtins.fetchTarball {
@@ -48,7 +47,7 @@ in {
   hardware.system76.enableAll = true;
   hardware.keyboard.zsa.enable = true;
   hardware.enableAllFirmware = true;
-  nix.settings.experimental-features = ["flakes" "nix-command"];
+  nix.settings.experimental-features = [ "flakes" "nix-command" ];
 
   environment.sessionVariables = rec {
     XDG_CONFIG_HOME = "$HOME/.config";
@@ -112,7 +111,6 @@ in {
     wayland.enable = true;
   };
 
-
   services.udev.extraRules = ''
     SUBSYSTEM="usb",ATTRS{idProduct}=="ea60",ATTRS{idVendor}=="10c4",GROUP="plugdev",TAG+="uaccess"
   '';
@@ -133,7 +131,7 @@ in {
     enable = true;
     wlr.enable = true;
     # gtk portal needed to make gtk apps happy
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   # enable sway window manager
@@ -194,7 +192,7 @@ in {
   users.users.derek = {
     isNormalUser = true;
     #    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
-    extraGroups = ["networkmanager" "wheel" "dialout" "docker" "video"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "networkmanager" "wheel" "dialout" "docker" "video" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
     ];
   };
@@ -300,12 +298,12 @@ in {
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
-    fileSystems = ["/"];
+    fileSystems = [ "/" ];
   };
 
   security.rtkit.enable = true;
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [22];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

@@ -1,17 +1,17 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ pkgs
+, ...
+}:
+let
   hibernateEnvironment = {
     HIBERNATE_SECONDS = "3600";
     HIBERNATE_LOCK = "/var/run/autohibernate.lock";
   };
-in {
+in
+{
   systemd.services."awake-after-suspend-for-a-time" = {
     description = "Sets up the suspend so that it'll wake for hibernation";
-    wantedBy = ["suspend.target"];
-    before = ["systemd-suspend.service"];
+    wantedBy = [ "suspend.target" ];
+    before = [ "systemd-suspend.service" ];
     environment = hibernateEnvironment;
     script = ''
       curtime=$(date +%s)
@@ -23,8 +23,8 @@ in {
   };
   systemd.services."hibernate-after-recovery" = {
     description = "Hibernates after a suspend recovery due to timeout";
-    wantedBy = ["suspend.target"];
-    after = ["systemd-suspend.service"];
+    wantedBy = [ "suspend.target" ];
+    after = [ "systemd-suspend.service" ];
     environment = hibernateEnvironment;
     script = ''
       curtime=$(date +%s)

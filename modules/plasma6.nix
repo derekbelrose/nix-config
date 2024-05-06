@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   disabledModules = [ "services/x11/desktop-managers/plasma5.nix" ];
 
   imports = [

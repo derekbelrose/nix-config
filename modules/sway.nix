@@ -1,6 +1,9 @@
-{ lib, pkgs, unstablePkgs, config, ... }:
+{ outputs
+, pkgs
+, ...
+}:
 let
-	  dbus-sway-environment = pkgs.writeTextFile {
+  dbus-sway-environment = pkgs.writeTextFile {
     name = "dbus-sway-environment";
     destination = "/bin/dbus-sway-environment";
     executable = true;
@@ -13,21 +16,22 @@ let
   };
 
   configure-gtk = pkgs.writeTextFile {
-      name = "configure-gtk";
-      destination = "/bin/configure-gtk";
-      executable = true;
-      text = let
+    name = "configure-gtk";
+    destination = "/bin/configure-gtk";
+    executable = true;
+    text =
+      let
         schema = pkgs.gsettings-desktop-schemas;
         datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-      in ''
+      in
+      ''
         export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
         gnome_schema=org.gnome.desktop.interface
         gsettings set $gnome_schema gtk-theme 'Dracula'
-			'';
-	};
+      '';
+  };
 in
 {
-
   services.dbus.enable = true;
 
   environment.sessionVariables = rec {
@@ -42,13 +46,15 @@ in
     ];
   };
 
+  nixpkgs.overlays = [ outputs.overlays.unstable-packages ];
+
   # enable sway window manager
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
-      unstablePkgs.corrupter
-	  waybar
+      unstable.corrupter
+      waybar
       mpg123
       swaylock
       swayidle
@@ -70,9 +76,9 @@ in
       tree
       htop
       pulseaudio
-			dbus-sway-environment
-			configure-gtk
-			jq
+      dbus-sway-environment
+      configure-gtk
+      jq
     ];
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland
@@ -82,6 +88,4 @@ in
       export MOZ_ENABLE_WAYLAND=1
     '';
   };
-
-
 }
