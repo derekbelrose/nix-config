@@ -8,6 +8,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
 		../_mixins/services/samba.nix
+		../_mixins/configs/laptop.nix
     ../../modules/sway.nix
   ];
 
