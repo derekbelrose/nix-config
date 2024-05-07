@@ -1,4 +1,4 @@
-{
+{ config, ... }:{
   disko.devices = {
     disk = {
       vdb = {
@@ -9,58 +9,47 @@
           type = "gpt";
           partitions = {
             ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "128M";
-              type = "EF00";
+              size = "512M";
+              type = "EF00"; 
+              label = "BOOT";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
               };
             };
+
             root = {
               size = "100%";
+              label = "root";
+
               content = {
                 type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
-                # Subvolumes must set a mountpoint in order to be mounted,
-                # unless their parent is mounted
+                extraArgs = [
+                  "-L ${config.host.name}"
+                  "-O bgt"
+                  "-f"
+                ];
+
                 subvolumes = {
-                  # Subvolume name is different from mountpoint
-                  "/rootfs" = {
+                  "@" = {
                     mountpoint = "/";
+                    mountOptions = ["compress=zstd"];
                   };
-                  # Subvolume name is the same as the mountpoint
-                  "/home" = {
-                    mountOptions = [ "compress=zstd" ];
+
+                  "@home" = {
                     mountpoint = "/home";
+                    mountOptions = ["compress=zstd"];
                   };
-                  # Sub(sub)volume doesn't need a mountpoint as its parent is mounted
-                  "/home/user" = { };
-                  # Parent is not mounted so the mountpoint must be set
-                  "/nix" = {
+
+                  "@var" = {
+                    mountpoint = "/var";
+                    mountOptions = ["compress=zstd"];
+                  };
+
+                  "@nix" = {
                     mountOptions = [ "compress=zstd" "noatime" ];
                     mountpoint = "/nix";
-                  };
-                  # This subvolume will be created but not mounted
-                  "/test" = { };
-                  # Subvolume for the swapfile
-                  "/swap" = {
-                    mountpoint = "/.swapvol";
-                    swap = {
-                      swapfile.size = "20M";
-                      swapfile2.size = "20M";
-                      swapfile2.path = "rel-path";
-                    };
-                  };
-                };
-
-                mountpoint = "/.partition-root";
-                swap = {
-                  swapfile = {
-                    size = "4096M";
                   };
                 };
               };
