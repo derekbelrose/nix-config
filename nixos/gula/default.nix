@@ -9,20 +9,23 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
-      ./disk-config.nix
-			../_mixins/configs/server.nix
+     # ./disk-config.nix
+      ../_mixins/configs/server.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "zfs" ];
 
   boot.kernelModules = [ "kvm-intel" "zfs" ];
+  boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 
   networking.hostName = "gula"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.hostId = "2cbc7865";
 
   # Set your time zone.
   time.timeZone = "America/New_York";
