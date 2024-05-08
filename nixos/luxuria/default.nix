@@ -10,6 +10,7 @@
 		../_mixins/services/samba.nix
 		../_mixins/configs/laptop.nix
     ../../modules/sway.nix
+		../../modules/suspend-then-hibernate.nix
   ];
 
   boot = {

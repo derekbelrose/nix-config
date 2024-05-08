@@ -13,34 +13,34 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
-      fsType = "btrfs";
-      options = [ "compress=zstd" "subvol=root" ];
-    };
+  #fileSystems."/" =
+  #  { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
+  #    fsType = "btrfs";
+  #    options = [ "compress=zstd" "subvol=root" ];
+  #  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
-      fsType = "btrfs";
-      options = [ "compress=zstd" "subvol=home" ];
-    };
+  #fileSystems."/home" =
+  #  { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
+  #    fsType = "btrfs";
+  #    options = [ "compress=zstd" "subvol=home" ];
+  #  };
 
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
-      fsType = "btrfs";
-      options = [ "compress=zstd" "noatime" "subvol=nix" ];
-    };
+  #fileSystems."/nix" =
+  #  { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
+  #    fsType = "btrfs";
+  #    options = [ "compress=zstd" "noatime" "subvol=nix" ];
+  #  };
 
-  fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
-      fsType = "btrfs";
-      options = [ "compress=zstd" "subvol=var" ];
-    };
+  #fileSystems."/var" =
+  #  { device = "/dev/disk/by-uuid/b63e8238-c734-4fec-8177-ef4620562217";
+  #    fsType = "btrfs";
+  #    options = [ "compress=zstd" "subvol=var" ];
+  #  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/58D1-CCCD";
-      fsType = "vfat";
-    };
+  #fileSystems."/boot" =
+  #  { device = "/dev/disk/by-uuid/58D1-CCCD";
+  #    fsType = "vfat";
+  #  };
 
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

@@ -1,10 +1,10 @@
-{ config, ... }:{
+{ hostname ? "gula", disks ? [ "/dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B7686A66902" ], ... }:
+{
   disko.devices = {
     disk = {
       vdb = {
         type = "disk";
-	# /dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B7686A66902
-        device = "/dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B7686A66902";
+        device = builtins.elemAt disks 0;
         content = {
           type = "gpt";
           partitions = {
@@ -26,29 +26,29 @@
               content = {
                 type = "btrfs";
                 extraArgs = [
-                  "-L ${config.host.name}"
+                  "-L ${hostname}"
                   "-O bgt"
                   "-f"
                 ];
 
                 subvolumes = {
-                  "@" = {
+                  "root" = {
                     mountpoint = "/";
-                    mountOptions = ["compress=zstd"];
+                    mountOptions = ["compress=zstd" "subvol=root"];
                   };
 
-                  "@home" = {
+                  "home" = {
                     mountpoint = "/home";
-                    mountOptions = ["compress=zstd"];
+                    mountOptions = ["compress=zstd" "subvol=home"];
                   };
 
-                  "@var" = {
+                  "var" = {
                     mountpoint = "/var";
-                    mountOptions = ["compress=zstd"];
+                    mountOptions = ["compress=zstd" "subvol=var"];
                   };
 
-                  "@nix" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
+                  "nix" = {
+                    mountOptions = [ "compress=zstd" "noatime" "subvol=nix" ];
                     mountpoint = "/nix";
                   };
                 };
