@@ -153,7 +153,6 @@ in
   networking.networkmanager.enable = true;
 
   networking.hostName = hostname;
-  services.sshd.enable = true;
 
 
   users.users.${username} = {
