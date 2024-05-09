@@ -26,9 +26,13 @@ in
 		inputs.disko.nixosModules.disko
     ./${hostname}
     ./_mixins/services/tailscale.nix
-    #		./_mixins/configs
-    #		./_mixins/users
+    ./_mixins/configs
+    ./_mixins/users
   ];
+
+	programs = {
+		fish.enable = true;
+	};
 
   boot = {
     consoleLogLevel = 0;
@@ -94,6 +98,16 @@ in
 
   security.polkit.enable = true;
   security.polkit.adminIdentities = [ "unix-user:${username}" "unix-group:admin" ];
+
+	nh = {
+		clean = {
+			enable = true;
+			extraArgs = "--keep-since 10d --keep 5";
+		};
+
+		enable = true;
+		flake = "/home/${username}/nixos-flake";
+	};
 
   nix = {
     # This will add each flake input as a registry

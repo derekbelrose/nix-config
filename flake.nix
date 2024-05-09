@@ -27,6 +27,7 @@
   outputs =
     { self
     , nix-formatter-pack
+		, home-manager
     , nixpkgs
     , ...
     } @ inputs:
@@ -38,9 +39,10 @@
       libx = import ./lib { inherit inputs outputs stateVersion; };
     in
     {
-      #homeConfigurations = {
-      #
-      #};
+      homeConfigurations = {
+				"derek@luxuria" = 	libx.mkHome { hostname = "luxura"; username = "derek"; desktop = "sway"; };
+      
+      };
 
       nixosConfigurations = {
         # (lust) luxuria, (avarice) avaritia, (envy) invidia, (sloth) acedia, (gluttony) gula, (pride) superbia, (anger) ira

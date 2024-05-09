@@ -26,8 +26,6 @@
               content = {
                 type = "btrfs";
                 extraArgs = [
-                  "-L ${hostname}"
-                  "-O bgt"
                   "-f"
                 ];
 

@@ -9,6 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
 		../_mixins/services/samba.nix
 		../_mixins/configs/laptop.nix
+		../_mixins/configs/gnome.nix
     ../../modules/sway.nix
 		../../modules/suspend-then-hibernate.nix
   ];
@@ -142,6 +143,7 @@
 		tmux
 		zellij
 		chromium
+		gnome.gnome-settings-daemon
   ];
 
   hardware.opengl = {
@@ -193,6 +195,8 @@
     ACTION=="add", SUBSYSTEM=="leds", RUN+="${pkgs.coreutils-full}/bin/chgrp input /sys/class/leds/%k/brightness"
     ACTION=="add", SUBSYSTEM=="leds", RUN+="${pkgs.coreutils-full}/bin/chmod g+w /sys/class/leds/%k/brightness"
   '';
+	
+	services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   services.logind = {
     lidSwitch = "hibernate";
