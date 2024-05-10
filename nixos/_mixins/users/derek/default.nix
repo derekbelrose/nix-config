@@ -23,12 +23,15 @@ in
 			chromium
 			element-desktop
 			gnome.dconf-editor
+			gnome.gnome-tweaks
+			brave
 		]) ++ (with pkgs.unstable; lib.optionals (isWorkstation) [
 			fractal
 		]);
 	};
 
 	programs = {
+		dconf.enable = true;
 		chromium = lib.mkIf (isWorkstation) {
 			extensions = [
 				"nngceckbapebfimnlniiiahkandclblb" # Bitwarden
@@ -42,6 +45,14 @@ in
   	  };
   	}];
 	};
+
+  #gtk = {
+  #  enable = true;
+  #  theme = {
+  #    package = pkgs.gnome.gnome-themes-extra;
+  #    name = "Adwaita-dark";
+  #  };
+  #};
 
   users.users.derek = {
     description = "Derek Belrose";

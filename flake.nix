@@ -41,7 +41,6 @@
     {
       homeConfigurations = {
 				"derek@luxuria" = 	libx.mkHome { hostname = "luxura"; username = "derek"; desktop = "sway"; };
-      
       };
 
       nixosConfigurations = {
@@ -50,6 +49,7 @@
           hostname = "luxuria";
           username = "derek";
           platform = "x86_64-linux";
+					desktop = "sway";
         };
 
 				gula = libx.mkHost {

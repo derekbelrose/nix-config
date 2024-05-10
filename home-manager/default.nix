@@ -1,8 +1,16 @@
 { config, desktop, hostname, inputs, lib, outputs, pkgs, stateVersion, username, ... }:
 let
 	inherit (pkgs.stdenv) isDarwin isLinux;
+	isWorkstation = if (desktop != null) then true else false;
 in
 {
+	imports = [
+		./_mixins/users/${username}
+	]; 
+	#++ lib.optional (builtins.pathExists (./. + "/_mixins/users/${username}")) ./_mixins/users/${username}
+  #++ lib.optional (builtins.pathExists (./. + "/_mixins/hosts/${hostname}")) ./_mixins/hosts/${hostname}
+  #++ lib.optional (isWorkstation) ./_mixins/desktop;
+
 	home = {
 		inherit stateVersion;
 		inherit username;
@@ -74,7 +82,7 @@ in
 			];
 
 			config = {
-				stlye = "plain";
+				style = "plain";
 			};
 		};
 		dircolors = {
