@@ -24,7 +24,7 @@
     extraModulePackages = [ ];
 
   	resumeDevice = "/dev/disk/by-uuid/18694165-78d3-4b43-8866-17026ed0ffa4";
-  	kernelParams = [ "mem_sleep_default=deep" "resume_offset=6967742" ];
+  	kernelParams = [ "mem_sleep_default=deep" "resume_offset=6967742" "nvme.noacpi=1"];
   };
 
   networking.nat.internalInterfaces = [ "ve-+" ];
@@ -79,7 +79,11 @@
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  services.fwupd.enable = true;
+  services.fwupd = {
+		enable = true;
+		extraRemotes = [ "lvfs-testing" ];
+	};
+	
   services.tailscale.enable = true;
   services.fprintd.enable = true;
 
@@ -136,6 +140,7 @@
 
   services.tlp.enable = true;
   services.blueman.enable = true;
+	services.fstrim.enable = true;
 
   security.protectKernelImage = false;
 
@@ -155,6 +160,7 @@
       vaapiVdpau
       libvdpau-va-gl
       brightnessctl
+			rocm-opencl-icd
     ];
   };
 
