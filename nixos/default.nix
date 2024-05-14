@@ -106,7 +106,7 @@ in
 		};
 
 		enable = true;
-		flake = "/home/${username}/nixos-flake";
+		flake = "/home/${username}/nix-config";
 	};
 
   nix = {

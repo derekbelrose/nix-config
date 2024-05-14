@@ -101,9 +101,13 @@
 
   services.xserver.displayManager = {
     gdm = {
-      enable = true;
+      enable = lib.mkForce false;
       wayland = true;
     };
+		sddm = {
+			enable = true;
+			wayland.enable = true;
+		};
   };
 
   services.xserver.displayManager = {
