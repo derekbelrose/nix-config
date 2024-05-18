@@ -22,6 +22,8 @@
 
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+
+		nur.url = "github:nix-community/NUR";
   };
 
   outputs =
@@ -29,6 +31,7 @@
     , nix-formatter-pack
 		, home-manager
     , nixpkgs
+		, nur
     , ...
     } @ inputs:
     let
@@ -41,6 +44,7 @@
     {
       homeConfigurations = {
 				"derek@luxuria" = 	libx.mkHome { hostname = "luxura"; username = "derek"; desktop = "sway"; };
+				"derek@gula" = 	libx.mkHome { hostname = "gula"; username = "derek"; };
       };
 
       nixosConfigurations = {

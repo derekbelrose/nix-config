@@ -37,7 +37,7 @@ trace target_host=hostname: (build target_host "--show-trace")
 # Build the NixOS configuration and switch to it.
 [linux]
 switch target_host=hostname flags="":
-  sudo nixos-rebuild switch --flake .#{{target_host}} {{flags}} --impure
+  NIXPKGS_ALLOW_UNFREE=1 sudo nixos-rebuild switch --flake .#{{target_host}} {{flags}} --impure
 
 # Update flake inputs to their latest revisions
 update:

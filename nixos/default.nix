@@ -24,6 +24,7 @@ in
     (modulesPath + "/installer/scan/not-detected.nix")
 		inputs.nh.nixosModules.default
 		inputs.disko.nixosModules.disko
+		inputs.nur.nixosModules.nur
     ./${hostname}
     ./_mixins/services/tailscale.nix
     ./_mixins/configs
@@ -144,6 +145,9 @@ in
       outputs.overlays.additions
       outputs.overlays.unstable-packages
     ];
+	
+		config = {
+		};
   };
 
   environment = {
@@ -158,6 +162,7 @@ in
       rsync
       pavucontrol
 			avizo
+			zellij
     ];
   };
 

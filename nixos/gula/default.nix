@@ -2,14 +2,17 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
-			(import ./disk-config.nix { })
+      (import ./disk-config.nix { })
+			inputs.nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
+      ../_mixins/services/openssh.nix
+			../_mixins/services/jellyfin.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -17,8 +20,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "zfs" ];
 
-  boot.kernelModules = [ "kvm-intel" "zfs" ];
+  boot.kernelModules = [ "kvm-intel" "zfs" "bcachefs" ];
   boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+	boot.zfs.extraPools = [ ];
 
   networking.hostName = "gula"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -26,9 +30,14 @@
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   networking.hostId = "2cbc7865";
 
+	services.smartd.enable = true;
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
+	nixpkgs = {
+		config.allowUnfree = true;
+	};
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -73,10 +82,10 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  # ];
+   environment.systemPackages = with pkgs; [
+		nvidia-vaapi-driver
+		bcachefs-tools
+   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -115,6 +124,40 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+
+	networking = {
+		nat = {
+			enable = true;
+			externalInterface = "br0";
+		};
+
+		bridges.br0.interfaces = [ "eno1" ];
+
+		useDHCP = false;
+		interfaces."br0".useDHCP = true;
+
+		interfaces."br0".ipv4.addresses = [ {
+			address = "10.0.1.1";
+			prefixLength = 24;
+		}];
+	};
+
+	services.xserver.videoDriver = [ "nvidia" ];
+	hardware.nvidia = {
+		package = config.nur.repos.arc.packages.nvidia-patch.override {
+			nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
+		};
+		modesetting.enable = true;
+
+		nvidiaPersistenced = true;
+		powerManagement.enable = false;
+		powerManagement.finegrained = false;
+
+		open = false;
+
+		nvidiaSettings = true;
+	};
+
   system.stateVersion = "23.11"; # Did you read the comment?
 
 }

@@ -11,7 +11,7 @@ let
 in
 {
   services.flatpak = lib.mkIf (isInstall) {
-	enable = true;
+		enable = true;
   };
 
   systemd.services = {
