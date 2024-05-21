@@ -2,17 +2,19 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs, config, lib, pkgs, ... }:
+{ system, outputs, inputs, config, lib, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       (import ./disk-config.nix { })
-			inputs.nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			../_mixins/services/jellyfin.nix
+			#../_mixins/services/jellyfin.nix
+			#../_mixins/services/plex.nix
+			../_mixins/configs/nvidia.nix
+			../_mixins/configs/ollama.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -23,6 +25,15 @@
   boot.kernelModules = [ "kvm-intel" "zfs" "bcachefs" ];
   boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ ];
+
+	systemd.network.netdevs.eno1np0.enable = false;
+
+	systemd.services.mount-store = {
+		description = "Mount bcachefs /store";
+		script = "/run/current-system/sw/bin/mount -t bcachefs /dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0MAR4RJ:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0M3REZC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N6FT8CJC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N4PP8377:/dev/disk/by-id/ata-CT1000P3SSD8_2307E6ABF4BC:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZGY6VHBS:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40Z1YD:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40ZH68:/dev/disk/by-id/ata-ST12000VN0008-2PH103_ZTN1CLT3:/dev/disk/by-id/ata-ST12000VN0008-2YS101_ZRT1FXD9 /store";
+		wantedBy = [ "multi-user.target" ];
+	};
+
 
   networking.hostName = "gula"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -85,6 +96,8 @@
    environment.systemPackages = with pkgs; [
 		nvidia-vaapi-driver
 		bcachefs-tools
+		cudatoolkit
+		bridge-utils
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -118,7 +131,7 @@
   # so changing it will NOT upgrade your system.
   #
   # This value being lower than the current NixOS release does NOT mean your system is
-  # out of date, out of support, or vulnerable.
+  # out of date,127.0.0.1/8 out of support, or vulnerable.
   #
   # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
   # and migrated your data accordingly.
@@ -126,36 +139,20 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
 
 	networking = {
-		nat = {
-			enable = true;
-			externalInterface = "br0";
-		};
+		#nat = {
+		#	enable = true;
+		#	externalInterface = "br0";
+		#};
 
-		bridges.br0.interfaces = [ "eno1" ];
+		#bridges.br0.interfaces = [ "eno1" ];
 
-		useDHCP = false;
-		interfaces."br0".useDHCP = true;
+		#useDHCP = false;
+		#interfaces."br0".useDHCP = true;
 
-		interfaces."br0".ipv4.addresses = [ {
-			address = "10.0.1.1";
-			prefixLength = 24;
-		}];
-	};
-
-	services.xserver.videoDriver = [ "nvidia" ];
-	hardware.nvidia = {
-		package = config.nur.repos.arc.packages.nvidia-patch.override {
-			nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.stable;
-		};
-		modesetting.enable = true;
-
-		nvidiaPersistenced = true;
-		powerManagement.enable = false;
-		powerManagement.finegrained = false;
-
-		open = false;
-
-		nvidiaSettings = true;
+		#interfaces."br0".ipv4.addresses = [ {
+		#	address = "10.0.1.1";
+		#	prefixLength = 24;
+		#}];
 	};
 
   system.stateVersion = "23.11"; # Did you read the comment?

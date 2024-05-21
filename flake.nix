@@ -23,6 +23,8 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+		ollama.url = "github:abysssol/ollama-flake";
+
 		nur.url = "github:nix-community/NUR";
   };
 

@@ -127,6 +127,7 @@ in
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
+			trusted-users = [ "derek" ];
 
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
