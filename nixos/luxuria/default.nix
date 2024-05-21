@@ -153,6 +153,7 @@
 		zellij
 		chromium
 		gnome.gnome-settings-daemon
+		unstable.anytype
   ];
 
   hardware.opengl = {
