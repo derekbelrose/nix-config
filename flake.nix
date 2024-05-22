@@ -24,6 +24,8 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
 		ollama.url = "github:abysssol/ollama-flake";
+	
+		ollama-flake.url = "github:shivaraj-bh/ollama-flake";
 
 		nur.url = "github:nix-community/NUR";
   };
