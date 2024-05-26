@@ -17,6 +17,7 @@ in
 		homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
 
 		packages = with pkgs; [
+			bat
 			unzip
 			wget
 			jiq
@@ -73,18 +74,19 @@ in
 	};
 
 	programs = {
-		bat = {
-			enable = true;
-			extraPackages = with pkgs.bat-extras; [
-				batgrep
-				batwatch
-				prettybat
-			];
+		#bat = {
+		#	enable = true;
+		#	extraPackages = with pkgs.bat-extras; [
+		#		batgrep
+		#		batwatch
+		#		prettybat
+		#	];
 
-			config = {
-				style = "plain";
-			};
-		};
+		#	config = {
+		#		style = "plain";
+		#	};
+		#};
+
 		dircolors = {
 			enable = true;
 			enableBashIntegration = true;

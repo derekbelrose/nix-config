@@ -160,6 +160,7 @@ in
 
     systemPackages = with pkgs; [
       git
+			git-extras
       rsync
       pavucontrol
 			avizo

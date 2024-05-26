@@ -14,9 +14,8 @@
 			../_mixins/services/jellyfin.nix
 			#../_mixins/services/plex.nix
 			../_mixins/configs/nvidia.nix
-			#../_mixins/configs/ollama.nix
-			inputs.ollama-flake.flakeModules.nixpkgs
-			inputs.ollama-flake.processComposeModules.default
+			#(import ../_mixins/services/immich.nix { immichHost = "immich.belrose.io";})
+			../_mixins/configs/ollama.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -44,17 +43,6 @@
   networking.hostId = "2cbc7865";
 
 	services.smartd.enable = true;
-	
-	services = {
-		ollama = {
-			enable = true;
-			package = pkgs.ollama.override { acceleration = "cude"; };
-
-			models = [ "llama2-uncensored", "llama3" ];
-			services.open-webui.enable = true;
-		};	
-	};
-
   # Set your time zone.
   time.timeZone = "America/New_York";
 

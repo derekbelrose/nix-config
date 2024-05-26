@@ -70,7 +70,6 @@ in
       termite
       direnv
       eza
-      bat
       du-dust
       file
       tree

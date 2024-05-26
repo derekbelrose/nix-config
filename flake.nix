@@ -27,6 +27,8 @@
 	
 		ollama-flake.url = "github:shivaraj-bh/ollama-flake";
 
+ 		flake-parts.url = "github:hercules-ci/flake-parts";
+
 		nur.url = "github:nix-community/NUR";
   };
 
