@@ -143,11 +143,11 @@
         "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
-        "lastModified": 1716120557,
-        "narHash": "sha256-rvNq9YolMY1DRMgwdAti8qwNDjkhTsotSWa15/Ch7+A=",
+        "lastModified": 1716684282,
+        "narHash": "sha256-MgpkTQwvcEHq8m6aF22Mim69rXQqvRReuAel1yr/Us8=",
         "owner": "nix-community",
         "repo": "lib-aggregate",
-        "rev": "5fa64b174daa22fe0d20ebbcc0ec2c7905b503f1",
+        "rev": "08fbaeae63c39958a1dbf0a413ad1de24497996f",
         "type": "github"
       },
       "original": {
@@ -303,11 +303,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1716509168,
-        "narHash": "sha256-4zSIhSRRIoEBwjbPm3YiGtbd8HDWzFxJjw5DYSDy1n8=",
+        "lastModified": 1716700016,
+        "narHash": "sha256-fXHok/O54aXlDB71PsWI3qfdPcJL1wZMKsloxf6nmlc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bfb7a882678e518398ce9a31a881538679f6f092",
+        "rev": "256d46f0201001887c9a9e479b25053a2696b3bd",
         "type": "github"
       },
       "original": {
@@ -339,11 +339,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1716358718,
-        "narHash": "sha256-NQbegJb2ZZnAqp2EJhWwTf6DrZXSpA6xZCEq+RGV1r0=",
+        "lastModified": 1716651315,
+        "narHash": "sha256-iMgzIeedMqf30TXZ439zW3Yvng1Xm9QTGO+ZwG1IWSw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3f316d2a50699a78afe5e77ca486ad553169061e",
+        "rev": "c5187508b11177ef4278edf19616f44f21cc8c69",
         "type": "github"
       },
       "original": {
@@ -363,11 +363,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716506298,
-        "narHash": "sha256-AuyiiMPCzYzl5hmCIggT94OHoyta1t9gUtFDHjSrXTU=",
+        "lastModified": 1716686065,
+        "narHash": "sha256-w7Cslmx6b4ZskQRsYE1hnGwtX40laZJc0eoPKuVrfyg=",
         "owner": "nix-community",
         "repo": "nixpkgs-wayland",
-        "rev": "f9d6426bc18e49d560a79aedc55f42a24dca4b89",
+        "rev": "c6493bf5886aedc02ff94649da6d2c7abb95d8c6",
         "type": "github"
       },
       "original": {
@@ -394,11 +394,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1713687659,
-        "narHash": "sha256-Yd8KuOBpZ0Slau/NxFhMPJI0gBxeax0vq/FD0rqKwuQ=",
+        "lastModified": 1716619601,
+        "narHash": "sha256-9dUxZf8MOqJH3vjbhrz7LH4qTcnRsPSBU1Q50T7q/X8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f2d7a289c5a5ece8521dd082b81ac7e4a57c2c5c",
+        "rev": "47e03a624662ce399e55c45a5f6da698fc72c797",
         "type": "github"
       },
       "original": {
@@ -458,11 +458,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1716514798,
-        "narHash": "sha256-7q3xhLOhr0Fqpfw5l9O+q1w20TAbJlUV9b6CkyK2rho=",
+        "lastModified": 1716696282,
+        "narHash": "sha256-ZI6tjsqJcIQZ79NZvGTtk7C2fmeFu72NOM/1Hi5XpXs=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "8b33b57c6815f2c788a961570fb86c70f3cfad26",
+        "rev": "90ded5878099c7607d670220390a97376f59bd0a",
         "type": "github"
       },
       "original": {
@@ -477,11 +477,11 @@
         "nixpkgs-unfree": "nixpkgs-unfree"
       },
       "locked": {
-        "lastModified": 1715575373,
-        "narHash": "sha256-4/if52fPjsAy+JEJX06QMqGYKwreBqWND4wAEX3LUVk=",
+        "lastModified": 1716659806,
+        "narHash": "sha256-dj+AmIXQO5ojLDPgxP0Ly9bKxolJ+lsoFYDWnmpCDqA=",
         "owner": "abysssol",
         "repo": "ollama-flake",
-        "rev": "e35c3cfe96244121516ca6810015e0f6fa34329d",
+        "rev": "12614910d25ed16b0d85a2d727a6977eb174d20f",
         "type": "github"
       },
       "original": {
@@ -496,11 +496,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1716383711,
-        "narHash": "sha256-2pI6YSfCcFw6Kp89oqcMaLvyS0OnzyWmd0YfVwK/y5w=",
+        "lastModified": 1716563739,
+        "narHash": "sha256-ccwWoXj0+sNWMKgtaU0kUdtS2fcVOO4hXkkxnbdwzC0=",
         "owner": "shivaraj-bh",
         "repo": "ollama-flake",
-        "rev": "faea89ec168684342aba3fb180705e3b97f79745",
+        "rev": "b61859956129b63fc6e2c8ad1ab4c8d13cc6cc96",
         "type": "github"
       },
       "original": {
