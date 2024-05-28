@@ -7,8 +7,8 @@
 		jellyfin = {
 			enable = true;
 			package = pkgs.unstable.jellyfin;
-			group = "root";
-			user = "root";
+			group = "render";
+			user = "jellyfin";
 		};
 		jellyseerr.enable = true;
 	};
@@ -24,7 +24,7 @@
 			"/dev/dri/card1 rw"
 			"/dev/dri/renderD128 rw"
 		];
-  	PrivateDevices = pkgs.lib.mkForce true;
+  	PrivateDevices = pkgs.lib.mkForce false;
   	RestrictAddressFamilies = pkgs.lib.mkForce [ "AF_UNIX" "AF_NETLINK" "AF_INET" "AF_INET6" ];
 	};
 
@@ -33,4 +33,14 @@
 		unstable.jellyfin-ffmpeg
 		cudatoolkit
 	];
+
+	users.users.jellyfin = {
+		description = "Jellyfin Service Account";
+		name = "jellyfin";
+		extraGroups = [ 
+			"render"
+			"video"
+		];
+		isSystemUser = true;
+	};
 }

@@ -42,13 +42,12 @@ in {
 
   virtualisation.oci-containers.containers.immich_server = {
     image = "ghcr.io/immich-app/immich-server:${immichVersion}";
-    ports = ["127.0.0.1:2283:3001"];
+    ports = ["2283:3001"];
     extraOptions = [
       "--pull=newer"
       # Force DNS resolution to only be the podman dnsname name server; by default podman provides a resolv.conf
       # that includes both this server and the upstream system server, causing resolutions of other pod names
       # to be inconsistent.
-      "--dns=10.88.0.1"
     ];
     cmd = [ "start.sh" "immich" ];
     environment = {
@@ -73,7 +72,6 @@ in {
       # Force DNS resolution to only be the podman dnsname name server; by default podman provides a resolv.conf
       # that includes both this server and the upstream system server, causing resolutions of other pod names
       # to be inconsistent.
-      "--dns=10.88.0.1"
     ];
     cmd = [ "start.sh" "microservices" ];
     environment = {
