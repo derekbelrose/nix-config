@@ -32,4 +32,8 @@ in
 			'';
 		};
   };
+
+	environment.systemPackages = with pkgs; [
+		emacsPackages.emacs
+	];
 } 
