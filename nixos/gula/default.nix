@@ -138,6 +138,16 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
 
+	virtualisation.podman = {
+		enableNvidia	= true;
+		enable = true;
+		dockerCompat = true;
+		extraPackages = with pkgs; [
+			podman-compose
+			nvidia-podman
+		];
+	};
+
 	networking = {
 		#nat = {
 		#	enable = true;
