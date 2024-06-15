@@ -50,6 +50,7 @@
     {
       homeConfigurations = {
 				"derek@luxuria" = 	libx.mkHome { hostname = "luxura"; username = "derek"; desktop = "sway"; };
+				"derek@superbia" = 	libx.mkHome { hostname = "superbia"; username = "derek"; desktop = "sway"; };
 				"derek@gula" = 	libx.mkHome { hostname = "gula"; username = "derek"; };
       };
 
@@ -62,11 +63,17 @@
 					desktop = "sway";
         };
 
-				gula = libx.mkHost {
-					hostname = "gula";
-					username = "derek";
-					platform = "x86_64-linux";
-				};
+		gula = libx.mkHost {
+			hostname = "gula";
+			username = "derek";
+			platform = "x86_64-linux";
+		};
+
+		superbia = libx.mkHost {
+			hostname = "superbia";
+			username = "derek";
+			platform = "x86_64-linux";
+		};
       };
 
       devShells = libx.forAllSystems (

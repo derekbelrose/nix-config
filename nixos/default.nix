@@ -22,9 +22,9 @@ in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-		inputs.nh.nixosModules.default
-		inputs.disko.nixosModules.disko
-		inputs.nur.nixosModules.nur
+    inputs.nh.nixosModules.default
+    inputs.disko.nixosModules.disko
+    inputs.nur.nixosModules.nur
     ./${hostname}
     ./_mixins/services/tailscale.nix
     ./_mixins/configs

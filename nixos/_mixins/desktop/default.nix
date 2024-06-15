@@ -11,7 +11,7 @@ in
 	  packages = with pkgs; [
 	    #(nerdfonts.override { fonts = [ "FiraCode" "NerdFontsSymbolsOnly" ]; })
 	    fira
-			fira-code-symbols-only
+        fira-code-symbols-only
 	    liberation_ttf
 	    noto-fonts-emoji
 	    source-serif
@@ -41,28 +41,6 @@ in
         lcdfilter = "light";
       };
     };
-	};
-
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = isGamestation;
-    };
-    openrazer = lib.mkIf (hasRazerPeripherals) {
-      enable = true;
-      devicesOffOnScreensaver = false;
-      keyStatistics = true;
-      mouseBatteryNotifier = true;
-      syncEffectsEnabled = true;
-      users = [ "${username}" ];
-    };
-    pulseaudio.enable = lib.mkForce false;
-    sane = lib.mkIf (isInstall) {
-      enable = true;
-      #extraBackends = with pkgs; [ hplipWithPlugin sane-airscan ];
-      extraBackends = with pkgs; [ sane-airscan ];
-    };
   };
 
   hardware = {
@@ -87,7 +65,7 @@ in
     };
   };
 
-	services = {
+  services = {
     flatpak = lib.mkIf (isInstall) {
       enable = true;
     };
@@ -121,7 +99,7 @@ in
       displayManager.gdm.autoSuspend = if (desktop == "pantheon") then true else false;
       excludePackages = [ pkgs.xterm ];
     };
-	};
+  };
 	
 	xserver = {
       desktopManager.xterm.enable = false;

@@ -7,11 +7,11 @@
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-		../_mixins/services/samba.nix
-		../_mixins/configs/laptop.nix
-		../_mixins/configs/gnome.nix
+    ../_mixins/services/samba.nix
+    ../_mixins/configs/laptop.nix
+    ../_mixins/configs/gnome.nix
     ../../modules/sway.nix
-		../../modules/suspend-then-hibernate.nix
+    ../../modules/suspend-then-hibernate.nix
   ];
 
   boot = {
@@ -32,7 +32,7 @@
 
   nixpkgs.overlays = [ 
 		outputs.overlays.additions 
-	];
+  ];
 
   fileSystems = {
     "/" = {
