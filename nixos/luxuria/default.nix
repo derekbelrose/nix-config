@@ -115,10 +115,13 @@
   };
 
   services.xserver.desktopManager.gnome.enable = true;
+	services.xserver.desktopManager.plasma6.enable = true;
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
+
+	programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}";
 
   xdg.portal = {
     #extraPortals = [ pkgs.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
@@ -154,6 +157,8 @@
 		chromium
 		gnome.gnome-settings-daemon
 		unstable.anytype
+		kdePackages.ksshaskpass
+		python312Packages.python-lsp-server
   ];
 
   hardware.opengl = {
