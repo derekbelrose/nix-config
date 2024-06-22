@@ -159,6 +159,9 @@
 		unstable.anytype
 		kdePackages.ksshaskpass
 		python312Packages.python-lsp-server
+		hyprland
+		fira
+		nerdfonts
   ];
 
   hardware.opengl = {

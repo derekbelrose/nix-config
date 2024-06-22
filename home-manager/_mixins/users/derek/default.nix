@@ -26,6 +26,9 @@ in
   };
 
 	home.file.".icons/default".source = "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ"; 
+	home.file.".config/alacritty/alacritty.toml".source =  ./sources/alacritty.toml;
+
+	
 
   #sops = {
   #  age = {
