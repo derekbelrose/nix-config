@@ -20,6 +20,7 @@ in
 	];
 
 	home.packages = with pkgs; [
+		foot
 	];
 
 	
@@ -69,7 +70,7 @@ in
 	 				blinking = "on";
 	 			};
 	 			font = {
-	 				size = 14;
+	 				size = 12;
 	 				normal = {
 	 					family = "FiraMono Nerd Font"; 
 	 					style = "Regular";
