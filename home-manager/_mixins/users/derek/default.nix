@@ -43,7 +43,7 @@ in
 	 		enable = true;
 	 		package = pkgs.openssh;
 	 		addKeysToAgent = "yes";
-	 		controlMaster = "yes";
+	 		controlMaster = "auto";
 	 		controlPersist = "10m";
 	 		matchBlocks = {
 	 			"github.com" = {
