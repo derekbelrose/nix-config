@@ -162,6 +162,7 @@
 		hyprland
 		fira
 		nerdfonts
+		logisim-evolution
   ];
 
   hardware.opengl = {

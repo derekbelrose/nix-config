@@ -31,14 +31,14 @@ in
 	}; 
 
 	programs = {
-	   #fish.interactiveShellInit = ''
-	   #  set -x GH_TOKEN (cat ${config.sops.secrets.gh_token.path})
-	   #  set -x GITHUB_TOKEN (cat ${config.sops.secrets.gh_token.path})
-	   #'';
-	   git = {
+	  #fish.interactiveShellInit = ''
+	  #  set -x GH_TOKEN (cat ${config.sops.secrets.gh_token.path})
+	  #  set -x GITHUB_TOKEN (cat ${config.sops.secrets.gh_token.path})
+	  #'';
+	  git = {
 	     userEmail = "derek@derekbelrose.com";
 	     userName = "Derek Belrose";
-	   };
+	  };
 	 	ssh = {
 	 		enable = true;
 	 		package = pkgs.openssh;

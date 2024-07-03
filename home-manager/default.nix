@@ -6,8 +6,8 @@ in
 {
 	imports = [
 		./_mixins/users/${username}
-	]; 
-	#++ lib.optional (builtins.pathExists (./. + "/_mixins/users/${username}")) ./_mixins/users/${username}
+	] 
+	++ lib.optional (builtins.pathExists (./. + "/_mixins/users/${username}")) ./_mixins/users/${username};
   #++ lib.optional (builtins.pathExists (./. + "/_mixins/hosts/${hostname}")) ./_mixins/hosts/${hostname}
   #++ lib.optional (isWorkstation) ./_mixins/desktop;
 
