@@ -12,10 +12,13 @@
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
 			../_mixins/services/jellyfin.nix
+			../_mixins/services/mealie/default.nix
+			../_mixins/services/stirling-pdf/default.nix
 			#../_mixins/services/plex.nix
 			../_mixins/configs/nvidia.nix
 			#(import ../_mixins/services/immich.nix { immichHost = "immich.belrose.io";})
 			../_mixins/configs/ollama.nix
+			../_mixins/services/openvscode-server.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -33,6 +36,7 @@
 		description = "Mount bcachefs /store";
 		script = "/run/current-system/sw/bin/mount -t bcachefs /dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0MAR4RJ:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0M3REZC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N6FT8CJC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N4PP8377:/dev/disk/by-id/ata-CT1000P3SSD8_2307E6ABF4BC:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZGY6VHBS:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40Z1YD:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40ZH68:/dev/disk/by-id/ata-ST12000VN0008-2PH103_ZTN1CLT3:/dev/disk/by-id/ata-ST12000VN0008-2YS101_ZRT1FXD9 /store";
 		wantedBy = [ "multi-user.target" ];
+		enable = true;
 	};
 
 
@@ -40,7 +44,14 @@
   networking.hostId = "2cbc7865";
 
 
-	services.smartd.enable = true;
+	services.systembus-notify.enable = true;
+	services.smartd = {
+		enable = true;
+		autodetect = true;
+		notifications = {
+			wall.enable = true;
+		};
+	};
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -139,7 +150,7 @@
 	virtualisation.podman = {
 		enableNvidia	= true;
 		enable = true;
-		dockerCompat = true;
+		dockerCompat = false;
 		extraPackages = with pkgs; [
 			podman-compose
 			nvidia-podman

@@ -17,7 +17,7 @@ let
     if (builtins.substring 0 4 hostname != "iso-")
     then true
     else false;
-	
+
 in
 {
   imports = [
@@ -25,11 +25,27 @@ in
     inputs.nh.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.nur.nixosModules.nur
+		inputs.agenix.nixosModules.default
+		inputs.sops-nix.nixosModules.sops
     ./${hostname}
     ./_mixins/services/tailscale.nix
     ./_mixins/configs
     ./_mixins/users
   ];
+
+	sops = {
+		defaultSopsFile = ./secrets/secrets.yaml;
+		defaultSopsFormat = "yaml";
+		age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+	};
+
+	environment.etc = {
+		"etcsecrets" = {
+			source = ./secrets.nix.orig;
+			target = "nixos/secrets/secrets.nix";	
+			enable = (hostname == "luxuria");
+		};
+	};
 
 	programs = {
 		fish.enable = true;
@@ -161,12 +177,15 @@ in
       ];
 
     systemPackages = with pkgs; [
+			inputs.agenix.packages."${system}".default
       git
 			git-extras
       rsync
       pavucontrol
 			avizo
 			zellij
+			sops
+			gnupg
     ];
   };
 
@@ -187,4 +206,8 @@ in
       firefox
     ];
   };
+
+	age.identityPaths = [
+		"/etc/ssh/ssh_host_ed25519_key"
+	];
 }

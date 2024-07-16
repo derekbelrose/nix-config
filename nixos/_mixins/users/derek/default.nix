@@ -46,14 +46,6 @@ in
   	}];
 	};
 
-  #gtk = {
-  #  enable = true;
-  #  theme = {
-  #    package = pkgs.gnome.gnome-themes-extra;
-  #    name = "Adwaita-dark";
-  #  };
-  #};
-
   users.users.derek = {
     description = "Derek Belrose";
     # mkpasswd -m sha-512

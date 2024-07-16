@@ -4,4 +4,8 @@
   imports = [
     "${inputs.nixpkgs-unstable}/nixos/modules/services/x11/desktop-managers/plasma6.nix"
   ];
+
+	environment.systemPackages = with pkgs; [
+		pinentry-qt
+	];
 }

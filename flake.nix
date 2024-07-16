@@ -29,7 +29,10 @@
 
  		flake-parts.url = "github:hercules-ci/flake-parts";
 
+		agenix.url = "github:ryantm/agenix";
+
 		nur.url = "github:nix-community/NUR";
+		sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs =
@@ -38,6 +41,8 @@
 		, home-manager
     , nixpkgs
 		, nur
+		, sops-nix
+		, agenix
     , ...
     } @ inputs:
     let

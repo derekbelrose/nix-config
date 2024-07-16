@@ -10,6 +10,9 @@
     ../_mixins/services/samba.nix
     ../_mixins/configs/laptop.nix
     ../_mixins/configs/gnome.nix
+		# mealie dev testing
+    # ../_mixins/services/mealie/default.nix
+    # ../_mixins/services/stirling-pdf/default.nix
     ../../modules/sway.nix
     ../../modules/suspend-then-hibernate.nix
   ];
@@ -130,7 +133,13 @@
     enable = true;
   };
 
-  services.fwupd.package =
+	programs.gnupg.agent = {
+	  enable = true;
+	  enableSSHSupport = true;
+		pinentryPackage = pkgs.pinentry-qt;
+	};  
+
+	services.fwupd.package =
     (import
       (builtins.fetchTarball {
         url = "https://github.com/NixOS/nixpkgs/archive/bb2009ca185d97813e75736c2b8d1d8bb81bde05.tar.gz";
@@ -152,6 +161,7 @@
   security.protectKernelImage = false;
 
   environment.systemPackages = with pkgs; [
+		yubikey-personalization
 		tmux
 		zellij
 		chromium
@@ -163,6 +173,7 @@
 		fira
 		nerdfonts
 		logisim-evolution
+		pinentry-qt
   ];
 
   hardware.opengl = {
@@ -216,7 +227,10 @@
     ACTION=="add", SUBSYSTEM=="leds", RUN+="${pkgs.coreutils-full}/bin/chmod g+w /sys/class/leds/%k/brightness"
   '';
 	
-	services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+	services.udev.packages = with pkgs; [ 
+		gnome.gnome-settings-daemon 
+		yubikey-personalization
+	];
 
   services.logind = {
     lidSwitch = "hibernate";
@@ -233,6 +247,12 @@
     SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK = "1";
   };
 
+  programs.steam = {
+    enable = false;
+    remotePlay.openFirewall = true;
+    gamescopeSession.enable = true;
+  };
+ 
   services.kanata = {
     enable = true;
     keyboards.default.devices = [ "/dev/input/by-path/platform-i8042-serio-0-event-kbd" ];

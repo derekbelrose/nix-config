@@ -39,6 +39,15 @@ in
 	     userEmail = "derek@derekbelrose.com";
 	     userName = "Derek Belrose";
 	  };
+		rbw = {
+			enable = true;
+			settings = {
+				email = "derek@derekbelrose.com";
+				base_url = "https://bitwarden.belrose.io";
+				pinentry = pkgs.pinentry-qt;
+				lock_timeout = 0;
+			};
+		};
 	 	ssh = {
 	 		enable = true;
 	 		package = pkgs.openssh;
@@ -162,5 +171,6 @@ in
   #systemd.user.tmpfiles.rules = lib.mkIf isLinux [
   #  "L+ ${config.home.homeDirectory}/.config/obs-studio/ - - - - ${config.home.homeDirectory}/Studio/OBS/config/obs-studio/"
   #];
-}
+
+	}
 

@@ -1,0 +1,9 @@
+keys:
+  - &derek age17a3fzyczhq3zmsash94jf9lpwcfxrwf897d8u6k65ka8j3r48cgqh9rsg0
+  - &luxuria age1thxt9typy9r6sqmqk94ttnec43hqmg8j7j87qv84ved6nlq28esqhjpt0m
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *derek
+          - *luxuria

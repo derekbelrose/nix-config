@@ -13,6 +13,10 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+#	fileSystems."/store" = {
+#  	device = "UUID=464bb7e4-c23e-4611-a864-941a07bf6a46";
+#    fsType = "bcachefs";
+#	};
   #fileSystems."/store" = 
   #  {
 	#		 device = "/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0MAR4RJ:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0M3REZC:/dev/disk/by-id/ata-WDCWD30EFRX-68EUZN0_WD-WCC4N6FT8CJC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N4PP8377:/dev/disk/by-id/ata-CT1000P3SSD8_2307E6ABF4BC:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZGY6VHBS:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40Z1YD:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40ZH68 /store"
