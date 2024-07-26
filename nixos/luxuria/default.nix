@@ -174,6 +174,7 @@
 		nerdfonts
 		logisim-evolution
 		pinentry-qt
+		mealie
   ];
 
   hardware.opengl = {
