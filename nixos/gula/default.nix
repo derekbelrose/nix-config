@@ -11,20 +11,21 @@
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			../_mixins/services/jellyfin.nix
-			../_mixins/services/mealie/default.nix
-			../_mixins/services/stirling-pdf/default.nix
+			#../_mixins/services/jellyfin.nix
+			#../_mixins/services/mealie/default.nix
+			#../_mixins/services/stirling-pdf/default.nix
 			#../_mixins/services/plex.nix
-			../_mixins/configs/nvidia.nix
+			#../_mixins/configs/nvidia.nix
 			#(import ../_mixins/services/immich.nix { immichHost = "immich.belrose.io";})
-			../_mixins/configs/ollama.nix
-			../_mixins/services/openvscode-server.nix
+			#../_mixins/configs/ollama.nix
+			#../_mixins/services/openvscode-server.nix
+			#../_mixins/services/nextcloud
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = [ "bcachefs" "zfs" ];
 
   boot.kernelModules = [ "kvm-intel" "zfs" "bcachefs" ];
   boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
@@ -147,8 +148,10 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
 
+	hardware.nvidia-container-toolkit.enable = true;
+
 	virtualisation.podman = {
-		enableNvidia	= true;
+		#enableNvidia	= true;
 		enable = true;
 		dockerCompat = false;
 		extraPackages = with pkgs; [
@@ -174,7 +177,7 @@
 		#}];
 	};
 
-  system.stateVersion = "23.11"; # Did you read the comment?
+  #system.stateVersion = "24.05"; # Did you read the comment?
 
 }
 

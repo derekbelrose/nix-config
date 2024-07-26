@@ -27,7 +27,6 @@ in
 		homeMode = "0755";
 		isNormalUser = true;
 		packages = [ pkgs.home-manager ];
-		shell = pkgs.fish;
 	};
 }
 

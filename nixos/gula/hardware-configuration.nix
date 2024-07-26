@@ -13,6 +13,12 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  #fileSystems."/store" =
+  #  { device = "UUID=464bb7e4-c23e-4611-a864-941a07bf6a46";
+  #    fsType = "bcachefs";
+	#		options = ["noatime" "nodev" "nosuid" "noexec" "noexec" "nofail"];
+  #  };
+
 #	fileSystems."/store" = {
 #  	device = "UUID=464bb7e4-c23e-4611-a864-941a07bf6a46";
 #    fsType = "bcachefs";

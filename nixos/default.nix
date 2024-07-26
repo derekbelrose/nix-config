@@ -102,7 +102,7 @@ in
     };
   };
 
-  services.xserver.layout = "us";
+	services.xserver.xkb.layout = "us";
   time.timeZone = "America/New_York";
 
   documentation = {

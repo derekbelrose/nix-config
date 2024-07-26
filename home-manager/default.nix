@@ -34,10 +34,6 @@ in
 		];
 
 		sessionVariables = {
-			EDITOR = "nvim";
-			VISUAL = "nvim";
-			SYSTEMD_EDITOR = "nvim";
-			PAGER = "bat";
 		};
 	};
 

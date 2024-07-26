@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ inputs
+, config
+, lib
+, pkgs
+, username
+, ... }:
 let
   inherit (pkgs.stdenv) isLinux;
 in
@@ -6,6 +11,8 @@ in
   imports = [
     #../../services/keybase.nix
     #../../services/syncthing.nix
+
+		inputs.sops-nix.homeManagerModules.sops
   ];
 
 	nix = {
@@ -13,6 +20,10 @@ in
 			automatic = true;
 			frequency = "15d";
 		};
+	};
+
+	systemd.user.sessionVariables = {
+		EDITOR="vim";
 	};
 
 	pam.yubico.authorizedYubiKeys.ids = [
@@ -23,7 +34,11 @@ in
 		foot
 	];
 
-	
+	sops = {
+		age.keyFile = "/home/${username}/.config/sops/keys.txt";
+
+		defaultSopsFile = ../../../.sops.yaml;
+	};
 	home.pointerCursor = {
 		package = pkgs.breeze-gtk;
 		name = "Breeze_Snow";
