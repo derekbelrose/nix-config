@@ -11,7 +11,7 @@
     ../_mixins/configs/laptop.nix
     ../_mixins/configs/gnome.nix
 		# mealie dev testing
-    # ../_mixins/services/mealie/default.nix
+    #../_mixins/services/mealie/default.nix
     # ../_mixins/services/stirling-pdf/default.nix
     ../../modules/sway.nix
     ../../modules/suspend-then-hibernate.nix
