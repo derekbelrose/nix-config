@@ -186,6 +186,8 @@ in
 			zellij
 			sops
 			gnupg
+      mosh
+      wayvnc
     ];
   };
 
