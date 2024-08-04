@@ -9,7 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ../_mixins/services/samba.nix
     ../_mixins/configs/laptop.nix
-    ../_mixins/configs/gnome.nix
+    #../_mixins/configs/gnome.nix
 		# mealie dev testing
     #../_mixins/services/mealie/default.nix
     # ../_mixins/services/stirling-pdf/default.nix
@@ -102,23 +102,18 @@
 
   services.xserver.enable = true;
 
-  services.xserver.displayManager = {
-    gdm = {
-      enable = lib.mkForce false;
-      wayland = true;
-    };
+  services.displayManager = {
 		sddm = {
 			enable = true;
 			wayland.enable = true;
 		};
   };
 
-  services.xserver.displayManager = {
+  services.displayManager = {
     sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
   };
 
-  services.xserver.desktopManager.gnome.enable = true;
-	services.xserver.desktopManager.plasma6.enable = true;
+	services.desktopManager.plasma6.enable = true;
   services.xserver.xkb = {
     layout = "us";
     variant = "";
@@ -161,6 +156,7 @@
   security.protectKernelImage = false;
 
   environment.systemPackages = with pkgs; [
+		inkscape
 		yubikey-personalization
 		tmux
 		zellij
