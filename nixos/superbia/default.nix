@@ -20,6 +20,8 @@ let
      '';
    };
 
+   hardware.system76.enableAll = true;
+
    configure-gtk = pkgs.writeTextFile {
       name = "configure-gtk";
       destination = "/bin/configure-gtk";
@@ -57,7 +59,7 @@ in
         hostId = "b7527247";
         nat.enable = true;
         nat.internalInterfaces = ["ve-+"];
-        nat.externalInterface = "enp3s0";
+        nat.externalInterface = "enp6s0";
         
         #extraHosts = "100.105.177.118 bitwarden.belrose.io";
     };

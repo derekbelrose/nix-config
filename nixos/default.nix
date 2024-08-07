@@ -39,6 +39,9 @@ in
 		age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
 	};
 
+  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
+  systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
+
 	environment.etc = {
 		"etcsecrets" = {
 			source = ./secrets.nix.orig;
