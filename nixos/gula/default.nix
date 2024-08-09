@@ -11,13 +11,13 @@
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			#../_mixins/services/jellyfin.nix
-			#../_mixins/services/mealie/default.nix
-			#../_mixins/services/stirling-pdf/default.nix
+			../_mixins/services/jellyfin.nix
+			../_mixins/services/mealie/default.nix
+			../_mixins/services/stirling-pdf/default.nix
 			#../_mixins/services/plex.nix
-			#../_mixins/configs/nvidia.nix
-			#(import ../_mixins/services/immich.nix { immichHost = "immich.belrose.io";})
-			#../_mixins/configs/ollama.nix
+			../_mixins/configs/nvidia.nix
+			../_mixins/services/immich.nix
+			../_mixins/configs/ollama.nix
 			#../_mixins/services/openvscode-server.nix
 			#../_mixins/services/nextcloud
     ];
@@ -31,7 +31,8 @@
   boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ "store" ];
 
-	systemd.network.netdevs.eno1np0.enable = false;
+	systemd.network.netdevs.eno2np1.enable = true;
+	systemd.network.netdevs.eno1np1.enable = true;
 
 	#systemd.services.mount-store = {
 	#	description = "Mount bcachefs /store";
@@ -60,34 +61,6 @@
 	nixpkgs = {
 		config.allowUnfree = true;
 	};
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.derek = {
@@ -122,7 +95,7 @@
   # List services that you want to enable:
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  #networking.firewall.allowedTCPPorts = [];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
