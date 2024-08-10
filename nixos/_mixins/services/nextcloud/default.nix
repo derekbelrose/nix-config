@@ -1,4 +1,8 @@
-{ self, config, lib, pkgs, ... }: {
+{ self, config, lib, pkgs, ... }: 
+let
+	domainName = "files.belrose.io"
+in
+{
   # Based on https://carjorvaz.com/posts/the-holy-grail-nextcloud-setup-made-easy-by-nixos/
   #security.acme = {
   #  acceptTerms = true;
@@ -22,7 +26,7 @@
     # 
     nextcloud = {
       enable = true;
-      hostName = "YOUR.DOMAIN.NAME";
+      hostName = domainName
       # Need to manually increment with every major upgrade.
       package = pkgs.nextcloud28;
       # Let NixOS install and configure the database automatically.
@@ -39,12 +43,12 @@
         # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/nextcloud/packages/nextcloud-apps.json
         inherit calendar contacts notes onlyoffice tasks cookbook qownnotesapi;
         # Custom app example.
-        socialsharing_telegram = pkgs.fetchNextcloudApp rec {
-          url =
-            "https://github.com/nextcloud-releases/socialsharing/releases/download/v3.0.1/socialsharing_telegram-v3.0.1.tar.gz";
-          license = "agpl3Only";
-          sha256 = "sha256-8XyOslMmzxmX2QsVzYzIJKNw6rVWJ7uDhU1jaKJ0Q8k=";
-        };
+        #socialsharing_telegram = pkgs.fetchNextcloudApp rec {
+        #  url =
+        #    "https://github.com/nextcloud-releases/socialsharing/releases/download/v3.0.1/socialsharing_telegram-v3.0.1.tar.gz";
+        #  license = "agpl3Only";
+        #  sha256 = "sha256-8XyOslMmzxmX2QsVzYzIJKNw6rVWJ7uDhU1jaKJ0Q8k=";
+        #};
       };
       settings = {
         overwriteProtocol = "https";

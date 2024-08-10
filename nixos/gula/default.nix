@@ -14,7 +14,6 @@
 			../_mixins/services/jellyfin.nix
 			../_mixins/services/mealie/default.nix
 			../_mixins/services/stirling-pdf/default.nix
-			#../_mixins/services/plex.nix
 			../_mixins/configs/nvidia.nix
 			../_mixins/services/immich.nix
 			../_mixins/configs/ollama.nix

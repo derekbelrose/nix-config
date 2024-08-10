@@ -11,13 +11,18 @@ in {
 		mealie
 	];
 
-	age.secrets.mealie.file = ./mealie.age;
+	#age.secrets.mealie.file = ./mealie.age;
+	sops.secrets."mealie" = {
+		sopsFile = ../../../../secrets/mealie.env;
+		format = "dotenv";
+		owner = "mealie";
+	};
 
 	services.mealie = {
 		package = pkgs.unstable.mealie;
 		enable = true;
 		port = port;
-		credentialsFile = config.age.secrets.mealie.path;
+		credentialsFile = config.sops.secrets.mealie.path;
 		settings = {
 			TZ = "America/New_York";
 			BASE_URL = url;
@@ -43,4 +48,11 @@ in {
 	networking.firewall.allowedTCPPorts = [
 		port
 	];
+
+	#users.users."mealie" = {
+	#	name = "mealie";
+	#	isSystemUser = true;	
+	#	group = "mealie";
+	#};
+	#users.groups.mealie = {};
 }

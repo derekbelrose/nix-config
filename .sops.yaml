@@ -1,13 +1,18 @@
 keys:
   - &users:
-    - &derek age1d2wk8qj5n2exn0uq5686843pcsmu9hq9ppmeyqsqty64ge9fsfmsv3cwhl
+    - &derek age1huhw5qmvntvudkjs5jxmphn37eu3dwp3tegkmkgqvev7rlvsvyqsdykq97
   - &hosts:
     - &luxuria age1thxt9typy9r6sqmqk94ttnec43hqmg8j7j87qv84ved6nlq28esqhjpt0m
     - &gula age19e0kzr3dy4vdt0a5c5ngd28zkatnqc45sghnpecw0zzcrgsltpyq30cdpm
+    - &superbia age10cggct4jrne2ursqgzqpsz8mzzfypk5vpza3sddkuqu8ktr0xcwqzhp9xg
+    - &testgula age19e0kzr3dy4vdt0a5c5ngd28zkatnqc45sghnpecw0zzcrgsltpyq30cdpm
 creation_rules:
-  - path_regex: secrets/secrets.yaml
-    key_groups:
+ - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+   key_groups:
       - age:
           - *derek
           - *luxuria
           - *gula
+          - *superbia
+          - *testgula
+

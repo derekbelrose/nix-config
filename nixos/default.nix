@@ -34,20 +34,20 @@ in
   ];
 
 	sops = {
-		defaultSopsFile = ./secrets/secrets.yaml;
+		defaultSopsFile = ../secrets/secrets.yaml;
 		defaultSopsFormat = "yaml";
-		age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+		age.keyFile = "/home/derek/.config/sops/age/keys.txt";
 	};
 
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 
 	environment.etc = {
-		"etcsecrets" = {
-			source = ./secrets.nix.orig;
-			target = "nixos/secrets/secrets.nix";	
-			enable = (hostname == "luxuria");
-		};
+		#"etcsecrets" = {
+		#	source = ./secrets.nix.orig;
+		#	target = "nixos/secrets/secrets.nix";	
+		#	enable = (hostname == "luxuria");
+		#};
 	};
 
 	programs = {
