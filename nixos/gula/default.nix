@@ -15,7 +15,7 @@
 			../_mixins/services/mealie/default.nix
 			../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix
-			../_mixins/services/immich.nix
+			#../_mixins/services/immich.nix
 			../_mixins/configs/ollama.nix
 			#../_mixins/services/openvscode-server.nix
 			#../_mixins/services/nextcloud

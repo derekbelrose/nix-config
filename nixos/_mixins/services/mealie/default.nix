@@ -11,11 +11,23 @@ in {
 		mealie
 	];
 
+	users.users."mealie" = {
+		name = "mealie";
+		isSystemUser=true;
+		group = "mealie";
+		extraGroups = [ config.users.groups.keys.name ];
+	};
+
+	users.groups.mealie = {};
+
 	#age.secrets.mealie.file = ./mealie.age;
-	sops.secrets."mealie" = {
+	sops.secrets.mealie = {
 		sopsFile = ../../../../secrets/mealie.env;
 		format = "dotenv";
-		owner = "mealie";
+		owner = config.users.users.mealie.name;
+		group = config.users.groups.${config.users.users.mealie.group}.name;
+		mode = "0640";
+		path = "/etc/mealie.env";
 	};
 
 	services.mealie = {
@@ -26,6 +38,9 @@ in {
 		settings = {
 			TZ = "America/New_York";
 			BASE_URL = url;
+
+			PUID = config.users.users.mealie.uid;
+			PGID = config.users.groups.${config.users.users.mealie.group}.gid;
 
 			# OIDC Related
 			OIDC_AUTH_ENABLED = true;
@@ -49,10 +64,4 @@ in {
 		port
 	];
 
-	#users.users."mealie" = {
-	#	name = "mealie";
-	#	isSystemUser = true;	
-	#	group = "mealie";
-	#};
-	#users.groups.mealie = {};
 }
