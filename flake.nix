@@ -24,15 +24,21 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
 		ollama.url = "github:abysssol/ollama-flake";
+		ollama.inputs.nixpkgs.follows = "nixpkgs";
 	
 		ollama-flake.url = "github:shivaraj-bh/ollama-flake";
+		ollama-flake.inputs.nixpkgs.follows = "nixpkgs";
 
  		flake-parts.url = "github:hercules-ci/flake-parts";
+		flake-parts.inputs.nixpkgs.follows = "nixpkgs";
 
 		agenix.url = "github:ryantm/agenix";
+		agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+		sops-nix.url = "github:Mic92/sops-nix";
+		sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
 		nur.url = "github:nix-community/NUR";
-		sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs =

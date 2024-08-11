@@ -19,7 +19,11 @@
 			../_mixins/configs/ollama.nix
 			#../_mixins/services/openvscode-server.nix
 			#../_mixins/services/nextcloud
+			../_mixins/containers/test1/default.nix
+			#../_mixins/services/adguard.nix
     ];
+
+	sops.age.keyFile = "/etc/sops/age/keys.txt";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -33,17 +37,8 @@
 	systemd.network.netdevs.eno2np1.enable = true;
 	systemd.network.netdevs.eno1np1.enable = true;
 
-	#systemd.services.mount-store = {
-	#	description = "Mount bcachefs /store";
-	#	script = "/run/current-system/sw/bin/mount -t bcachefs /dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0MAR4RJ:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0M3REZC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N6FT8CJC:/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WCC4N4PP8377:/dev/disk/by-id/ata-CT1000P3SSD8_2307E6ABF4BC:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZGY6VHBS:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40Z1YD:/dev/disk/by-id/ata-ST4000VN008-2DR166_ZM40ZH68:/dev/disk/by-id/ata-ST12000VN0008-2PH103_ZTN1CLT3:/dev/disk/by-id/ata-ST12000VN0008-2YS101_ZRT1FXD9 /store";
-	#	wantedBy = [ "multi-user.target" ];
-	#	enable = true;
-	#};
-
-
   networking.hostName = "gula"; # Define your hostname.
   networking.hostId = "2cbc7865";
-
 
 	services.zfs.autoScrub.enable = true;
 	services.systembus-notify.enable = true;
@@ -134,15 +129,19 @@
 	};
 
 	networking = {
-		#nat = {
-		#	enable = true;
-		#	externalInterface = "br0";
-		#};
+		bridges.br0 = {
+			interfaces = [ "eno2np1" ];
+		};
+
+		nat = {
+			enable = true;
+			externalInterface = "br0";
+		};
 
 		#bridges.br0.interfaces = [ "eno1" ];
 
-		#useDHCP = false;
-		#interfaces."br0".useDHCP = true;
+		useDHCP = false;
+		interfaces."br0".useDHCP = true;
 
 		#interfaces."br0".ipv4.addresses = [ {
 		#	address = "10.0.1.1";

@@ -7,7 +7,7 @@ keys:
     - &superbia age10cggct4jrne2ursqgzqpsz8mzzfypk5vpza3sddkuqu8ktr0xcwqzhp9xg
     - &testgula age19e0kzr3dy4vdt0a5c5ngd28zkatnqc45sghnpecw0zzcrgsltpyq30cdpm
 creation_rules:
- - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+ - path_regex: '\.enc\.(yaml|json|env|ini|secret)$'
    key_groups:
       - age:
           - *derek

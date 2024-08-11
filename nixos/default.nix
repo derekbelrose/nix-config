@@ -36,7 +36,8 @@ in
 	sops = {
 		defaultSopsFile = ../secrets/secrets.yaml;
 		defaultSopsFormat = "yaml";
-		age.keyFile = "/home/derek/.config/sops/age/keys.txt";
+		#age.keyFile = "/etc/sops/age/keys.txt";
+		age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ]; 
 	};
 
 

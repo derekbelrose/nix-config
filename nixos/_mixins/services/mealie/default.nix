@@ -20,9 +20,8 @@ in {
 
 	users.groups.mealie = {};
 
-	#age.secrets.mealie.file = ./mealie.age;
 	sops.secrets.mealie = {
-		sopsFile = ../../../../secrets/mealie.env;
+		sopsFile = ./mealie.enc.env;
 		format = "dotenv";
 		owner = config.users.users.mealie.name;
 		group = config.users.groups.${config.users.users.mealie.group}.name;
