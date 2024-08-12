@@ -138,18 +138,10 @@
 			externalInterface = "br0";
 		};
 
-		#bridges.br0.interfaces = [ "eno1" ];
-
 		useDHCP = false;
+	
 		interfaces."br0".useDHCP = true;
 
-		#interfaces."br0".ipv4.addresses = [ {
-		#	address = "10.0.1.1";
-		#	prefixLength = 24;
-		#}];
 	};
-
-  #system.stateVersion = "24.05"; # Did you read the comment?
-
 }
 

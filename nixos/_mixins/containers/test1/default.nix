@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ stateVerison, inputs, pkgs, ... }:
 {
 	containers.test1 = {
 		bindMounts = {
@@ -25,6 +25,7 @@
 				format = "binary";
 			};
 
+			inherit(stateVersion);
 			boot.isContainer = true;
 			networking = {
 				useDHCP = lib.mkForce true;

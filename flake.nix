@@ -30,7 +30,6 @@
 		ollama-flake.inputs.nixpkgs.follows = "nixpkgs";
 
  		flake-parts.url = "github:hercules-ci/flake-parts";
-		flake-parts.inputs.nixpkgs.follows = "nixpkgs";
 
 		agenix.url = "github:ryantm/agenix";
 		agenix.inputs.nixpkgs.follows = "nixpkgs";
