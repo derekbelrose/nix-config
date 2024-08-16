@@ -269,4 +269,9 @@
       '';
     };
   };
+
+	boot.kernel.sysctl = {
+		"net.ipv4.ip_forward" = true;
+		"net.ipv6.conf.all.ip_forwarding" = true;
+	}
 }
