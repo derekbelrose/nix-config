@@ -39,11 +39,12 @@ in
 
 		defaultSopsFile = ../../../.sops.yaml;
 	};
-	home.pointerCursor = {
-		package = pkgs.breeze-gtk;
-		name = "Breeze_Snow";
-		size = 24;
-	}; 
+
+	#home.pointerCursor = {
+	#	package = pkgs.breeze-gtk;
+	#	name = "Breeze_Snow";
+	#	size = 24;
+	#}; 
 
 	programs = {
 	  #fish.interactiveShellInit = ''
@@ -144,15 +145,15 @@ in
 
 	home.file.".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
 
-	gtk = {
-		enable = true;
-		iconTheme.name = "Papirus";
-		iconTheme.package = pkgs.papirus-icon-theme;
-		theme.name = "Yaru-dark";
-		theme.package = pkgs.yaru-theme;
-		cursorTheme.package = pkgs.breeze-gtk;
-		cursorTheme.name = "Breeze_Snow";
-	};
+	#gtk = {
+	#	enable = true;
+	#	iconTheme.name = "Papirus";
+	#	iconTheme.package = pkgs.papirus-icon-theme;
+	#	theme.name = "Yaru-dark";
+	#	theme.package = pkgs.yaru-theme;
+	#	cursorTheme.package = pkgs.breeze-gtk;
+	#	cursorTheme.name = "Breeze_Snow";
+	#};
 
   #sops = {
   #  age = {
