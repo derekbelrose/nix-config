@@ -3,6 +3,7 @@
 , lib
 , pkgs
 , modulesPath
+, inputs
 , ...
 }: {
   imports = [
@@ -13,8 +14,10 @@
 		# mealie dev testing
     #../_mixins/services/mealie/default.nix
     # ../_mixins/services/stirling-pdf/default.nix
-    ../../modules/sway.nix
+    #../../modules/sway.nix
+    ../_mixins/configs/hyprland.nix
     ../../modules/suspend-then-hibernate.nix
+		inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
   ];
 
   boot = {
@@ -171,6 +174,7 @@
 		logisim-evolution
 		pinentry-qt
 		mealie
+		swaynotificationcenter
   ];
 
   hardware.opengl = {
@@ -205,17 +209,17 @@
 
   services.power-profiles-daemon.enable = lib.mkForce false;
 
-  services.auto-cpufreq.enable = true;
-  services.auto-cpufreq.settings = {
-    battery = {
-      governor = "powersave";
-      turbo = "never";
-    };
-    CHARGER = {
-      governor = "performance";
-      turbo = "auto";
-    };
-  };
+  #services.auto-cpufreq.enable = true;
+  #services.auto-cpufreq.settings = {
+  #  battery = {
+  #    governor = "powersave";
+  #    turbo = "never";
+  #  };
+  #  CHARGER = {
+  #    governor = "performance";
+  #    turbo = "auto";
+  #  };
+  #};
 
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils-full}/bin/chgrp video /sys/class/backlight/%k/brightness"
@@ -239,6 +243,12 @@
   };
 
   systemd.sleep.extraConfig = "HibernateMode=shutdown HibernateDelaySec=10m";
+	systemd.packages = with pkgs; [
+		swaynotificationcenter
+	];
+	services.dbus.packages = with pkgs; [
+		swaynotificationcenter
+	];
 
   systemd.services.systemd-logind.environment = {
     SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK = "1";
@@ -270,8 +280,4 @@
     };
   };
 
-	boot.kernel.sysctl = {
-		"net.ipv4.ip_forward" = true;
-		"net.ipv6.conf.all.ip_forwarding" = true;
-	}
 }

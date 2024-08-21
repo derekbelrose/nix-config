@@ -35,5 +35,12 @@ in
 
 	environment.systemPackages = with pkgs; [
 		emacsPackages.emacs
+		vulkan-tools
+		glxinfo
+		opencl-info
+		wayland-utils
+		clinfo
+		kitty
+		alacritty
 	];
 } 
