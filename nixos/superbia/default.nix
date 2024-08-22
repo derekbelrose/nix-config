@@ -1,4 +1,5 @@
 { outputs
+, inputs
 , config
 , lib
 , pkgs
@@ -44,6 +45,8 @@ in
         ../../modules/suspend-then-hibernate.nix
         ../_mixins/configs/client.nix
         ./hardware-configuration.nix
+        inputs.nixos-cosmic.nixosModules.default
+        ../_mixins/configs/cosmic.nix
     ];
 
     nix.settings.experimental-features = [ "flakes" "nix-command" ];
@@ -120,7 +123,7 @@ in
     services.xserver.desktopManager.gnome.enable = true;
     
     services.xserver.displayManager.gdm = {
-      enable = true;
+      enable = false;
       wayland = true;
     };
     

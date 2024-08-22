@@ -38,6 +38,11 @@
 		sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
 		nur.url = "github:nix-community/NUR";
+
+    nixos-cosmic = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
