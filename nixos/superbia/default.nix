@@ -46,6 +46,7 @@ in
         ../_mixins/configs/client.nix
         ./hardware-configuration.nix
         inputs.nixos-cosmic.nixosModules.default
+        ../_mixins/configs/hyprland.nix
         ../_mixins/configs/cosmic.nix
     ];
 
@@ -81,7 +82,7 @@ in
 
         # Enable Avahi
         avahi = {
-          nssmdns = true;
+          nssmdns4 = true;
           enable = true;
           ipv4 = true;
           ipv6 = true;
@@ -109,9 +110,9 @@ in
        upower.enable = lib.mkForce false;
     };
 
-    services.udev.extraRules = ''
-      SUBSYSTEM="usb",ATTRS{idProduct}=="ea60",ATTRS{idVendor}=="10c4",GROUP="plugdev",TAG+="uaccess"
-    '';
+#    services.udev.extraRules = ''
+#      SUBSYSTEM="tty",ATTRS{idProduct}=="ea60",ATTRS{idVendor}=="10c4",GROUP="plugdev",TAG+="uaccess"
+#    '';
     services.xserver.enable = true;
 
     #Set your time zone.
@@ -307,7 +308,11 @@ in
             vaapiVdpau
             libvdpau-va-gl
             intel-gpu-tools
+            amdvlk
         ];	
+        extraPackages32 = with pkgs; [
+          driversi686Linux.amdvlk
+        ];
     };
 
     hardware.bluetooth.enable = true;

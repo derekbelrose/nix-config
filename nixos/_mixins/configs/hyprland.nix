@@ -7,7 +7,7 @@
 	programs = {
 		hyprland = {
 			enable = true;
-			package = pkgs.unstable.hyprland;
+			package = pkgs.hyprland;
 			portalPackage = pkgs.xdg-desktop-portal-hyprland;
 			xwayland.enable = true;
 		};	
@@ -18,6 +18,7 @@
 
 	services.hypridle.enable = true;
 	environment.systemPackages = with pkgs; [
+    hyprutils
 		wofi
 		waybar
 		libnotify

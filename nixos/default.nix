@@ -170,6 +170,7 @@ in
     overlays = [
       outputs.overlays.additions
       outputs.overlays.unstable-packages
+   #   outputs.overlays.modifications
     ];
 	
 		config = {

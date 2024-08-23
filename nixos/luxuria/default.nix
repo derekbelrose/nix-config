@@ -15,7 +15,7 @@
     #../_mixins/services/mealie/default.nix
     # ../_mixins/services/stirling-pdf/default.nix
     #../../modules/sway.nix
-    ../_mixins/configs/hyprland.nix
+    #../_mixins/configs/hyprland.nix
     ../../modules/suspend-then-hibernate.nix
 		inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
   ];
@@ -159,6 +159,7 @@
   security.protectKernelImage = false;
 
   environment.systemPackages = with pkgs; [
+    hyprutils
 		inkscape
 		yubikey-personalization
 		tmux
