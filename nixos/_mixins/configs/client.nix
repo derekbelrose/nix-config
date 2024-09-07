@@ -24,13 +24,13 @@ in
          sleep 10 && flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
        '';
      };
-		configure-appcenter-repo = lib.mkIf(isInstall) {
-			wantedBy = [ "multi-user.target" ];
-			path = [ pkgs.flatpak ];
-			script = ''
-				flatpak remote-add --if-not-exists appcenter https://flatpak.elementary.io/repo.flatpakrepo
-			'';
-		};
+		#configure-appcenter-repo = lib.mkIf(isInstall) {
+		#	wantedBy = [ "multi-user.target" ];
+		#	path = [ pkgs.flatpak ];
+		#	script = ''
+		#		flatpak remote-add --if-not-exists appcenter https://flatpak.elementary.io/repo.flatpakrepo
+		#	'';
+		#};
   };
 
 	environment.systemPackages = with pkgs; [
