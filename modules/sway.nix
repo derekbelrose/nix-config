@@ -33,6 +33,8 @@ in
 {
   services.dbus.enable = true;
 
+  services.displayManager.defaultSession = "sway";
+
   environment.sessionVariables = rec {
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_DATA_HOME = "$HOME/.local/share";

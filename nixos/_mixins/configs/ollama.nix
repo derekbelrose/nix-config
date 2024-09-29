@@ -2,6 +2,11 @@
 
 {
 	services = {
+#    nextjs-ollama-llm-ui = {
+#      enable = true;
+#      hostname = "0.0.0.0";
+#    };
+#
 		ollama = {
 			enable = true;
 			package = pkgs.ollama.override { acceleration = "cuda"; };

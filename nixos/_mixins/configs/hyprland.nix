@@ -3,11 +3,11 @@
 , ...
 }:
 {
-	services.displayManager.defaultSession = lib.mkForce "hyprland";
+	#services.displayManager.defaultSession = lib.mkForce "hyprland";
 	programs = {
 		hyprland = {
 			enable = true;
-			package = pkgs.hyprland;
+			package = pkgs.unstable.hyprland;
 			portalPackage = pkgs.xdg-desktop-portal-hyprland;
 			xwayland.enable = true;
 		};	

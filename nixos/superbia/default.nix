@@ -47,10 +47,25 @@ in
         ./hardware-configuration.nix
         inputs.nixos-cosmic.nixosModules.default
         ../_mixins/configs/hyprland.nix
-        ../_mixins/configs/cosmic.nix
+        ../_mixins/configs/ollama.nix
+        #../_mixins/configs/cosmic.nix
     ];
 
     nix.settings.experimental-features = [ "flakes" "nix-command" ];
+
+    services.displayManager.sddm = {
+      enable = true;
+      wayland.compositor = "kwin";
+      wayland.enable = true;
+    };
+
+    #services.xserver.displayManager.lightdm = {
+    #  enable = true;
+    #  greeters = {
+    #    slick.enable = true;
+    #    #enso.enable = true;
+    #  };
+    #};
 
     # Use the systemd-boot EFI boot loader.
     boot = {
@@ -75,6 +90,10 @@ in
 
     hardware.enableRedistributableFirmware = true;
     hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.amdgpu = {
+      opencl.enable = true;
+      initrd.enable = true;
+    }; 
 
     services = {
         # Enable CUPS to print documents.
@@ -108,6 +127,15 @@ in
        };
        dbus.enable = true;
        upower.enable = lib.mkForce false;
+
+      ollama = {
+        acceleration = "rocm";
+        enable = true;
+        environmentVariables = {
+          ROC_ENABLE_PRE_VEGA = "1";
+          HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+        };
+      };
     };
 
 #    services.udev.extraRules = ''
@@ -120,12 +148,12 @@ in
     #Enable the X11 windowing system.
     
     #Enable the Plasma Desktop Environment.
-    services.xserver.desktopManager.plasma5.enable = false;
-    services.xserver.desktopManager.gnome.enable = true;
+    #services.xserver.desktopManager.plasma5.enable = false;
+    #services.xserver.desktopManager.gnome.enable = true;
     
     services.xserver.displayManager.gdm = {
       enable = false;
-      wayland = true;
+      wayland = false;
     };
     
     
@@ -142,6 +170,7 @@ in
       gamescopeSession.enable = true;
     };
     
+    programs.gamemode.enable = true;
    
     
     #nixpkgs.overlays = [ 
@@ -198,6 +227,8 @@ in
           setSocketVariable = true;
         };
       };
+
+      waydroid.enable = false;
     
       podman = {
         enable = false;
@@ -246,6 +277,7 @@ in
         mesa_drivers
         vulkan-tools
         wayland-utils
+        unstable.orca-slicer
     ];
     
     fonts.packages = with pkgs; [
