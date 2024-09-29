@@ -14,9 +14,10 @@
 		# mealie dev testing
     #../_mixins/services/mealie/default.nix
     # ../_mixins/services/stirling-pdf/default.nix
-    #../../modules/sway.nix
+    ../../modules/sway.nix
     #../_mixins/configs/hyprland.nix
     ../../modules/suspend-then-hibernate.nix
+		../_mixins/configs/cosmic.nix
 		inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
   ];
 
@@ -123,6 +124,7 @@
   };
 
 	programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}";
+	programs.npm.enable = true;
 
   xdg.portal = {
     #extraPortals = [ pkgs.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
@@ -176,6 +178,8 @@
 		pinentry-qt
 		mealie
 		swaynotificationcenter
+		nodejs_18
+		yarn
   ];
 
   hardware.opengl = {
