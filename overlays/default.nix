@@ -9,6 +9,13 @@
     };
   };
 
+  master-packages = final: _prev: {
+		master = import inputs.nixpkgs-master {
+			inherit (final) system;
+			config.allowUnfree = true;
+		};
+  };
+
   modifications = final: prev: {
     hyprland = prev.hyprland.overrideAttrs ( old: {
       pname = "hyprland";

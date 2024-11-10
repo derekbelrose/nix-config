@@ -1,0 +1,34 @@
+services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest
+    restart: unless-stopped
+    volumes:
+      - /store/service-data/mealie:/app/data/
+    ports:
+      - 9091:9000
+    environment:
+      ALLOW_SIGNUP: "false"
+      LOG_LEVEL: "DEBUG"
+
+      PGID: "mealie"
+      PUID: "mealie"
+
+      # OIDC Related
+      OIDC_AUTH_ENABLED: "true"
+      OIDC_SIGNUP_ENABLED: "true"
+      OIDC_CONFIGURATION_URL: "https: //idp.belrose.io/realms/belrose.io/.well-known/openid-configuration"
+      OIDC_CLIENT_ID: "mealie"
+      OIDC_AUTO_REDIRECT: "true"
+      
+      DB_ENGINE:  sqlite # Optional:  'sqlite', 'postgres'
+      
+      # Email Configuration
+      SMTP_HOST: "smtp.sendgrid.net"
+      SMTP_FROM_EMAIL: "mealie@derekbelrose.com"
+      SMTP_USER: "apikey"
+      # SMTP_PORT: 587
+      # SMTP_FROM_NAME=Mealie
+      # SMTP_AUTH_STRATEGY=TLS # Options: 'TLS', 'SSL', 'NONE'
+      # SMTP_FROM_EMAIL=
+      # SMTP_USER=
+      # SMTP_PASSWORD=

@@ -11,26 +11,29 @@
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			../_mixins/services/jellyfin.nix
+			#../_mixins/services/jellyfin.nix
 			../_mixins/services/mealie/default.nix
-			../_mixins/services/stirling-pdf/default.nix
+			#../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix
 			#../_mixins/services/immich.nix
 			../_mixins/configs/ollama.nix
 			#../_mixins/services/openvscode-server.nix
 			#../_mixins/services/nextcloud
-			../_mixins/containers/test1/default.nix
+			#../_mixins/containers/test1/default.nix
 			#../_mixins/services/adguard.nix
     ];
 
+	users.groups = {
+		files = {};
+	};
 	sops.age.keyFile = "/etc/sops/age/keys.txt";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "bcachefs" "zfs" ];
+  boot.supportedFilesystems = [ "zfs" ];
 
-  boot.kernelModules = [ "kvm-intel" "zfs" "bcachefs" ];
+  boot.kernelModules = [ "kvm-intel" "zfs"];
   boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ "store" ];
 
@@ -48,6 +51,13 @@
 		notifications = {
 			wall.enable = true;
 		};
+	};
+
+	services.open-webui = {
+		enable = true;
+		package = pkgs.master.open-webui;
+		host = "0.0.0.0";
+		openFirewall = true;
 	};
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -73,9 +83,10 @@
   # $ nix search wget
    environment.systemPackages = with pkgs; [
 		nvidia-vaapi-driver
-		bcachefs-tools
 		cudatoolkit
 		bridge-utils
+		unstable.gpt4all-cuda
+		master.open-webui
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -121,7 +132,6 @@
 	virtualisation.podman = {
 		#enableNvidia	= true;
 		enable = true;
-		dockerCompat = false;
 		extraPackages = with pkgs; [
 			podman-compose
 			nvidia-podman

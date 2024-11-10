@@ -170,6 +170,7 @@ in
     overlays = [
       outputs.overlays.additions
       outputs.overlays.unstable-packages
+      outputs.overlays.master-packages
    #   outputs.overlays.modifications
     ];
 	
@@ -201,7 +202,7 @@ in
 
   system = {
     nixos.label = lib.mkIf isInstall "-";
-    inherit stateVersion;
+    inherit (stateVersion);
   };
 
   networking.networkmanager.enable = true;
