@@ -6,6 +6,20 @@
 , ... }:
 let
   inherit (pkgs.stdenv) isLinux;
+	modKey = "Mod4";
+	ws1 = "1 - Communication";
+	ws2 = "2 - Browsing";
+	ws3 = "3 - Making";
+	ws4 = "4 - Writing";
+	ws5 = "5 - Homelab";
+	ws6 = "6 - Home Assistant";
+	ws7 = "7 - Work";
+	ws8 = "8 - Learning";
+	ws9 = "9 - More";
+	ws10 = "10 - Even more";
+
+	WOBSOCK = "/run/user/1000/wob.socket";
+
 in
 {
   imports = [
@@ -15,6 +29,16 @@ in
 		inputs.sops-nix.homeManagerModules.sops
   ];
 
+	services = {
+		emacs ={
+			enable = true;
+			defaultEditor = true;
+		};
+		wob = {
+			enable = true;
+		};
+	};
+
 	nix = {
 		gc = {
 			automatic = true;
@@ -22,8 +46,121 @@ in
 		};
 	};
 
+	wayland.windowManager.sway = {
+		enable = true;
+		checkConfig = true;	
+		swaynag = {
+			enable = true;
+			settings = {};
+		};
+		systemd = {
+			enable = true;
+			xdgAutostart = true;
+		};
+		config = {
+			startup = [
+				{ command = "sleep 1; swaymsg ${ws1}:"; }
+			];
+			modifier = modKey;
+			terminal = "${pkgs.foot}/bin/foot";
+			gaps = {
+				inner = 5;
+				outer = 3;
+			};
+			window.titlebar = false;
+			
+			input = {
+				"2362:628:PIXA3854:00_093A:0274_Touchpad" = {
+					tap = "enabled";
+					natural_scroll = "enabled";
+					dwt = "enabled";
+				};	
+			};
+		
+			output = {
+				"*" = {
+					scale = "1.5";
+				};
+			};
+	
+			keybindings = let
+				inherit (config.wayland.windowManager.sway.config) modifier terminal;
+			in lib.mkAfter {
+				# Exit Sway
+				"${modKey}+Shift+Control+q" = "exit";
+				# Move Between Workspaces
+				"${modKey}+1" = "workspace ${ws1}";
+				"${modKey}+2" = "workspace ${ws2}";
+				"${modKey}+3" = "workspace ${ws3}";
+				"${modKey}+4" = "workspace ${ws4}";
+				"${modKey}+5" = "workspace ${ws5}";
+				"${modKey}+6" = "workspace ${ws6}";
+				"${modKey}+7" = "workspace ${ws7}";
+				"${modKey}+8" = "workspace ${ws8}";
+				"${modKey}+9" = "workspace ${ws9}";
+				"${modKey}+0" = "workspace ${ws10}";
+
+				# Move Focus
+				"${modKey}+left" = "focus left";
+				"${modKey}+Right" = "focus right";
+				"${modKey}+Up" = "focus up";
+				"${modKey}+Down" = "focus down";
+
+				#Move focused window
+				"${modKey}+Shift+Left" = "move left";
+				"${modKey}+Shift+Right" = "move right";
+				"${modKey}+Shift+Up" = "move up";
+				"${modKey}+Shift+Down" = "move down";
+
+				# Shortcuts
+				"${modKey}+Return" = "exec ${terminal}";
+				"${modKey}+Shift+q" = "kill";
+				"${modKey}+Shift+c" = "reload";
+				"${modKey}+b" = "splith";
+				"${modKey}+v" = "splitv";
+
+				# Switch current container to different layouts
+				"${modKey}+s" = "stacking";
+				"${modKey}+w" = "tabbed";
+				"${modKey}+e" = "toggle split";
+	
+				# Fullscreen
+				"${modKey}+f" = "fullscreen";
+
+				# Current container toggle floating
+				"${modKey}+Shift+space" = "floating toggle";
+			
+				# Swap focus betweenthe tiling area and the floating area
+				"${modKey}+space" = "focus mode_toggle";
+
+				# Move focus to parent container
+				"${modKey}+a" = "focus parent";
+
+				# Move the focused window to the scratchpad
+				"${modKey}+Shift+minus" = "move scratchpad";
+
+				# Show the next scratchpad window. Cycles if multiple
+				"${modKey}+minus" = "scratchpad show";
+
+				# Start applications
+				"${modKey}+Shift+b" = "exec ${pkgs.firefox}/bin/firefox";
+
+				# Emacs client
+				"${modKey}+Alt+e" = "exec ${pkgs.emacs}/bin/emacsclient -c";
+
+				# Media Keys
+				XF86AudioMute = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle && ${pkgs.pulseaudio}/bin/pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{printf "%s", $5}' > ${WOBSOCK}";
+				#XF86AudioRaiseVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ +5%";
+  			#XF86AudioLowerVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ -5%";
+			};
+
+			workspaceAutoBackAndForth = true;
+		};
+	};
+
 	systemd.user.sessionVariables = {
 		EDITOR="vim";
+		MOZ_ENABLE_WAYLAND=1;
 	};
 
 	pam.yubico.authorizedYubiKeys.ids = [
@@ -31,8 +168,42 @@ in
 	];
 
 	home.packages = with pkgs; [
+		wob
 		foot
-	];
+		fractal
+		orca-slicer
+    yubikey-personalization
+    tmux
+    zellij
+    chromium
+    gnome.gnome-settings-daemon
+    unstable.anytype
+    kdePackages.ksshaskpass
+    hyprland
+    fira
+    nerdfonts
+    logisim-evolution
+    pinentry-qt
+    swaynotificationcenter
+    yarn
+    wayland-utils
+
+		#Fonts
+		(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    source-code-pro
+    source-sans-pro
+    source-serif-pro
+    font-awesome
+    ibm-plex
+    jetbrains-mono
+    fira-code
+    fira-code-symbols
+    fira
+    nerdfonts
+    powerline-fonts
+  ];
+
+	fonts.fontconfig.enable = true;
 
 	sops = {
 		age.keyFile = "/home/${username}/.config/sops/keys.txt";
@@ -40,17 +211,7 @@ in
 		defaultSopsFile = ../../../.sops.yaml;
 	};
 
-	#home.pointerCursor = {
-	#	package = pkgs.breeze-gtk;
-	#	name = "Breeze_Snow";
-	#	size = 24;
-	#}; 
-
 	programs = {
-	  #fish.interactiveShellInit = ''
-	  #  set -x GH_TOKEN (cat ${config.sops.secrets.gh_token.path})
-	  #  set -x GITHUB_TOKEN (cat ${config.sops.secrets.gh_token.path})
-	  #'';
 	  git = {
 	     userEmail = "derek@derekbelrose.com";
 	     userName = "Derek Belrose";
@@ -138,55 +299,5 @@ in
 	 		};
 	 	};
 	 };
-
-	#home.file.".icons/default".source = "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ"; 
-	#home.file.".config/alacritty/alacritty.toml".source =  ./sources/alacritty.toml;
-
-
-	home.file.".icons/default".source = "${pkgs.gnome.adwaita-icon-theme}/share/icons/Adwaita";
-
-	#gtk = {
-	#	enable = true;
-	#	iconTheme.name = "Papirus";
-	#	iconTheme.package = pkgs.papirus-icon-theme;
-	#	theme.name = "Yaru-dark";
-	#	theme.package = pkgs.yaru-theme;
-	#	cursorTheme.package = pkgs.breeze-gtk;
-	#	cursorTheme.name = "Breeze_Snow";
-	#};
-
-  #sops = {
-  #  age = {
-  #    keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-  #    generateKey = false;
-  #  };
-  #  defaultSopsFile = ../../../../secrets/secrets.yaml;
-  #  # sops-nix options: https://dl.thalheim.io/
-  #  secrets = {
-  #    asciinema.path = "${config.home.homeDirectory}/.config/asciinema/config";
-  #    atuin_key.path = "${config.home.homeDirectory}/.local/share/atuin/key";
-  #    flakehub_netrc.path = "${config.home.homeDirectory}/.local/share/flakehub/netrc";
-  #    flakehub_token.path = "${config.home.homeDirectory}/.config/flakehub/auth";
-  #    gh_token = {};
-  #    gpg_private = {};
-  #    gpg_public = {};
-  #    gpg_ownertrust = {};
-  #    halloy_config.path = "${config.home.homeDirectory}/.config/halloy/config.toml";
-  #    hueadm.path = "${config.home.homeDirectory}/.hueadm.json";
-  #    obs_secrets = {};
-  #    ssh_config.path = "${config.home.homeDirectory}/.ssh/config";
-  #    ssh_key.path = "${config.home.homeDirectory}/.ssh/id_rsa";
-  #    ssh_pub.path = "${config.home.homeDirectory}/.ssh/id_rsa.pub";
-  #    ssh_semaphore_key.path = "${config.home.homeDirectory}/.ssh/id_rsa_semaphore";
-  #    ssh_semaphore_pub.path = "${config.home.homeDirectory}/.ssh/id_rsa_semaphore.pub";
-  #    transifex.path = "${config.home.homeDirectory}/.transifexrc";
-  #  };
-  #};
-
-  # Linux specific configuration
-  #systemd.user.tmpfiles.rules = lib.mkIf isLinux [
-  #  "L+ ${config.home.homeDirectory}/.config/obs-studio/ - - - - ${config.home.homeDirectory}/Studio/OBS/config/obs-studio/"
-  #];
-
-	}
+}
 

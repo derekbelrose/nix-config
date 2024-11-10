@@ -10,9 +10,29 @@ let
 		else false;
 in
 {
+
+	services.xserver.displayManager.gdm = {
+		enable = true;
+		wayland = true;
+	};	
+
+	services.xserver.enable = true;
+	services.desktopManager.plasma6.enable = true;
+	services.xserver.desktopManager.gnome.enable = true;
+
+	xdg.portal.enable = true;
+	xdg.portal.configPackages = [
+		pkgs.gnome.gnome-session
+	];
+	xdg.portal.extraPortals = with pkgs;[
+		xdg-desktop-portal-kde
+	];
+
   services.flatpak = lib.mkIf (isInstall) {
 		enable = true;
   };
+
+	programs.ssh.askPassword = lib.mkForce("ksshAskPass");
 
   systemd.services = {
      configure-flathub-repo = lib.mkIf (isInstall) {
@@ -24,22 +44,10 @@ in
          sleep 10 && flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
        '';
      };
-		#configure-appcenter-repo = lib.mkIf(isInstall) {
-		#	wantedBy = [ "multi-user.target" ];
-		#	path = [ pkgs.flatpak ];
-		#	script = ''
-		#		flatpak remote-add --if-not-exists appcenter https://flatpak.elementary.io/repo.flatpakrepo
-		#	'';
-		#};
   };
 
 	environment.systemPackages = with pkgs; [
-		emacsPackages.emacs
-		vulkan-tools
-		glxinfo
-		opencl-info
-		wayland-utils
-		clinfo
+		vim
 		kitty
 		alacritty
 	];

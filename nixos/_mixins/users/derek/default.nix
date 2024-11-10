@@ -25,9 +25,7 @@ in
 			gnome.dconf-editor
 			gnome.gnome-tweaks
 			brave
-		]) ++ (with pkgs.unstable; lib.optionals (isWorkstation) [
-			fractal
-		]);
+		]) ++ (with pkgs.unstable; lib.optionals (isWorkstation) []);
 	};
 
 	programs = {
