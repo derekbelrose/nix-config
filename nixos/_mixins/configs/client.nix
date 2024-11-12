@@ -11,11 +11,6 @@ let
 in
 {
 
-	services.xserver.displayManager.gdm = {
-		enable = true;
-		wayland = true;
-	};	
-
 	services.xserver.enable = true;
 	services.desktopManager.plasma6.enable = true;
 	services.xserver.desktopManager.gnome.enable = true;
@@ -51,4 +46,6 @@ in
 		kitty
 		alacritty
 	];
+  
+  programs.gnupg.agent.pinentryPackage = lib.mkForce pkgs.pinentry-qt;
 } 

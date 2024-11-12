@@ -3,6 +3,7 @@
 , lib
 , pkgs
 , username
+, hostname
 , ... }:
 let
   inherit (pkgs.stdenv) isLinux;
@@ -26,6 +27,7 @@ in
     #../../services/keybase.nix
     #../../services/syncthing.nix
 
+    ./${hostname}.nix
 		inputs.sops-nix.homeManagerModules.sops
   ];
 
@@ -69,20 +71,6 @@ in
 			};
 			window.titlebar = false;
 			
-			input = {
-				"2362:628:PIXA3854:00_093A:0274_Touchpad" = {
-					tap = "enabled";
-					natural_scroll = "enabled";
-					dwt = "enabled";
-				};	
-			};
-		
-			output = {
-				"*" = {
-					scale = "1.5";
-				};
-			};
-	
 			keybindings = let
 				inherit (config.wayland.windowManager.sway.config) modifier terminal;
 			in lib.mkAfter {
@@ -149,7 +137,7 @@ in
 				"${modKey}+Alt+e" = "exec ${pkgs.emacs}/bin/emacsclient -c";
 
 				# Media Keys
-				XF86AudioMute = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle && ${pkgs.pulseaudio}/bin/pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{printf "%s", $5}' > ${WOBSOCK}";
+				XF86AudioMute = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle && ${pkgs.pulseaudio}/bin/pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{printf \"%s\", $5}' > ${WOBSOCK}";
 				#XF86AudioRaiseVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ +5%";
   			#XF86AudioLowerVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ -5%";
 			};

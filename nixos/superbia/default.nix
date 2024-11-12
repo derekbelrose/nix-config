@@ -41,13 +41,13 @@ in
     time.timeZone = "America/New_York";
     imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
-        ../../modules/sway.nix
         ../../modules/suspend-then-hibernate.nix
+        ../_mixins/configs/sway.nix
         ../_mixins/configs/client.nix
         ./hardware-configuration.nix
         inputs.nixos-cosmic.nixosModules.default
         ../_mixins/configs/hyprland.nix
-        ../_mixins/configs/ollama.nix
+        #../_mixins/configs/ollama.nix
         #../_mixins/configs/cosmic.nix
     ];
 
@@ -152,7 +152,7 @@ in
     #services.xserver.desktopManager.gnome.enable = true;
     
     services.xserver.displayManager.gdm = {
-      enable = false;
+      enable = lib.mkForce false;
       wayland = false;
     };
     

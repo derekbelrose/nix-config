@@ -202,7 +202,7 @@ in
 
   system = {
     nixos.label = lib.mkIf isInstall "-";
-    inherit (stateVersion);
+    stateVersion = stateVersion;
   };
 
   networking.networkmanager.enable = true;
