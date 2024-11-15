@@ -7,7 +7,6 @@
 	environment.systemPackages = with pkgs; [
 		acl
 		zfs
-		bcachefs-tools
 		smartmontools
 	];
 

@@ -11,12 +11,13 @@
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			#../_mixins/services/jellyfin.nix
+			../_mixins/services/jellyfin.nix
 			../_mixins/services/mealie/default.nix
 			#../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix
 			#../_mixins/services/immich.nix
 			../_mixins/configs/ollama.nix
+			../_mixins/services/audiobookshelf.nix
 			#../_mixins/services/openvscode-server.nix
 			#../_mixins/services/nextcloud
 			#../_mixins/containers/test1/default.nix
@@ -31,9 +32,9 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = [ "zfs" "btrfs" ];
 
-  boot.kernelModules = [ "kvm-intel" "zfs"];
+  boot.kernelModules = [ "kvm-intel" "zfs" "btrfs" ];
   boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ "store" ];
 

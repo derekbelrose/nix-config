@@ -1,4 +1,4 @@
-{ hostname ? "gula", disks ? [ "/dev/disk/by-id/nvme-KINGSTON_SNV2S1000G_50026B7686A66902" ], ... }:
+{ hostname ? "gula", disks ? [ "/dev/disk/by-id/KINGSTON_SNV2S1000G_50026B7686A66902" ], ... }:
 {
   disko.devices = {
     disk = {
