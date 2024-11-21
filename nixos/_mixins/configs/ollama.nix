@@ -9,7 +9,8 @@
 #
 		ollama = {
 			enable = true;
-			package = pkgs.ollama.override { acceleration = "cuda"; };
+			package = pkgs.unstable.ollama.override { acceleration = "cuda"; };
+			acceleration = "cuda";
 			writablePaths = [ "/store/ollama" ];
 			home = "/store/ollama";
       listenAddress = "0.0.0.0:11434";
