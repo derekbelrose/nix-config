@@ -61,10 +61,10 @@ in
 		};
 		config = {
 			startup = [
-				{ command = "sleep 1; swaymsg ${ws1}:"; }
+				{ command = "sleep 5; swaymsg ${ws1}:"; }
 			];
 			modifier = modKey;
-			terminal = "${pkgs.foot}/bin/foot";
+			terminal = "${pkgs.alacritty}/bin/alacritty";
 			gaps = {
 				inner = 5;
 				outer = 3;
@@ -87,6 +87,19 @@ in
 				"${modKey}+8" = "workspace ${ws8}";
 				"${modKey}+9" = "workspace ${ws9}";
 				"${modKey}+0" = "workspace ${ws10}";
+
+        # Move Active Container to a specific workspaces
+				"${modKey}+Shift+1" = "move container to workspace ${ws1}";
+				"${modKey}+Shift+2" = "move container to workspace ${ws2}";
+				"${modKey}+Shift+3" = "move container to workspace ${ws3}";
+				"${modKey}+Shift+4" = "move container to workspace ${ws4}";
+				"${modKey}+Shift+5" = "move container to workspace ${ws5}";
+				"${modKey}+Shift+6" = "move container to workspace ${ws6}";
+				"${modKey}+Shift+7" = "move container to workspace ${ws7}";
+				"${modKey}+Shift+8" = "move container to workspace ${ws8}";
+				"${modKey}+Shift+9" = "move container to workspace ${ws9}";
+				"${modKey}+Shift+0" = "move container to workspace ${ws10}";
+
 
 				# Move Focus
 				"${modKey}+left" = "focus left";
@@ -138,8 +151,8 @@ in
 
 				# Media Keys
 				XF86AudioMute = "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle && ${pkgs.pulseaudio}/bin/pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{printf \"%s\", $5}' > ${WOBSOCK}";
-				#XF86AudioRaiseVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ +5%";
-  			#XF86AudioLowerVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ -5%";
+				XF86AudioRaiseVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ +5%";
+  			XF86AudioLowerVolume = "exec ${pkgs.pulseaudio}/bin/pactl  set-sink-volume @DEFAULT_SINK@ -5%";
 			};
 
 			workspaceAutoBackAndForth = true;
@@ -158,6 +171,7 @@ in
 	home.packages = with pkgs; [
 		wob
 		foot
+    alacritty
 		fractal
 		orca-slicer
     yubikey-personalization
@@ -286,6 +300,9 @@ in
 	 			};
 	 		};
 	 	};
+    fuzzel = {
+      enable = true;
+    };
 	 };
 }
 
