@@ -1,12 +1,17 @@
-{ pkgs, ... }:
+{ pkgs
+, configs
+, lib
+, ... }:
 
 {
+	networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 11434 ];
 	services = {
 #    nextjs-ollama-llm-ui = {
 #      enable = true;
 #      hostname = "0.0.0.0";
 #    };
 #
+
 		ollama = {
 			enable = true;
 			package = pkgs.unstable.ollama.override { acceleration = "cuda"; };

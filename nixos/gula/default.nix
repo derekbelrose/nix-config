@@ -86,7 +86,6 @@
 		nvidia-vaapi-driver
 		cudatoolkit
 		bridge-utils
-		unstable.gpt4all-cuda
 		master.open-webui
    ];
 
