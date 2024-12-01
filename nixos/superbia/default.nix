@@ -277,7 +277,7 @@ in
         mesa_drivers
         vulkan-tools
         wayland-utils
-        unstable.orca-slicer
+        orca-slicer
     ];
     
     fonts.packages = with pkgs; [
