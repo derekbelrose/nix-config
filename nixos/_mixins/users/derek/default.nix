@@ -7,11 +7,11 @@ in
 		gnome.excludePackages = with pkgs; [
 			gnome-console
 			gnome-text-editor
-			gnome.epiphany
-			gnome.geary
-			gnome.gnome-music
-			gnome.gnome-system-monitor
-			gnome.totem
+			epiphany
+			geary
+			gnome-music
+			gnome-system-monitor
+			totem
 		];
 		
 		systemPackages = (with pkgs; [

@@ -17,7 +17,7 @@ in
 
 	xdg.portal.enable = true;
 	xdg.portal.configPackages = [
-		pkgs.gnome.gnome-session
+		pkgs.gnome-session
 	];
 	xdg.portal.extraPortals = with pkgs;[
 		xdg-desktop-portal-kde

@@ -2,13 +2,13 @@
   description = "Derek's System Flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware?ref=1e679b9";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
 
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
@@ -57,7 +57,7 @@
     let
       inherit (self) outputs;
 
-      stateVersion = "24.05";
+      stateVersion = "24.11";
 
       libx = import ./lib { inherit inputs outputs stateVersion; };
     in

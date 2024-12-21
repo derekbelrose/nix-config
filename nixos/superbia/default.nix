@@ -59,6 +59,17 @@ in
       wayland.enable = true;
     };
 
+    systemd.services.syncthing = {
+      environment = {
+        STNODEFAULTFOLDER = "false";
+      };
+    };
+
+    services.syncthing = {
+      enable = true;
+      openDefaultPorts = true;
+    };
+
     #services.xserver.displayManager.lightdm = {
     #  enable = true;
     #  greeters = {
@@ -208,7 +219,7 @@ in
     
     
     # Enable sound.
-    sound.enable = true;
+    #sound.enable = true;
     
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.derek = {
@@ -238,6 +249,7 @@ in
     };
     
     environment.systemPackages = with pkgs; [
+        unstable.minigalaxy
         vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
         distrobox
         wget
@@ -247,7 +259,7 @@ in
         xdg-utils # for opening default programs when clicking links
         glib # gsettings
         dracula-theme # gtk theme
-        gnome3.adwaita-icon-theme  # default gnome cursors
+        adwaita-icon-theme  # default gnome cursors
         jq
         redshift
         psmisc
@@ -274,7 +286,7 @@ in
         glxinfo
         libva-utils
         mesa
-        mesa_drivers
+        mesa.drivers
         vulkan-tools
         wayland-utils
         orca-slicer
@@ -330,9 +342,9 @@ in
         fileSystems = [ "/" ]; 
     };
 
-    hardware.opengl = {
+    hardware.graphics = {
         enable = true;
-        driSupport = true;
+        #driSupport = true;
         extraPackages = with pkgs; [
             intel-media-driver
             intel-vaapi-driver
@@ -366,6 +378,7 @@ in
     };
 
 
+    system.stateVersion = "24.11";
 
     security.rtkit.enable = true;
     # Open ports in the firewall.

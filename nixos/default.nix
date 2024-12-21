@@ -24,7 +24,7 @@ in
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.nh.nixosModules.default
     inputs.disko.nixosModules.disko
-    inputs.nur.nixosModules.nur
+    inputs.nur.modules.nixos.default
 		inputs.agenix.nixosModules.default
 		inputs.sops-nix.nixosModules.sops
     ./${hostname}

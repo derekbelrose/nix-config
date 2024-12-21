@@ -26,7 +26,7 @@
     extraRemotes = [ "lvfs-testing" ];
   };
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     driSupport = true;
     extraPackages = with pkgs; [

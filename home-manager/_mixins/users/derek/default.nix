@@ -42,10 +42,10 @@ in
 	};
 
 	nix = {
-		gc = {
-			automatic = true;
-			frequency = "15d";
-		};
+		#gc = {
+		#	automatic = true;
+		#	frequency = "15d";
+		#};
 	};
 
 	wayland.windowManager.sway = {
@@ -114,7 +114,8 @@ in
 				"${modKey}+Shift+Down" = "move down";
 
 				# Shortcuts
-				"${modKey}+Return" = "exec ${terminal}";
+				"${modKey}+Return" = "exec ${terminal}";  
+        "${modKey}+D" = "exec fuzzel";
 				"${modKey}+Shift+q" = "kill";
 				"${modKey}+Shift+c" = "reload";
 				"${modKey}+b" = "splith";
@@ -234,10 +235,6 @@ in
 	 		controlMaster = "auto";
 	 		controlPersist = "10m";
 	 		matchBlocks = {
-	 			"github.com" = {
-	 				user = "git";
-	 				identityFile = "~/.ssh/github";
-	 			};
 	 			"gula" = {
 	 				identityFile = "~/.ssh/gula";
 	 			};

@@ -44,7 +44,7 @@ in
   };
 
   hardware = {
-    opengl = {
+    graphics = {
       enable = true;
       driSupport = true;
       driSupport32Bit = isGamestation;
