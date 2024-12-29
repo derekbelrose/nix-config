@@ -28,14 +28,15 @@
 
   hardware.graphics = {
     enable = true;
-    driSupport = true;
+    #driSupport = true;
     extraPackages = with pkgs; [
+			rocmPackages.clr.icd
       intel-media-driver
       intel-vaapi-driver
       vaapiVdpau
       libvdpau-va-gl
       brightnessctl
-      rocm-opencl-icd
+      # rocmPackages.opencl.icd
     ];
   };
 

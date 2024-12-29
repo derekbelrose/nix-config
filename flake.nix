@@ -63,7 +63,7 @@
     in
     {
       homeConfigurations = {
-				"derek@luxuria" = 	libx.mkHome { hostname = "luxura"; username = "derek"; desktop = "sway"; };
+				"derek@luxuria" = 	libx.mkHome { hostname = "luxuria"; username = "derek"; desktop = "cosmic"; };
 				"derek@superbia" = 	libx.mkHome { hostname = "superbia"; username = "derek"; desktop = "sway"; };
 				"derek@gula" = 	libx.mkHome { hostname = "gula"; username = "derek"; };
       };
