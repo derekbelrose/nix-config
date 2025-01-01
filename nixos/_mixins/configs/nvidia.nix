@@ -1,11 +1,12 @@
 { pkgs, config, lib, ... }:
 
 {
+	hardware.nvidia-container-toolkit.enable = true;
+
   services.xserver.videoDrivers = ["nvidia"];
-    hardware.graphics = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+		enable32Bit = true;
   };
   nixpkgs.config.allowUnfree = true;
   hardware.nvidia = {
@@ -36,8 +37,13 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-	environment.systemPackages = with pkgs.cudaPackages; [
-		cudatoolkit
-		#nvidia_driver
+	environment.systemPackages = [
+		pkgs.nvidia-vaapi-driver
+		pkgs.cudaPackages.cudatoolkit
+	#	pkgs.cudaPackages.nvidia_driver
 	];
+
+	#virtualisation.podman = {
+	#	enableNvidia = true;
+	#};
 }

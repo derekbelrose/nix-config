@@ -13,11 +13,12 @@
       ../_mixins/services/openssh.nix
 			../_mixins/services/jellyfin.nix
 			../_mixins/services/mealie/default.nix
+			../_mixins/services/pinchflat/default.nix
 			#../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix
 			#../_mixins/services/immich.nix
-			../_mixins/configs/ollama.nix
-			../_mixins/services/audiobookshelf.nix
+			#../_mixins/configs/ollama.nix
+			#../_mixins/services/audiobookshelf.nix
 			#../_mixins/services/openvscode-server.nix
 			#../_mixins/services/nextcloud
 			#../_mixins/containers/test1/default.nix
@@ -35,8 +36,10 @@
   boot.supportedFilesystems = [ "zfs" "btrfs" ];
 
   boot.kernelModules = [ "kvm-intel" "zfs" "btrfs" ];
-  boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+  #boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ "store" ];
+
+	boot.kernelParams = [ "video=1024x768" ];
 
 	systemd.network.netdevs.eno2np1.enable = true;
 	systemd.network.netdevs.eno1np1.enable = true;
@@ -54,12 +57,12 @@
 		};
 	};
 
-	services.open-webui = {
-		enable = true;
-		package = pkgs.master.open-webui;
-		host = "0.0.0.0";
-		openFirewall = true;
-	};
+	#services.open-webui = {
+	#	enable = true;
+	#	package = pkgs.master.open-webui;
+	#	host = "0.0.0.0";
+	#	openFirewall = true;
+	#};
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -83,10 +86,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
    environment.systemPackages = with pkgs; [
-		nvidia-vaapi-driver
-		cudatoolkit
 		bridge-utils
-		master.open-webui
+		#master.open-webui
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -127,14 +128,12 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
 
-	hardware.nvidia-container-toolkit.enable = true;
 
 	virtualisation.podman = {
 		#enableNvidia	= true;
 		enable = true;
 		extraPackages = with pkgs; [
 			podman-compose
-			nvidia-podman
 		];
 	};
 
@@ -152,6 +151,14 @@
 	
 		interfaces."br0".useDHCP = true;
 
+	};
+
+	console = lib.mkForce {
+    font = "ter-powerline-v24b";
+    packages = [
+      pkgs.terminus_font
+      pkgs.powerline-fonts
+    ];
 	};
 }
 
