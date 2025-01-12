@@ -383,8 +383,6 @@ in
     };
 
 
-    system.stateVersion = "24.11";
-
     security.rtkit.enable = true;
     # Open ports in the firewall.
     networking.firewall.allowedTCPPorts = [ 22 ];
