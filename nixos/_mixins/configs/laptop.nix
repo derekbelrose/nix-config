@@ -7,11 +7,11 @@ _: {
   powerManagement.powertop.enable = true;
 
   services.logind = {
-    lidSwitch = "hibernate";
+    lidSwitch = "suspend";
     extraConfig = ''
       HandlePowerKey=suspend-then-hibernate
       IdleAction=suspend-then-hibernate
-      IdleActionSec=15m
+      IdleActionSec=5m
     '';
   };
 

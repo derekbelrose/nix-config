@@ -2,23 +2,19 @@
 	inputs
 , modulesPath
 , pkgs
+, lib
 , ...
 }:{
 	imports = [
 		./hardware-configuration.nix
 		../_mixins/configs/framework-laptop.nix
-
 		../_mixins/configs/cosmic.nix
 		../_mixins/configs/sway.nix
-		#inputs.home-manager.nixosModules.home-manager {
-		#	home-manager.useGlobalPkgs = true;
-		#	home-manager.useUserPackages = true;
-		#	home-manager.users.derek = import ../../home-manager/_mixins/users/derek;
-		#}
 	];
 
 	environment.systemPackages = with pkgs; [
 		freecad
+		waypipe
 	];
 
 
@@ -29,5 +25,7 @@
   services.tlp.enable = true;
   services.blueman.enable = true;
   services.fstrim.enable = true;
+
+	services.power-profiles-daemon.enable = lib.mkForce true;
 
 }

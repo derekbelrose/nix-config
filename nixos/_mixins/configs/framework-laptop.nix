@@ -19,7 +19,7 @@
 	hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
-  services.power-profiles-daemon.enable = lib.mkForce false;
+  services.power-profiles-daemon.enable = lib.mkDefault false;
 
   services.fwupd = {
     enable = true;
