@@ -190,6 +190,7 @@ in
     swaynotificationcenter
     yarn
     wayland-utils
+		devenv
 
 		#Fonts
 		(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })

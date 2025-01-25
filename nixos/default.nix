@@ -186,6 +186,7 @@ in
       ];
 
     systemPackages = with pkgs; [
+			devenv
 			inputs.agenix.packages."${system}".default
       git
 			git-extras
