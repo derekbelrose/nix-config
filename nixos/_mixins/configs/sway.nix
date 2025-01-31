@@ -19,6 +19,7 @@
       rofi-wayland
       wofi
 			dbus
+      grim
     ];
 
     extraSessionCommands = ''
