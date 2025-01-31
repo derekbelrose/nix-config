@@ -233,7 +233,7 @@ in
 	 		enable = true;
 	 		package = pkgs.openssh;
 	 		addKeysToAgent = "yes";
-	 		controlMaster = "auto";
+	 		controlMaster = "no";
 	 		controlPersist = "10m";
 	 		matchBlocks = {
 	 			"gula" = {

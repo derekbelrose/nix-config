@@ -288,11 +288,6 @@ in
         just
         chromium
         wally-cli
-        glxinfo
-        libva-utils
-        mesa
-        mesa.drivers
-        vulkan-tools
         wayland-utils
         orca-slicer
     ];
@@ -354,7 +349,12 @@ in
             intel-media-driver
             intel-vaapi-driver
             vaapiIntel
+            glxinfo
+            mesa
+            mesa.drivers
+            vulkan-tools
             vaapiVdpau
+            libva-utils
             libvdpau-va-gl
             intel-gpu-tools
             amdvlk
