@@ -12,12 +12,9 @@ in
 {
 
 	services.xserver.enable = true;
-	services.desktopManager.plasma6.enable = true;
-	services.xserver.desktopManager.gnome.enable = true;
 
 	xdg.portal.enable = true;
 	xdg.portal.configPackages = [
-		pkgs.gnome-session
 	];
 	xdg.portal.extraPortals = with pkgs;[
 		xdg-desktop-portal-kde

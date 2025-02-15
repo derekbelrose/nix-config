@@ -192,12 +192,9 @@ in
 			git-extras
       rsync
       pavucontrol
-			avizo
 			zellij
 			sops
 			gnupg
-      mosh
-      wayvnc
     ];
   };
 
