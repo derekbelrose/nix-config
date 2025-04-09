@@ -171,6 +171,7 @@ in
       outputs.overlays.additions
       outputs.overlays.unstable-packages
       outputs.overlays.master-packages
+      inputs.nix-comfyui.overlays.default
    #   outputs.overlays.modifications
     ];
 	
@@ -186,13 +187,14 @@ in
       ];
 
     systemPackages = with pkgs; [
-			devenv
 			inputs.agenix.packages."${system}".default
+      brave
       git
 			git-extras
       rsync
       pavucontrol
 			zellij
+			avizo
 			sops
 			gnupg
     ];
@@ -212,7 +214,6 @@ in
     extraGroups = [ "networkmanager" "wheel" "video" "dialout" "uinput" "render" ];
     packages = with pkgs; [
       vim
-      firefox
     ];
   };
 

@@ -23,6 +23,24 @@ let
 
    hardware.system76.enableAll = true;
 
+   boot.kernelParams = [
+    "amdgpu.msi=0" 
+    "amdgpu.aspm=0" 
+    "amdgpu.runpm=0"
+    "amdgpu.bapm=0" 
+    "amdgpu.vm_update_mode=0"
+    "amdgpu.exp_hw_support=1" 
+    "amdgpu.sched_jobs=64" 
+    "amdgpu.sched_hw_submission=4" 
+    "amdgpu.lbpw=0" 
+    "amdgpu.mes=1" 
+    "amdgpu.mes_kiq=1"
+    "amdgpu.sched_policy=1" 
+    "amdgpu.ignore_crat=1" 
+    "amdgpu.no_system_mem_limit"
+    "amdgpu.smu_pptable_id=0"
+   ];
+
    configure-gtk = pkgs.writeTextFile {
       name = "configure-gtk";
       destination = "/bin/configure-gtk";
@@ -41,13 +59,13 @@ in
     time.timeZone = "America/New_York";
     imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
-        ../../modules/suspend-then-hibernate.nix
         ../_mixins/configs/sway.nix
         ../_mixins/configs/client.nix
         ./hardware-configuration.nix
         inputs.nixos-cosmic.nixosModules.default
         ../_mixins/configs/hyprland.nix
-        #../_mixins/configs/ollama.nix
+        ../_mixins/services/open-webui.nix
+        ../_mixins/configs/ollama.nix
         #../_mixins/configs/cosmic.nix
     ];
 
@@ -55,7 +73,7 @@ in
 
     services.displayManager.sddm = {
       enable = true;
-      wayland.compositor = "kwin";
+      #wayland.compositor = "kwin";
       wayland.enable = true;
     };
 
@@ -138,20 +156,8 @@ in
        };
        dbus.enable = true;
        upower.enable = lib.mkForce false;
-
-      ollama = {
-        acceleration = "rocm";
-        enable = true;
-        environmentVariables = {
-          ROC_ENABLE_PRE_VEGA = "1";
-          HSA_OVERRIDE_GFX_VERSION = "11.0.0";
-        };
-      };
     };
 
-#    services.udev.extraRules = ''
-#      SUBSYSTEM="tty",ATTRS{idProduct}=="ea60",ATTRS{idVendor}=="10c4",GROUP="plugdev",TAG+="uaccess"
-#    '';
     services.xserver.enable = true;
 
     #Set your time zone.
@@ -210,11 +216,11 @@ in
 
        
     
-    programs.waybar.enable = true;
+    #programs.waybar.enable = true;
     
     services.emacs = {
         enable = true;
-        package = pkgs.emacs29-pgtk;
+        package = pkgs.emacs30-pgtk;
     };
     
     
@@ -249,7 +255,12 @@ in
     };
     
     environment.systemPackages = with pkgs; [
+        unstable.exo
+        oterm
+        amdvlk
         microsoft-edge
+        vulkan-tools
+        glxinfo
         devenv
         cliphist
         pavucontrol
@@ -258,7 +269,6 @@ in
         vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
         distrobox
         wget
-        firefox
         configure-gtk
         wayland
         xdg-utils # for opening default programs when clicking links
@@ -282,7 +292,6 @@ in
         btop
         sof-firmware
         tmux
-        ollama
         flatpak
         bottles
         just
@@ -290,6 +299,8 @@ in
         wally-cli
         wayland-utils
         orca-slicer
+        lact
+        comfyuiPackages.comfyui-unwrapped
     ];
     
     fonts.packages = with pkgs; [
@@ -325,6 +336,16 @@ in
             thunar-volman
         ];
     };
+  
+    systemd.services.lact = {
+      description = "AMDGPU Control Daemon";
+      after = ["multi-user.target"];
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        ExecStart = "${pkgs.lact}/bin/lact daemon";
+      };
+      enable = true;
+    };
  
     programs.dconf.enable = true;
     # List services that you want to enable:
@@ -345,10 +366,8 @@ in
     hardware.graphics = {
         enable = true;
         #driSupport = true;
+        enable32Bit = lib.mkDefault true;
         extraPackages = with pkgs; [
-            intel-media-driver
-            intel-vaapi-driver
-            vaapiIntel
             glxinfo
             mesa
             mesa.drivers
@@ -356,12 +375,7 @@ in
             vaapiVdpau
             libva-utils
             libvdpau-va-gl
-            intel-gpu-tools
-            amdvlk
         ];	
-        extraPackages32 = with pkgs; [
-          driversi686Linux.amdvlk
-        ];
     };
 
     hardware.bluetooth.enable = true;
@@ -383,24 +397,78 @@ in
     };
 
 
-    security.rtkit.enable = true;
-    # Open ports in the firewall.
-    networking.firewall.allowedTCPPorts = [ 22 ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
-    
-    # Copy the NixOS configuration file and link it from the resulting system
-    # (/run/current-system/configuration.nix). This is useful in case you
-    # accidentally delete configuration.nix.
-    system.copySystemConfiguration = false;
+   security.rtkit.enable = true;
+   # Open ports in the firewall.
+   networking.firewall.allowedTCPPorts = [ 22 8080 11434 ];
+   # networking.firewall.allowedUDPPorts = [ ... ];
+   # Or disable the firewall altogether.
+   # networking.firewall.enable = false;
+   
+   # Copy the NixOS configuration file and link it from the resulting system
+   # (/run/current-system/configuration.nix). This is useful in case you
+   # accidentally delete configuration.nix.
+   system.copySystemConfiguration = false;
 
 
-    # This value determines the NixOS release from which the default
-    # settings for stateful data, like file locations and database versions
-    # on your system were taken. It's perfectly fine and recommended to leave
-    # this value at the release version of the first install of this system.
-    # Before changing this value read the documentation for this option
-    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+   # This value determines the NixOS release from which the default
+   # settings for stateful data, like file locations and database versions
+   # on your system were taken. It's perfectly fine and recommended to leave
+   # this value at the release version of the first install of this system.
+   # Before changing this value read the documentation for this option
+   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+
+   systemd.tmpfiles.rules = [
+      "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+   ];
+
+  environment.etc."lact/config.yaml".text =
+    let
+      gpuConfig = # yaml
+        ''
+          fan_control_enabled: true
+          fan_control_settings:
+            mode: curve
+            static_speed: 0.5
+            temperature_key: edge
+            interval_ms: 500
+            curve:
+              60: 0.0
+              70: 0.5
+              75: 0.6
+              80: 0.65
+              90: 0.75
+          pmfw_options:
+            acoustic_limit: 3300
+            acoustic_target: 2000
+            minimum_pwm: 15
+            target_temperature: 80
+          # Run at 257 for slightly better performance but louder fans
+          power_cap: 231.0
+          performance_level: manual
+          max_core_clock: 2394
+          voltage_offset: -30
+          power_profile_mode_index: 0
+          power_states:
+            memory_clock:
+            - 0
+            - 1
+            - 2
+            - 3
+            core_clock:
+            - 0
+            - 1
+            - 2
+        '';
+    in
+    # yaml
+    ''
+      daemon:
+        log_level: info
+        admin_groups:
+        - wheel
+        - sudo
+        disable_clocks_cleanup: false
+      apply_settings_timer: 5
+    '';
 }
 

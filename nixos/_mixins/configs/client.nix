@@ -40,8 +40,7 @@ in
 
 	environment.systemPackages = with pkgs; [
 		vim
-		kitty
-		alacritty
+    kitty
 	];
   
   programs.gnupg.agent.pinentryPackage = lib.mkForce pkgs.pinentry-qt;

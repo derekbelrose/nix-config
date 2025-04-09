@@ -38,6 +38,9 @@
 
 		nur.url = "github:nix-community/NUR";
 
+    nix-comfyui.url = "github:dyscorv/nix-comfyui";
+    nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
+
     nixos-cosmic = {
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
