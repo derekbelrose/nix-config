@@ -59,12 +59,12 @@ in
     time.timeZone = "America/New_York";
     imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
-        ../_mixins/configs/sway.nix
+        #../_mixins/configs/sway.nix
         ../_mixins/configs/client.nix
         ./hardware-configuration.nix
         inputs.nixos-cosmic.nixosModules.default
-        ../_mixins/configs/hyprland.nix
-        ../_mixins/services/open-webui.nix
+        #../_mixins/configs/hyprland.nix
+        #../_mixins/services/open-webui.nix
         ../_mixins/configs/ollama.nix
         #../_mixins/configs/cosmic.nix
     ];
@@ -156,6 +156,8 @@ in
        };
        dbus.enable = true;
        upower.enable = lib.mkForce false;
+  
+       desktopManager.plasma6.enable = true;
     };
 
     services.xserver.enable = true;
