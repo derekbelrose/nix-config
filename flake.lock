@@ -273,6 +273,7 @@
         "type": "github"
       }
     },
+<<<<<<< Updated upstream
     "nix-comfyui": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -295,6 +296,8 @@
         "type": "github"
       }
     },
+=======
+>>>>>>> Stashed changes
     "nix-formatter-pack": {
       "inputs": {
         "nixpkgs": [
@@ -317,6 +320,7 @@
         "type": "github"
       }
     },
+<<<<<<< Updated upstream
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
@@ -339,6 +343,8 @@
         "type": "github"
       }
     },
+=======
+>>>>>>> Stashed changes
     "nixos-cosmic": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -349,11 +355,19 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1744137608,
         "narHash": "sha256-KEuKL7lM2ZqKzvaGIptVDAce29CAR4ZSgWtFD3PnpB0=",
         "owner": "lilyinstarlight",
         "repo": "nixos-cosmic",
         "rev": "d20b15f629985fe6900925bef462f947e4a75b2f",
+=======
+        "lastModified": 1744456153,
+        "narHash": "sha256-xTaAboh9p0Mz0UEgcKe+B1zVKoRFG7RQR+gf7ypMQVA=",
+        "owner": "lilyinstarlight",
+        "repo": "nixos-cosmic",
+        "rev": "a76a451a2c97aa37a7741bdf8244ad91205776b8",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -426,11 +440,19 @@
     },
     "nixpkgs-master": {
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1744162655,
         "narHash": "sha256-o3+u4hQKeekMXGaCfIEW9ks56TMrEMEVZ6s/uX8YGpY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "317b66870920f93e11abce28e54037906b8d3594",
+=======
+        "lastModified": 1744470639,
+        "narHash": "sha256-lMxXPqKjGsimmkbezzfhWTZT6RThDu4/YryHlFHvHlQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "58f6b61debfbc7b7554e8d68b8e3a4baf476eef7",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -441,11 +463,19 @@
     },
     "nixpkgs-stable": {
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1743975612,
         "narHash": "sha256-o4FjFOUmjSRMK7dn0TFdAT0RRWUWD+WsspPHa+qEQT8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "a880f49904d68b5e53338d1e8c7bf80f59903928",
+=======
+        "lastModified": 1744309437,
+        "narHash": "sha256-QZnNHM823am8apCqKSPdtnzPGTy2ZB4zIXOVoBp5+W0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f9ebe33a928b5d529c895202263a5ce46bdf12f7",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -478,11 +508,19 @@
     },
     "nixpkgs-unstable": {
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1744032190,
         "narHash": "sha256-KSlfrncSkcu1YE+uuJ/PTURsSlThoGkRqiGDVdbiE/k=",
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "b0b4b5f8f621bfe213b8b21694bab52ecfcbf30b",
+=======
+        "lastModified": 1744442362,
+        "narHash": "sha256-i47t4DRIZgwBZw2Osbrp1OJhhO1k/n+QzRx+TrmfE9Y=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2349f9de17183971db12ae9e0123dab132023bd7",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -501,11 +539,19 @@
         ]
       },
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1744119001,
         "narHash": "sha256-e9v+lWxnFtJQPVsTlq9LEEL/3trmR6KYs9wk96u74CE=",
         "owner": "nix-community",
         "repo": "nixpkgs-wayland",
         "rev": "d9de146fe5c0ea2b9649c8dd4edffa455a15ebbe",
+=======
+        "lastModified": 1744425287,
+        "narHash": "sha256-dEbTf9WukczQ+cqRs8y511UWsQH3raXnvuEEYNXM3Pk=",
+        "owner": "nix-community",
+        "repo": "nixpkgs-wayland",
+        "rev": "fe647dcdd0bcce7b1713f6430266644c6e2dde9b",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -516,11 +562,19 @@
     },
     "nixpkgs_2": {
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1743975612,
         "narHash": "sha256-o4FjFOUmjSRMK7dn0TFdAT0RRWUWD+WsspPHa+qEQT8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "a880f49904d68b5e53338d1e8c7bf80f59903928",
+=======
+        "lastModified": 1744309437,
+        "narHash": "sha256-QZnNHM823am8apCqKSPdtnzPGTy2ZB4zIXOVoBp5+W0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f9ebe33a928b5d529c895202263a5ce46bdf12f7",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -532,11 +586,19 @@
     },
     "nixpkgs_3": {
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1743964447,
         "narHash": "sha256-nEo1t3Q0F+0jQ36HJfbJtiRU4OI+/0jX/iITURKe3EE=",
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "063dece00c5a77e4a0ea24e5e5a5bd75232806f8",
+=======
+        "lastModified": 1744232761,
+        "narHash": "sha256-gbl9hE39nQRpZaLjhWKmEu5ejtQsgI5TWYrIVVJn30U=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "f675531bc7e6657c10a18b565cfebd8aa9e24c14",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -582,6 +644,7 @@
       "inputs": {
         "flake-parts": "flake-parts_2",
         "nixpkgs": "nixpkgs_3",
+<<<<<<< Updated upstream
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
@@ -590,6 +653,16 @@
         "owner": "nix-community",
         "repo": "NUR",
         "rev": "bb6b512b08b22a8d5e029927cf241e0b6134eb43",
+=======
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1744468702,
+        "narHash": "sha256-urKPEftd1R2tEquoSAUGYfAIjRNMsflegtplhG2Bj9w=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "93f032a5355b330aa87e22caa6c673d6d8e79726",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -740,11 +813,19 @@
         ]
       },
       "locked": {
+<<<<<<< Updated upstream
         "lastModified": 1744079607,
         "narHash": "sha256-5cog6Qd6w/bINdLO5mOysAHOHey8PwFXk4IWo+y+Czg=",
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "f6b62cc99c25e79a1c17e9fca91dc6b6faebec6c",
+=======
+        "lastModified": 1744425163,
+        "narHash": "sha256-iFcqIbyY25uhtRrQal5vFTxt0q59vDf++nY8du5hof4=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "4bb0b6dfc5bafa8b4e8dbe1170f051c437b2cb79",
+>>>>>>> Stashed changes
         "type": "github"
       },
       "original": {
@@ -844,6 +925,7 @@
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
+<<<<<<< Updated upstream
           "nix-comfyui",
           "poetry2nix",
           "nixpkgs"
@@ -866,6 +948,8 @@
     "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
+=======
+>>>>>>> Stashed changes
           "nur",
           "nixpkgs"
         ]

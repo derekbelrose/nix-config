@@ -12,7 +12,7 @@ in
 {
   imports = [
     #../../services/keybase.nix
-    #../../services/syncthing.nix
+    ../../services/syncthing.nix
 
     ./${hostname}.nix
     ./packages.nix

@@ -8,11 +8,12 @@
 	imports = [
 		./hardware-configuration.nix
 		../_mixins/configs/framework-laptop.nix
-		#../_mixins/configs/cosmic.nix
+		../_mixins/configs/cosmic.nix
 		#../_mixins/configs/sway.nix
 	];
 
 	environment.systemPackages = with pkgs; [
+		thunderbird
 	];
 
 
