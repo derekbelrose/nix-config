@@ -12,8 +12,8 @@
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
 			../_mixins/services/jellyfin.nix
-			../_mixins/services/mealie/default.nix
-			../_mixins/services/pinchflat/default.nix
+			#../_mixins/services/mealie/default.nix
+			#../_mixins/services/pinchflat/default.nix
 			#../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix
 			#../_mixins/services/immich.nix
@@ -36,7 +36,7 @@
   boot.supportedFilesystems = [ "zfs" "btrfs" ];
 
   boot.kernelModules = [ "kvm-intel" "zfs" "btrfs" ];
-  #boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ "store" ];
 
 	boot.kernelParams = [ "video=1024x768" ];
@@ -73,7 +73,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.derek = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "files" "docker" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       firefox
       tree
@@ -131,12 +131,24 @@
 
 	virtualisation.podman = {
 		#enableNvidia	= true;
-		enable = true;
+		enable = false;
 		extraPackages = with pkgs; [
 			podman-compose
 		];
 	};
 
+	virtualisation.docker = {
+		enable = true;
+		rootless = {
+			enable = false;
+			setSocketVariable = true;
+		};
+		daemon = {
+			settings = {
+				data-root = "/store/docker-data/";
+			};
+		};
+	};
 	networking = {
 		bridges.br0 = {
 			interfaces = [ "eno2np1" ];
@@ -159,6 +171,15 @@
       pkgs.terminus_font
       pkgs.powerline-fonts
     ];
+	};
+
+	services.transmission = {
+		enable = true;
+		openRPCPort = true;
+		settings = {
+			rpc-bind-address = "0.0.0.0";
+			rpc-whitelist = "172.16.*,100.*,127.0.0.1";
+		};
 	};
 }
 
