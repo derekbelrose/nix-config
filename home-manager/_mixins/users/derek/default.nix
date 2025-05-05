@@ -22,6 +22,7 @@ in
   ];
 
   sway.WOBSOCK = WOBSOCK;
+  boot.supportedFilesystems."fuse.sshfs" = true;
 
 	services = {
 		emacs ={
