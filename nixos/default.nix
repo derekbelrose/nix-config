@@ -149,6 +149,7 @@ in
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
 			trusted-users = [ "derek" ];
+			download-buffer-size = 134217728;
 
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="

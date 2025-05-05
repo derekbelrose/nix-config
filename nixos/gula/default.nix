@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ system, outputs, inputs, config, lib, pkgs, ... }:
+{ system, outputs, inputs, config, lib, pkgs, hostname, ... }:
 
 {
   imports =
@@ -11,7 +11,7 @@
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			../_mixins/services/jellyfin.nix
+			#../_mixins/services/jellyfin.nix
 			#../_mixins/services/mealie/default.nix
 			#../_mixins/services/pinchflat/default.nix
 			#../_mixins/services/stirling-pdf/default.nix
@@ -23,6 +23,7 @@
 			#../_mixins/services/nextcloud
 			#../_mixins/containers/test1/default.nix
 			#../_mixins/services/adguard.nix
+			../_mixins/services/k3s.nix
     ];
 
 	users.groups = {
@@ -30,13 +31,20 @@
 	};
 	sops.age.keyFile = "/etc/sops/age/keys.txt";
 
+	#sops.secrets.token = {
+	#	sopsFile = ../../secrets/test.yaml.enc;
+	#	format = "json";
+	#	owner = "derek";
+	#	group = "derek";
+	#};
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "zfs" "btrfs" ];
 
   boot.kernelModules = [ "kvm-intel" "zfs" "btrfs" ];
-  boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.kernelPackages = lib.mkForce pkgs.zfs.latestCompatibleLinuxPackages;
 	boot.zfs.extraPools = [ "store" ];
 
 	boot.kernelParams = [ "video=1024x768" ];
