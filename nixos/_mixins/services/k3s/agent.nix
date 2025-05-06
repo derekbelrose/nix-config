@@ -28,9 +28,10 @@
 	    "--disable servicelb"
 	    "--disable traefik"
 	    "--disable local-storage"
-    ] ++ (if hostname == "gula" then [] else [
-	    "--cluster-init"
-	    "--server https://gula:6443"
+    ] ++ (if hostname == "gula" then [
+			"--tls-san 100.116.115.111"
+		] else [
+	    "--server https://100.116.115.111:6443"
 			"--tls-san gula"
     ]));
     clusterInit = (hostname == "gula");

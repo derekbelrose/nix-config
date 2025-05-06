@@ -23,7 +23,7 @@
 			#../_mixins/services/nextcloud
 			#../_mixins/containers/test1/default.nix
 			#../_mixins/services/adguard.nix
-			../_mixins/services/k3s.nix
+			../_mixins/services/k3s/server.nix
     ];
 
 	users.groups = {
