@@ -1,7 +1,6 @@
 { hostname 
 , config
 , pkgs
-, hostname
 , ... 
 }:
 {
