@@ -21,16 +21,17 @@
 	
   services.k3s = {
     enable = true;
-    role = "server";
+    role = if hostname == "gula" then "server" else "agent";
 		tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = toString ([
 	    "--write-kubeconfig-mode \"0644\""
-	    "--cluster-init"
 	    "--disable servicelb"
 	    "--disable traefik"
 	    "--disable local-storage"
     ] ++ (if hostname == "gula" then [] else [
-	      "--server https://gula:6443"
+	    "--cluster-init"
+	    "--server https://gula:6443"
+			"--tls-san gula"
     ]));
     clusterInit = (hostname == "gula");
   };
