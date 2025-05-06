@@ -1,6 +1,7 @@
 { hostname 
 , config
 , pkgs
+, hostname
 , ... 
 }:
 {
@@ -36,6 +37,11 @@
 
   services.openiscsi = {
     enable = true;
-    name = "iqn.2020-08.org.linux-iscsi.superbia:test";
+    name = "iqn.2020-08.org.linux-iscsi:${hostname}";
   };
+
+  # fix for longhorn
+  systemd.tmpfiles.rules = [
+    "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
+  ];
 }
