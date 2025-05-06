@@ -67,6 +67,7 @@ in
         #../_mixins/services/open-webui.nix
         ../_mixins/configs/ollama.nix
         #../_mixins/configs/cosmic.nix
+        ../_mixins/services/k3s/agent.nix
     ];
 
     nix.settings.experimental-features = [ "flakes" "nix-command" ];

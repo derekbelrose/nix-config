@@ -1,13 +1,14 @@
 { hostname 
 , config
+, pkgs
 , ... 
 }:
 {
-	networking.firewall.allowedTCPPorts = [
-		6443
-		2379
-		2380
-	];	
+#	networking.firewall.allowedTCPPorts = [
+#		6443
+#		2379
+#		2380
+#	];	
 
 	networking.firewall.allowedUDPPorts = [
 		8472
@@ -15,25 +16,26 @@
 
 	sops.secrets.k3s-token = {
 		restartUnits = [ "k3s.service" ];
-		sopsFile = ./test.yaml.enc;
+		sopsFile = ./token.yaml.enc;
 		format = "yaml";
 	};
 	
   services.k3s = {
     enable = true;
-    role = if hostname == "gula" then "server" else "agent";
+    role = "agent";
 		tokenFile = config.sops.secrets.k3s-token.path;
+    serverAddr = "https://gula:6443";
     extraFlags = toString ([
-	    "--write-kubeconfig-mode \"0644\""
-	    "--disable servicelb"
-	    "--disable traefik"
-	    "--disable local-storage"
-    ] ++ (if hostname == "gula" then [
-			"--tls-san 100.116.115.111"
-		] else [
-	    "--server https://100.116.115.111:6443"
-			"--tls-san gula"
-    ]));
-    clusterInit = (hostname == "gula");
+    ]);
+  };
+
+  environment.systemPackages = [
+    pkgs.kubectl
+    pkgs.openiscsi
+  ];
+
+  services.openiscsi = {
+    enable = true;
+    name = "iqn.2020-08.org.linux-iscsi.superbia:test";
   };
 }

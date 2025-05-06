@@ -1,5 +1,6 @@
 { hostname 
 , config
+, pkgs
 , ... 
 }:
 {
@@ -25,5 +26,15 @@
 		tokenFile = config.sops.secrets.k3s-token.path;
     extraFlags = [];
     clusterInit = true;
+  };
+
+  environment.systemPackages = [
+    pkgs.kubectl
+    pkgs.openiscsi
+  ];
+
+  services.openiscsi = {
+    enable = true;
+    name = "iqn.2020-08.org.linux-iscsi.gula:test";
   };
 }
