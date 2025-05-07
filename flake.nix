@@ -41,6 +41,8 @@
     nix-comfyui.url = "github:dyscorv/nix-comfyui";
     nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
+
     nixos-cosmic = {
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,6 +57,7 @@
 		, nur
 		, sops-nix
 		, agenix
+    , disko
     , ...
     } @ inputs:
     let
@@ -69,6 +72,7 @@
 				"derek@luxuria" = 	libx.mkHome { hostname = "luxuria"; username = "derek"; desktop = "cosmic"; };
 				"derek@superbia" = 	libx.mkHome { hostname = "superbia"; username = "derek"; desktop = "sway"; };
 				"derek@gula" = 	libx.mkHome { hostname = "gula"; username = "derek"; };
+				"derek@agent1" = 	libx.mkHome { hostname = "agent1"; username = "derek"; };
       };
 
       nixosConfigurations = {
@@ -88,6 +92,12 @@
 		
 				superbia = libx.mkHost {
 					hostname = "superbia";
+					username = "derek";
+					platform = "x86_64-linux";
+				};
+
+				agent1 = libx.mkHost {
+					hostname = "agent1";
 					username = "derek";
 					platform = "x86_64-linux";
 				};

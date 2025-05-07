@@ -7,11 +7,13 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      (import ./disko.nix { })
+      inputs.disko.nixosModules.disko
+      ./disko.nix
+      #(import ./disko.nix { })
       ./hardware-configuration.nix
-      ../_mixins/configs/server.nix
+      #../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			../_mixins/services/k3s/agent.nix
+			#../_mixins/services/k3s/agent.nix
     ];
 
 	users.groups = {
