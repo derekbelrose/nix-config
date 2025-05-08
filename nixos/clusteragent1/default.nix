@@ -14,7 +14,7 @@
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
 			../_mixins/services/k3s/agent.nix
-      #./disk-config.nix
+      ./disk-config.nix
     ];
 
 	users.groups = {

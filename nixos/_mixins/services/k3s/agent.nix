@@ -16,8 +16,8 @@
 
 	sops.secrets.k3s-token = {
 		restartUnits = [ "k3s.service" ];
-		sopsFile = ./token.yaml.enc;
-		format = "yaml";
+		sopsFile = ./k3s.json.enc;
+		format = "json";
 	};
 	
   services.k3s = {

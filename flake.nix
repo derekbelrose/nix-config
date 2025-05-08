@@ -43,6 +43,8 @@
 
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
+    nixinate.url = "github:matthewcroughan/nixinate";
+
     nixos-cosmic = {
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,6 +60,7 @@
 		, sops-nix
 		, agenix
     , disko
+    , nixinate
     , ...
     } @ inputs:
     let
@@ -72,10 +75,18 @@
 				"derek@luxuria" = 	libx.mkHome { hostname = "luxuria"; username = "derek"; desktop = "cosmic"; };
 				"derek@superbia" = 	libx.mkHome { hostname = "superbia"; username = "derek"; desktop = "sway"; };
 				"derek@gula" = 	libx.mkHome { hostname = "gula"; username = "derek"; };
-				"derek@agent1" = 	libx.mkHome { hostname = "agent1"; username = "derek"; };
+				"derek@anywhere" = 	libx.mkHome { hostname = "anywhere"; username = "derek"; };
       };
 
       nixosConfigurations = {
+        anywhere = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            ./nixos/anywhere
+            ./nixos/anywhere/hardware-configuration.nix
+          ];
+        };
         # (lust) luxuria, (avarice) avaritia, (envy) invidia, (sloth) acedia, (gluttony) gula, (pride) superbia, (anger) ira
         luxuria = libx.mkHost {
           hostname = "luxuria";
@@ -96,11 +107,18 @@
 					platform = "x86_64-linux";
 				};
 
-				agent1 = libx.mkHost {
-					hostname = "agent1";
+				clusteragent1 = libx.mkHost {
+					hostname = "clusteragent1";
 					username = "derek";
 					platform = "x86_64-linux";
 				};
+
+        agent1 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+          ];
+        };
       };
 
       devShells = libx.forAllSystems (

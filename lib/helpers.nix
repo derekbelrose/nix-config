@@ -44,6 +44,7 @@
             else inputs.nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix";
         in
         [
+          inputs.disko.nixosModules.disko
           ../nixos
         ]
         ++ (inputs.nixpkgs.lib.optionals isISO [ cd-dvd ]);
