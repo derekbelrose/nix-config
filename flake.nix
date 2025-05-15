@@ -113,7 +113,19 @@
 					platform = "x86_64-linux";
 				};
 
-        agent1 = nixpkgs.lib.nixosSystem {
+ 				clusteragent2 = libx.mkHost {
+					hostname = "clusteragent2";
+					username = "derek";
+					platform = "x86_64-linux";
+				};
+
+ 				clusteragent3 = libx.mkHost {
+					hostname = "clusteragent3";
+					username = "derek";
+					platform = "x86_64-linux";
+				};
+
+       agent1 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             disko.nixosModules.disko
