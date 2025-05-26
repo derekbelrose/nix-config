@@ -67,7 +67,7 @@ in
         #../_mixins/services/open-webui.nix
         ../_mixins/configs/ollama.nix
         #../_mixins/configs/cosmic.nix
-        #../_mixins/services/k3s/agent.nix
+        #../_mixins/services/kubernetes/master.nix
     ];
 
     nix.settings.experimental-features = [ "flakes" "nix-command" ];
@@ -304,6 +304,7 @@ in
         orca-slicer
         lact
         comfyuiPackages.comfyui-unwrapped
+        unstable.nixos-rebuild-ng
     ];
     
     fonts.packages = with pkgs; [

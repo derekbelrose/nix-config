@@ -49,6 +49,14 @@
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixpkgs-devenv.url = "github:cachix/devenv-nixpkgs/rolling";
+    devenv.url = "github:cachix/devenv";
+  };
+
+  nixConfig = {
+    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
+    extra-substituters = "https://devenv.cachix.org"; 
   };
 
   outputs =
@@ -61,10 +69,13 @@
 		, agenix
     , disko
     , nixinate
+    , nixpkgs-devenv
+    , devenv
     , ...
     } @ inputs:
     let
       inherit (self) outputs;
+      system = "x86_64-linux";
 
       stateVersion = "24.05";
 
@@ -141,6 +152,22 @@
         import ./shell.nix { inherit pkgs; }
       );
 
+      #packages.${system}.devenv-up = self.devShells.${system}.default.config.procfileScript;
+      #packages.${system}.devenv-test = self.devShells.${system}.default.config.test;
+
+      #devShells."x86_64-linux".default = devenv.lib.mkShell {
+      #  inherit inputs system;
+      #  modules = [
+      #    ({ inputs, system, ... }: 
+      #      let
+      #        pkgs = inputs.nixpkgs-devenv.legacyPackages.${system};
+      #      in
+      #     {
+      #        imports = [ ./devenv.nix ];
+      #     })
+      #  ];
+      #};
+
       formatter = libx.forAllSystems (
         system:
         nix-formatter-pack.lib.mkFormatter {
@@ -162,6 +189,7 @@
           pkgs = nixpkgs.legachyPackages.${system};
         in
         import ./pkgs { inherit pkgs; }
+
       );
     };
 }

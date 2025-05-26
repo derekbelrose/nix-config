@@ -18,7 +18,7 @@
 
   # https://devenv.sh/scripts/
   scripts.hello.exec = ''
-    echo hello from $GREET
+    ${pkgs.cowsay}/bin/cowsay "hello from $GREET"
   '';
 
   enterShell = ''

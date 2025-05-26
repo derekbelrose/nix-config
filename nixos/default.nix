@@ -70,7 +70,7 @@ in
 
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
-      "net.ipv4.ip_forward" = 1;
+      "net.ipv4.ip_forward" = lib.mkDefault 1;
       "net.ipv4.conf.all.forwarding" = 1;
 
       "vm.page-cluster" = 1;
@@ -149,7 +149,7 @@ in
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
 			trusted-users = [ "derek" ];
-			download-buffer-size = 134217728;
+			#download-buffer-size = 134217728;
 
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="

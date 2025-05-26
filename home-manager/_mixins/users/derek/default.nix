@@ -12,7 +12,7 @@ in
 {
   imports = [
     #../../services/keybase.nix
-    ../../services/syncthing.nix
+    #../../services/syncthing.nix
 
     ./${hostname}.nix
     ./packages.nix
@@ -22,7 +22,7 @@ in
   ];
 
   sway.WOBSOCK = WOBSOCK;
-  boot.supportedFilesystems."fuse.sshfs" = true;
+  #boot.supportedFilesystems."fuse.sshfs" = true;
 
 	services = {
 		emacs ={
@@ -84,5 +84,11 @@ in
       enable = true;
     };
 	 };
+  
+  
+  home.packages = [
+    pkgs.firefox
+  ];
+  
 }
 
