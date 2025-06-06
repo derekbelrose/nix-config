@@ -17,7 +17,7 @@ in
 	xdg.portal.configPackages = [
 	];
 	xdg.portal.extraPortals = with pkgs;[
-		xdg-desktop-portal-kde
+    kdePackages.xdg-desktop-portal-kde
 	];
 
   services.flatpak = lib.mkIf (isInstall) {

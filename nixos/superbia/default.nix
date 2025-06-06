@@ -59,10 +59,9 @@ in
     time.timeZone = "America/New_York";
     imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
-        #../_mixins/configs/sway.nix
+        ../_mixins/configs/sway.nix
         ../_mixins/configs/client.nix
         ./hardware-configuration.nix
-        inputs.nixos-cosmic.nixosModules.default
         #../_mixins/configs/hyprland.nix
         #../_mixins/services/open-webui.nix
         ../_mixins/configs/ollama.nix
@@ -88,6 +87,7 @@ in
       enable = true;
       openDefaultPorts = true;
     };
+
 
     #services.xserver.displayManager.lightdm = {
     #  enable = true;
@@ -191,6 +191,8 @@ in
     };
     
     programs.gamemode.enable = true;
+
+    programs.niri.enable = true;
    
     
     #nixpkgs.overlays = [ 
@@ -261,7 +263,6 @@ in
         unstable.exo
         oterm
         amdvlk
-        microsoft-edge
         vulkan-tools
         glxinfo
         devenv
@@ -317,9 +318,9 @@ in
         fira-code
         fira-code-symbols
         fira
-        nerdfonts
         powerline-fonts
-    ];
+        nerdfonts
+    ]; #++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
     
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
