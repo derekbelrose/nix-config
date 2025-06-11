@@ -1,6 +1,5 @@
 { inputs
 , config
-, lib
 , pkgs
 , username
 , hostname
@@ -88,6 +87,7 @@ in
   
   home.packages = [
     pkgs.firefox
+    pkgs.distrobox
   ];
   
 }
