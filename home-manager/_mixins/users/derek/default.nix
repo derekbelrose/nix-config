@@ -74,15 +74,15 @@ in
 				lock_timeout = 0;
 			};
 		};
-	 	ssh = {
-	 		enable = true;
-	 		package = pkgs.openssh;
-	 		addKeysToAgent = "yes";
-	 		controlMaster = "no";
-	 		controlPersist = "10m";
-	 		matchBlocks = {
-	 		};
-	 	};
+	 	#ssh = {
+	 	#	enable = true;
+	 	#	package = pkgs.openssh;
+	 	#	addKeysToAgent = "yes";
+	 	#	controlMaster = "no";
+	 	#	controlPersist = "10m";
+	 	#	matchBlocks = {
+	 	#	};
+	 	#};
 	 	emacs = {
 	 		enable = true;
 	 	};
