@@ -25,6 +25,7 @@
 			#../_mixins/services/adguard.nix
 			#../_mixins/services/kubernetes/master.nix
 			../_mixins/services/k3s/server.nix
+      ../_mixins/services/samba-server.nix
     ];
 
 	users.groups = {

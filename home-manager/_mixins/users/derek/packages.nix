@@ -10,7 +10,6 @@ let
 in
 {
 	home.packages = with pkgs; [
-		devenv
     wl-clipboard
 		zellij
 		wob
@@ -33,7 +32,7 @@ in
     swaynotificationcenter
     yarn
     wayland-utils
-		devenv
+    unstable.devenv
 
 		#Fonts
 		(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })

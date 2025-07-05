@@ -7,9 +7,9 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware?ref=1e679b9";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
 
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
@@ -45,6 +45,8 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
     nixinate.url = "github:matthewcroughan/nixinate";
+
+    niri.url = "github:sodiboo/niri-flake";
 
     #nixos-cosmic = {
     #  url = "github:lilyinstarlight/nixos-cosmic";
@@ -137,12 +139,17 @@
 					platform = "x86_64-linux";
 				};
 
-       agent1 = nixpkgs.lib.nixosSystem {
+        agent1 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             disko.nixosModules.disko
           ];
         };
+
+        #tmna = nixpkgs.lib.nixosSystem {
+        #  system = "x86_64-linux"
+        #  modules = [];
+        #}; 
       };
 
       devShells = libx.forAllSystems (

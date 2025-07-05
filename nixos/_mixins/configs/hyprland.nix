@@ -8,7 +8,7 @@
 		hyprland = {
 			enable = true;
 			package = pkgs.unstable.hyprland;
-			portalPackage = pkgs.xdg-desktop-portal-hyprland;
+			portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
 			xwayland.enable = true;
 		};	
 		hyprlock = {

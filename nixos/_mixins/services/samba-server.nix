@@ -8,16 +8,14 @@ in
 {
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
     settings = {
       global = {
-        "workgroup" = "Paradise";
+        "workgroup" = "WORKGROUP";
         "server string" = "Paradise File Server";
         "netbios name" = "Paradise";
         "security" = "user";
-        "hosts allow" = "172.16.0 127.0.0.1 localhost";
-        "hosts deny" = "0.0.0.0/0";
+        "hosts allow" = "0.0.0.0/0";
         "guest account" = "nobody";
         "map to guest" = "bad user";
       };
@@ -39,6 +37,6 @@ in
     openFirewall = true; 
   };
 
-  networking.firewall.enable = true;
+  #networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 }

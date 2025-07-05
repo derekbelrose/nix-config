@@ -31,11 +31,21 @@ in
 		wob = {
 			enable = false;
 		};
+    swayidle = {
+      enable = true; 
+      extraArgs = [
+        "-w"
+        "timeout" 
+        "600"
+        "niri msg action power-off-monitors"
+      ];
+    };
 	};
 
 	systemd.user.sessionVariables = {
 		EDITOR="vim";
 		MOZ_ENABLE_WAYLAND=1;
+    ELECTRON_OZONE_PLATFORM_HINT="auto";
 	};
 
 	pam.yubico.authorizedYubiKeys.ids = [
@@ -71,9 +81,6 @@ in
 	 		controlMaster = "no";
 	 		controlPersist = "10m";
 	 		matchBlocks = {
-	 			"gula" = {
-	 				identityFile = "~/.ssh/gula";
-	 			};
 	 		};
 	 	};
 	 	emacs = {
@@ -88,7 +95,8 @@ in
   home.packages = [
     pkgs.firefox
     pkgs.distrobox
+    #pkgs.unstable.devenv
+    pkgs.lmstudio
   ];
-  
 }
 

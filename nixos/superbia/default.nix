@@ -3,7 +3,9 @@
 , config
 , lib
 , pkgs
+, username
 , modulesPath
+, home-manager
 , ...
 }:
 let 
@@ -21,7 +23,6 @@ let
      '';
    };
 
-   hardware.system76.enableAll = true;
 
    boot.kernelParams = [
     "amdgpu.msi=0" 
@@ -56,6 +57,11 @@ let
     }; 
 in
  {
+    hardware.system76.enableAll = true;
+    systemd.network.netdevs.enp6s0.enable = false;
+    programs.niri.enable = true;
+    networking.nftables.enable = true;
+    
     time.timeZone = "America/New_York";
     imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
@@ -64,13 +70,18 @@ in
         ./hardware-configuration.nix
         #../_mixins/configs/hyprland.nix
         #../_mixins/services/open-webui.nix
-        ../_mixins/configs/ollama.nix
+        #../_mixins/configs/ollama.nix
+        #../_mixins/configs/niri.nix
         #../_mixins/configs/cosmic.nix
         #../_mixins/services/kubernetes/master.nix
     ];
 
     nix.settings.experimental-features = [ "flakes" "nix-command" ];
+  
 
+    services.n8n = {
+      enable = true;
+    };
     services.displayManager.sddm = {
       enable = true;
       #wayland.compositor = "kwin";
@@ -106,14 +117,16 @@ in
     
     networking = {
         hostId = "b7527247";
-        nat.enable = true;
-        nat.internalInterfaces = ["ve-+"];
-        nat.externalInterface = "enp6s0";
+        #nat.enable = true;
+        #nat.internalInterfaces = ["ve-+"];
+        #nat.externalInterface = "enp6s0";
+        #nftables.enable = true;
         
         #extraHosts = "100.105.177.118 bitwarden.belrose.io";
     };
 
     nixpkgs.overlays = [
+        #inputs.niri.overlays.niri 
         outputs.overlays.additions
     ];
     nixpkgs.config.allowUnfree = true;
@@ -188,13 +201,12 @@ in
       enable = true;
       remotePlay.openFirewall = true;
       gamescopeSession.enable = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
     };
     
     programs.gamemode.enable = true;
 
-    programs.niri.enable = true;
-   
-    
     #nixpkgs.overlays = [ 
     #  (import (builtins.fetchTarball {
     #    url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
@@ -235,7 +247,7 @@ in
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.derek = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "dialout" "networkmanager" "video" "render" "dialout" "uinput" ]; 
+      extraGroups = [ "incus-admin" "wheel" "dialout" "networkmanager" "video" "render" "dialout" "uinput" ]; 
       packages = with pkgs; [
       ];
     };
@@ -257,21 +269,28 @@ in
         dockerCompat = false;
         defaultNetwork.settings.dns_enabled = true;
       };
+  
+      incus.enable = true;
     };
     
     environment.systemPackages = with pkgs; [
+        nix-direnv
+        xwayland-satellite
+        swaylock
+        swayidle
+        waybar
         unstable.exo
         oterm
         amdvlk
         vulkan-tools
         glxinfo
-        devenv
+        #devenv
         cliphist
         pavucontrol
         waypipe
         unstable.minigalaxy
         vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-        distrobox
+        #distrobox
         wget
         configure-gtk
         wayland
@@ -304,7 +323,7 @@ in
         wayland-utils
         orca-slicer
         lact
-        comfyuiPackages.comfyui-unwrapped
+        comfyuiPackages.comfyui
         unstable.nixos-rebuild-ng
     ];
     
@@ -386,7 +405,11 @@ in
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
 
-    programs.gamescope.enable = true;
+    programs.gamescope = {
+      enable = true;
+      capSysNice = true;
+      args = [ "--expose-wayland" ];
+    };
 
     programs.partition-manager.enable = true;
     programs.kdeconnect.enable = true;
@@ -396,7 +419,6 @@ in
         steam = pkgs.steam.override {
             extraPkgs = pkgs: with pkgs; [
               gamescope
-              mangohud
             ];
         };
     };
@@ -475,5 +497,133 @@ in
         disable_clocks_cleanup: false
       apply_settings_timer: 5
     '';
+
+  #systemd.services.fix-nix-dirs = let
+  #  profileDir = "/nix/var/nix/profiles/per-user/${username}";
+  #  gcrootsDir = "/nix/var/nix/gcroots/per-user/${username}";
+  #in {
+  #  script = ''
+  #    #!${pkgs.stdenv.shell}
+  #    set -euo pipefail
+
+  #    mkdir -p ${profileDir} ${gcrootsDir}
+  #    chown ${username}:root ${profileDir} ${gcrootsDir}
+  #  '';
+  #  wantedBy = [ "multi-user.target" ];
+  #  serviceConfig = {
+  #    Type = "oneshot";
+  #  };
+  #};
+  
+  #containers.ibm = 
+  #let 
+  #  hostCfg = config;
+  #  userName = "derek";
+  #  userUid = 1000;
+  #in {
+  #  allowedDevices = [
+  #    { modifier = "rwm";
+  #      node = "/dev/dri/renderD129";
+  #    }
+  #  ];
+  #  ephemeral = true;
+  #  bindMounts = {
+  #    waylandDisplay = rec {
+  #      hostPath = "/run/user/${toString userUid}";
+  #      mountPoint = hostPath;
+  #      isReadOnly = false;
+  #    };
+  #    x11Display = rec {
+  #      hostPath = "/tmp/.X11-unix";
+  #      mountPoint = hostPath;
+  #      isReadOnly = true;
+  #    };
+  #    "/home/derek" = {
+  #      hostPath = "/home/derek/containers/ibm/home";
+  #      isReadOnly = false;
+  #    }; 
+  #    "/dev/dri" = {
+  #      hostPath = "/dev/dri";
+  #      isReadOnly = false;
+  #    };
+  #  };
+  #  autoStart = false;
+  #  privateNetwork = true;
+  #  hostAddress = "10.100.0.1";
+  #  localAddress = "10.100.0.2";
+  #  config = { config, pkgs, lib, ... }: {
+  #    users.users.derek = {
+  #      extraGroups = [ "wheel" "render" ];
+  #      uid = 1000;
+  #      isNormalUser = true; 
+  #    };
+  #    security.polkit.adminIdentities = [ "unix-user:derek" "unix-group:admin" ];
+  #    services.desktopManager.plasma6.enable = true;
+  #    xdg.portal.enable = true;
+  #    xdg.portal.extraPortals =  [ pkgs.xdg-desktop-portal-gtk ];
+  #    services.flatpak.enable = true;
+  #    environment.systemPackages = with pkgs; [
+  #      vim
+  #      firefox
+  #      ungoogled-chromium
+  #      emacs-gtk
+  #      alacritty
+  #      vscodium
+  #      zed-editor
+  #      devenv
+  #    ];
+
+  #    hardware.opengl = {
+  #      enable = true;
+  #      extraPackages = hostCfg.hardware.opengl.extraPackages;
+  #    };
+  #
+  #    system.stateVersion = "25.05";
+
+  #    nix = {
+  #      # This will add each flake input as a registry
+  #      # To make nix3 commands consistent with your flake
+  #      registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+  #
+  #      # This will additionally add your inputs to the system's legacy channels
+  #      # Making legacy nix commands consistent as well, awesome!
+  #      nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+  #      
+  #      optimise.automatic = true;
+
+  #      settings = {
+  #        auto-optimise-store = true;
+  #        experimental-features = [ "nix-command" "flakes" ];
+  #        warn-dirty = false;
+  #        trusted-users = [ "derek" ];
+  #        #download-buffer-size = 134217728;
+  #      
+  #        trusted-public-keys = [
+  #          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+  #          "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+  #          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  #          "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
+  #        ];
+  #        substituters = [
+  #          "https://cache.nixos.org"
+  #          "https://nixpkgs-wayland.cachix.org"
+  #          "https://nix-community.cachix.org"
+  #          "https://cosmic.cachix.org/" 
+  #        ];
+  #      };
+  #    };
+  #    networking = {
+  #      firewall = {
+  #        enable = true;
+  #        allowedTCPPorts =  []; 
+
+  #      };
+
+  #      useHostResolvConf = lib.mkForce false;
+  #    };
+
+  #    services.resolved.enable = true;
+  #  }; 
+  #};
 }
 
