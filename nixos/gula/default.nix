@@ -12,7 +12,7 @@
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
 			#../_mixins/services/jellyfin.nix
-			#../_mixins/services/mealie/default.nix
+			../_mixins/services/mealie/default.nix
 			#../_mixins/services/pinchflat/default.nix
 			#../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix

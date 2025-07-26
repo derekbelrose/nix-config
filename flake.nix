@@ -55,6 +55,12 @@
 
     nixpkgs-devenv.url = "github:cachix/devenv-nixpkgs/rolling";
     devenv.url = "github:cachix/devenv";
+
+
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable"; # IMPORTANT
+
+    claude-desktop.url = "github:k3d3/claude-desktop-linux-flake";
+    claude-desktop.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -74,6 +80,7 @@
     , nixinate
     , nixpkgs-devenv
     , devenv
+    , chaotic 
     , ...
     } @ inputs:
     let
@@ -97,6 +104,10 @@
           system = "x86_64-linux";
           modules = [
             disko.nixosModules.disko
+            chaotic.nixosModules.default  
+            chaotic.nixosModules.nyx-cache
+            chaotic.nixosModules.nyx-overlay
+            chaotic.nixosModules.nyx-registry
             ./nixos/anywhere
             ./nixos/anywhere/hardware-configuration.nix
           ];

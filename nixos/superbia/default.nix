@@ -23,23 +23,10 @@ let
      '';
    };
 
-
    boot.kernelParams = [
-    "amdgpu.msi=0" 
-    "amdgpu.aspm=0" 
-    "amdgpu.runpm=0"
-    "amdgpu.bapm=0" 
-    "amdgpu.vm_update_mode=0"
-    "amdgpu.exp_hw_support=1" 
-    "amdgpu.sched_jobs=64" 
-    "amdgpu.sched_hw_submission=4" 
-    "amdgpu.lbpw=0" 
-    "amdgpu.mes=1" 
-    "amdgpu.mes_kiq=1"
-    "amdgpu.sched_policy=1" 
-    "amdgpu.ignore_crat=1" 
-    "amdgpu.no_system_mem_limit"
-    "amdgpu.smu_pptable_id=0"
+    "quiet"
+    "splash"
+    "amdgpu.ppfeaturemask=0xffffffff"
    ];
 
    configure-gtk = pkgs.writeTextFile {
@@ -111,8 +98,9 @@ in
     # Use the systemd-boot EFI boot loader.
     boot = {
         loader.systemd-boot.enable = true;
+        loader.systemd-boot.consoleMode = lib.mkForce "auto";
         loader.efi.canTouchEfiVariables = true;
-        kernelModules = [ "kvm-intel" ];
+        initrd.kernelModules = [ "amdgpu" "kvm-intel" ];
     };
     
     networking = {
@@ -136,6 +124,8 @@ in
     hardware.amdgpu = {
       opencl.enable = true;
       initrd.enable = true;
+      amdvlk.enable = true;
+      amdvlk.support32Bit.enable = true;
     }; 
 
     services = {
@@ -274,6 +264,7 @@ in
     };
     
     environment.systemPackages = with pkgs; [
+        clinfo
         nix-direnv
         xwayland-satellite
         swaylock
@@ -325,6 +316,7 @@ in
         lact
         comfyuiPackages.comfyui
         unstable.nixos-rebuild-ng
+        inputs.claude-desktop.packages.${system}.claude-desktop-with-fhs
     ];
     
     fonts.packages = with pkgs; [
@@ -361,15 +353,15 @@ in
         ];
     };
   
-    systemd.services.lact = {
-      description = "AMDGPU Control Daemon";
-      after = ["multi-user.target"];
-      wantedBy = ["multi-user.target"];
-      serviceConfig = {
-        ExecStart = "${pkgs.lact}/bin/lact daemon";
-      };
-      enable = true;
-    };
+    #systemd.services.lact = {
+    #  description = "AMDGPU Control Daemon";
+    #  after = ["multi-user.target"];
+    #  wantedBy = ["multi-user.target"];
+    #  serviceConfig = {
+    #    ExecStart = "${pkgs.lact}/bin/lact daemon";
+    #  };
+    #  enable = true;
+    #};
  
     programs.dconf.enable = true;
     # List services that you want to enable:
@@ -399,6 +391,7 @@ in
             vaapiVdpau
             libva-utils
             libvdpau-va-gl
+            rocmPackages.clr.icd
         ];	
     };
 
@@ -625,5 +618,10 @@ in
   #    services.resolved.enable = true;
   #  }; 
   #};
+  
+  systemd.packages = with pkgs; [ lact ];
+  systemd.services.lactd.wantedBy = ["multi-user.target"];
+  systemd.services.lactd.enable = true;
 }
+
 

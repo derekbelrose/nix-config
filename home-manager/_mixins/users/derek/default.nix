@@ -97,6 +97,7 @@ in
     pkgs.distrobox
     #pkgs.unstable.devenv
     pkgs.lmstudio
+    pkgs.freetube
   ];
 }
 

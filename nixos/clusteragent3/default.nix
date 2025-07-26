@@ -13,7 +13,7 @@
       ./hardware-configuration.nix
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
-			#../_mixins/services/k3s/agent.nix
+			../_mixins/services/k3s/agent.nix
 			#../_mixins/services/kubernetes/node.nix
       ./disk-config.nix
     ];
