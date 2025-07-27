@@ -14,12 +14,12 @@
 
 	environment.systemPackages = with pkgs; [
 		thunderbird
-		hyprlauncher
-		hyprcursor
-		hyprpaper
-		hypridle
-		hyprlock
-		hyprpicker
+#		hyprlauncher
+#		hyprcursor
+#		hyprpaper
+#		hypridle
+#		hyprlock
+#		hyprpicker
 		meson
 		cmake
 		cpio
