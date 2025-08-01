@@ -141,7 +141,7 @@
 
 	virtualisation.podman = {
 		#enableNvidia	= true;
-		enable = false;
+		enable = true;
 		extraPackages = with pkgs; [
 			podman-compose
 		];
