@@ -23,8 +23,6 @@ let
      '';
    };
 
-	services.getty.autologinUser = "derek";
-
    boot.kernelParams = [
     "quiet"
     "splash"
@@ -596,7 +594,10 @@ in
 		portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 	};
 
-
+	services.displayManager = {
+		autoLogin.enable = true;
+		autoLogin.user = 'derek';
+	}
 }
 
 
