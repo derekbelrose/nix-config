@@ -1,42 +1,36 @@
 { inputs
 , config
-, lib
 , pkgs
 , username
 , hostname
 , ... }:
 let
   inherit (pkgs.stdenv) isLinux;
-	WOBSOCK = "/run/user/1000/wob.socket";
 in
 {
   imports = [
     #../../services/keybase.nix
-    ../../services/syncthing.nix
+    #../../services/syncthing.nix
 
     ./${hostname}.nix
     ./packages.nix
-    ./sway.nix
+		./hyprland.nix
+    #./sway.nix
     ./alacritty.nix
 		inputs.sops-nix.homeManagerModules.sops
   ];
-
-  sway.WOBSOCK = WOBSOCK;
-  boot.supportedFilesystems."fuse.sshfs" = true;
 
 	services = {
 		emacs ={
 			enable = true;
 			defaultEditor = true;
 		};
-		wob = {
-			enable = false;
-		};
 	};
 
 	systemd.user.sessionVariables = {
 		EDITOR="vim";
 		MOZ_ENABLE_WAYLAND=1;
+    ELECTRON_OZONE_PLATFORM_HINT="auto";
 	};
 
 	pam.yubico.authorizedYubiKeys.ids = [
@@ -61,22 +55,17 @@ in
 			settings = {
 				email = "derek@derekbelrose.com";
 				base_url = "https://bitwarden.belrose.io";
-				pinentry = pkgs.pinentry-qt;
-				lock_timeout = 0;
 			};
 		};
-	 	ssh = {
-	 		enable = true;
-	 		package = pkgs.openssh;
-	 		addKeysToAgent = "yes";
-	 		controlMaster = "no";
-	 		controlPersist = "10m";
-	 		matchBlocks = {
-	 			"gula" = {
-	 				identityFile = "~/.ssh/gula";
-	 			};
-	 		};
-	 	};
+	 	#ssh = {
+	 	#	enable = true;
+	 	#	package = pkgs.openssh;
+	 	#	addKeysToAgent = "yes";
+	 	#	controlMaster = "no";
+	 	#	controlPersist = "10m";
+	 	#	matchBlocks = {
+	 	#	};
+	 	#};
 	 	emacs = {
 	 		enable = true;
 	 	};
@@ -84,5 +73,21 @@ in
       enable = true;
     };
 	 };
+  
+	home.file = {
+		".local/bin/dimscreen.sh" = {
+			source = ./scripts/dimscreen.sh;
+			executable = true;
+			enable = true;
+		};
+	};
+
+  home.packages = [
+    pkgs.firefox
+    pkgs.distrobox
+    pkgs.unstable.devenv
+    pkgs.lmstudio
+    pkgs.freetube
+  ];
 }
 

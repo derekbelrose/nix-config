@@ -1,5 +1,6 @@
 { pkgs
 , lib
+, inputs
 , ...
 }:
 {
@@ -7,20 +8,10 @@
 	programs = {
 		hyprland = {
 			enable = true;
-			package = pkgs.unstable.hyprland;
-			portalPackage = pkgs.xdg-desktop-portal-hyprland;
+			withUWSM = true;
+			package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+			portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 			xwayland.enable = true;
 		};	
-		hyprlock = {
-			enable = true;
-		};
 	};
-
-	services.hypridle.enable = true;
-	environment.systemPackages = with pkgs; [
-    hyprutils
-		wofi
-		waybar
-		libnotify
-	];
 }

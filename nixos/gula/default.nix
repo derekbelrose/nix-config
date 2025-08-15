@@ -12,7 +12,7 @@
       ../_mixins/configs/server.nix
       ../_mixins/services/openssh.nix
 			#../_mixins/services/jellyfin.nix
-			#../_mixins/services/mealie/default.nix
+			../_mixins/services/mealie/default.nix
 			#../_mixins/services/pinchflat/default.nix
 			#../_mixins/services/stirling-pdf/default.nix
 			../_mixins/configs/nvidia.nix
@@ -23,7 +23,9 @@
 			#../_mixins/services/nextcloud
 			#../_mixins/containers/test1/default.nix
 			#../_mixins/services/adguard.nix
+			#../_mixins/services/kubernetes/master.nix
 			../_mixins/services/k3s/server.nix
+      ../_mixins/services/samba-server.nix
     ];
 
 	users.groups = {
@@ -139,7 +141,7 @@
 
 	virtualisation.podman = {
 		#enableNvidia	= true;
-		enable = false;
+		enable = true;
 		extraPackages = with pkgs; [
 			podman-compose
 		];

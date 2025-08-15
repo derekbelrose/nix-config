@@ -43,4 +43,6 @@
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
   ];
+
+  boot.kernelModules = [ "dm_crypt" ];
 }

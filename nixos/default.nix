@@ -70,7 +70,7 @@ in
 
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
-      "net.ipv4.ip_forward" = 1;
+      "net.ipv4.ip_forward" = lib.mkDefault 1;
       "net.ipv4.conf.all.forwarding" = 1;
 
       "vm.page-cluster" = 1;
@@ -93,17 +93,17 @@ in
   };
 
   i18n = {
-    defaultLocale = "en_US.utf8";
+    defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
-      LC_ADDRESS = "en_US.utf8";
-      LC_IDENTIFICATION = "en_US.utf8";
-      LC_MEASUREMENT = "en_US.utf8";
-      LC_MONETARY = "en_US.utf8";
-      LC_NAME = "en_US.utf8";
-      LC_NUMERIC = "en_US.utf8";
-      LC_PAPER = "en_US.utf8";
-      LC_TELEPHONE = "en_US.utf8";
-      LC_TIME = "en_US.utf8";
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
     };
   };
 
@@ -149,7 +149,7 @@ in
       experimental-features = [ "nix-command" "flakes" ];
       warn-dirty = false;
 			trusted-users = [ "derek" ];
-			download-buffer-size = 134217728;
+			#download-buffer-size = 134217728;
 
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="

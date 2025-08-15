@@ -10,7 +10,7 @@ let
 in
 {
 	home.packages = with pkgs; [
-		devenv
+		brightnessctl
     wl-clipboard
 		zellij
 		wob
@@ -22,18 +22,15 @@ in
     tmux
     zellij
     chromium
-    gnome.gnome-settings-daemon
     unstable.anytype
-    kdePackages.ksshaskpass
     hyprland
     fira
     nerdfonts
     logisim-evolution
-    pinentry-qt
     swaynotificationcenter
     yarn
     wayland-utils
-		devenv
+    unstable.devenv
 
 		#Fonts
 		(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })

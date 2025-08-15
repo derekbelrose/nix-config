@@ -5,7 +5,7 @@
   env.GREET = "devenv";
  
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = [ pkgs.just pkgs.git ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
@@ -16,12 +16,14 @@
   # https://devenv.sh/services/
   # services.postgres.enable = true;
 
-  # https://devenv.sh/scripts/
+ # https://devenv.sh/scripts/
   scripts.hello.exec = ''
-    echo hello from $GREET
+    ${pkgs.cowsay}/bin/cowsay "Good morning, Derek"
   '';
 
   enterShell = ''
+		reset
+		clear
     hello
     git --version
   '';

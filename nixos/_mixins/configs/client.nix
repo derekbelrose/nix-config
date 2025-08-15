@@ -17,14 +17,11 @@ in
 	xdg.portal.configPackages = [
 	];
 	xdg.portal.extraPortals = with pkgs;[
-		xdg-desktop-portal-kde
 	];
 
   services.flatpak = lib.mkIf (isInstall) {
 		enable = true;
   };
-
-	programs.ssh.askPassword = lib.mkForce("ksshAskPass");
 
   systemd.services = {
      configure-flathub-repo = lib.mkIf (isInstall) {
@@ -42,6 +39,4 @@ in
 		vim
     kitty
 	];
-  
-  programs.gnupg.agent.pinentryPackage = lib.mkForce pkgs.pinentry-qt;
 } 

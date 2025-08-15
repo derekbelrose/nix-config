@@ -22,6 +22,7 @@ in
 			"lxd"
 			"podman"
 			"rtkit"
+      "incus-admin"
 		];
 
 		homeMode = "0755";

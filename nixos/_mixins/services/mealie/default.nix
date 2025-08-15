@@ -22,9 +22,9 @@
 
   # Runtime
   virtualisation.podman = {
-    enable = true;
+    enable = lib.mkForce true;
     autoPrune.enable = true;
-    dockerCompat = true;
+    dockerCompat = false;
     defaultNetwork.settings = {
       # Required for container networking to be able to use names.
       dns_enabled = true;

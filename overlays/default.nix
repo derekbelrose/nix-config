@@ -17,16 +17,16 @@
   };
 
   modifications = final: prev: {
-    hyprland = prev.hyprland.overrideAttrs ( old: {
-      pname = "hyprland";
-      version = "0.41.2-derek";
-      src = prev.fetchFromGitHub {
-        owner = "hyprwm";
-        repo = "hyprland";
-        fetchSubmodules = true;
-        rev = "refs/tags/v0.42.0";
-        hash = "sha256-deu8zvgseDg2gQEnZiCda4TrbA6pleE9iItoZlsoMtE=";
-      };
-    }); 
+    #hyprland = prev.hyprland.overrideAttrs ( old: {
+    #  pname = "hyprland";
+    #  version = "0.41.2-derek";
+    #  src = prev.fetchFromGitHub {
+    #    owner = "hyprwm";
+    #    repo = "hyprland";
+    #    fetchSubmodules = true;
+    #    rev = "refs/tags/v0.42.0";
+    #    hash = "sha256-deu8zvgseDg2gQEnZiCda4TrbA6pleE9iItoZlsoMtE=";
+    #  };
+    #}); 
   };
 }
