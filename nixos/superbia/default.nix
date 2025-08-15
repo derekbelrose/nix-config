@@ -23,25 +23,13 @@ let
      '';
    };
 
+	services.getty.autologinUser = "derek";
+
    boot.kernelParams = [
     "quiet"
     "splash"
     "amdgpu.ppfeaturemask=0xffffffff"
    ];
-
-   configure-gtk = pkgs.writeTextFile {
-      name = "configure-gtk";
-      destination = "/bin/configure-gtk";
-      executable = true;
-      text = let
-        schema = pkgs.gsettings-desktop-schemas;
-        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-      in ''
-        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-        gnome_schema=org.gnome.desktop.interface
-        gsettings set $gnome_schema gtk-theme 'Dracula'
-      '';
-    }; 
 in
  {
     hardware.system76.enableAll = true;
@@ -65,16 +53,6 @@ in
 
     nix.settings.experimental-features = [ "flakes" "nix-command" ];
   
-
-    services.n8n = {
-      enable = true;
-    };
-    services.displayManager.sddm = {
-      enable = true;
-      #wayland.compositor = "kwin";
-      wayland.enable = true;
-    };
-
     systemd.services.syncthing = {
       environment = {
         STNODEFAULTFOLDER = "false";
@@ -85,15 +63,6 @@ in
       enable = true;
       openDefaultPorts = true;
     };
-
-
-    #services.xserver.displayManager.lightdm = {
-    #  enable = true;
-    #  greeters = {
-    #    slick.enable = true;
-    #    #enso.enable = true;
-    #  };
-    #};
 
     # Use the systemd-boot EFI boot loader.
     boot = {
@@ -283,7 +252,6 @@ in
         vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
         #distrobox
         wget
-        configure-gtk
         wayland
         xdg-utils # for opening default programs when clicking links
         glib # gsettings
@@ -621,6 +589,14 @@ in
   systemd.packages = with pkgs; [ lact ];
   systemd.services.lactd.wantedBy = ["multi-user.target"];
   systemd.services.lactd.enable = true;
+
+	programs.hyprland = {
+		enable = true;
+		package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+		portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+	};
+
+
 }
 
 
