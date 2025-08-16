@@ -24,9 +24,18 @@
 		meson
 		cmake
 		cpio
-		waybar
 	];
 
+	services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "Hyprland";
+        user = "derek";
+      };
+      default_session = initial_session;
+    };
+  };
 
 	security.protectKernelImage = false;
 

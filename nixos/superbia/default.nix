@@ -596,7 +596,7 @@ in
 
 	services.displayManager = {
 		autoLogin.enable = true;
-		autoLogin.user = 'derek';
+		autoLogin.user = "derek";
 	}
 }
 
