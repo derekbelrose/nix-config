@@ -13,7 +13,7 @@
 		enable = true;
 		settings = {
 			"exec-once" = [
-				#"${pkgs.waybar}/bin/waybar"
+				"systemctl --user restart waybar"
 				"${pkgs.hypridle}/bin/hypridle"
 				"systemctl --user start hyprpolkitagent"
 			];

@@ -190,8 +190,6 @@ in
 
        
     
-    #programs.waybar.enable = true;
-    
     services.emacs = {
         enable = true;
         package = pkgs.emacs30-pgtk;
@@ -236,7 +234,6 @@ in
         xwayland-satellite
         swaylock
         swayidle
-        waybar
         unstable.exo
         oterm
         amdvlk
