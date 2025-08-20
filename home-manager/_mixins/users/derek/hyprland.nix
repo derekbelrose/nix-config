@@ -7,15 +7,16 @@
 		pkgs.hypridle
 		pkgs.hyprpaper
 		pkgs.hyprpolkitagent
+		pkgs.waybar
 	];
 
 	wayland.windowManager.hyprland = {
 		enable = true;
 		settings = {
 			"exec-once" = [
-				"systemctl --user restart waybar"
-				"${pkgs.hypridle}/bin/hypridle"
 				"systemctl --user start hyprpolkitagent"
+				"${pkgs.waybar}/bin/waybar"
+				"${pkgs.hypridle}/bin/hypridle"
 			];
 	    "monitor" = ",highres,auto,1.175";
 	    "xwayland" = {
@@ -32,7 +33,7 @@
 	    ];
 	    "general" = {
 	      "gaps_in" = 5;
-	      "gaps_out" = 20;
+	      "gaps_out" = 15;
 	      "border_size" = 2;
 	      "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
 	      "col.inactive_border" = "rgba(595959aa)"; 

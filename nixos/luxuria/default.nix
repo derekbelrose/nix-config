@@ -13,29 +13,7 @@
 	];
 
 	boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-	environment.systemPackages = with pkgs; [
-		thunderbird
-#		hyprlauncher
-#		hyprcursor
-#		hyprpaper
-#		hypridle
-#		hyprlock
-#		hyprpicker
-		meson
-		cmake
-		cpio
-	];
-
-	services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "Hyprland";
-        user = "derek";
-      };
-      default_session = initial_session;
-    };
-  };
+	environment.systemPackages = with pkgs; [];
 
 	security.protectKernelImage = false;
 
