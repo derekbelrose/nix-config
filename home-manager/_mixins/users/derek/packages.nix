@@ -25,7 +25,7 @@ in
     unstable.anytype
     hyprland
     fira
-    nerdfonts
+    #nerdfonts
     logisim-evolution
     swaynotificationcenter
     yarn
@@ -33,7 +33,7 @@ in
     unstable.devenv
 
 		#Fonts
-		(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+		#(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
     source-code-pro
     source-sans-pro
     source-serif-pro
@@ -43,7 +43,7 @@ in
     fira-code
     fira-code-symbols
     fira
-    nerdfonts
+    #nerdfonts
     powerline-fonts
   ];
 }

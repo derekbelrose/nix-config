@@ -23,15 +23,30 @@ let
      '';
    };
 
+  boot.extraModprobeConfig = "options kvm_intel nested=1";
    boot.kernelParams = [
     "quiet"
     "splash"
     "amdgpu.ppfeaturemask=0xffffffff"
    ];
+
+  gaming = with pkgs; [
+    # steam - now managed by programs.steam
+    steam-run
+    moonlight-qt
+    sunshine
+    adwaita-icon-theme
+    lutris
+    playonlinux
+    wineWowPackages.staging
+    winetricks
+    vulkan-tools
+    steamtinkerlaunch
+    mangohud
+  ];
 in
  {
     hardware.system76.enableAll = true;
-    systemd.network.netdevs.enp6s0.enable = false;
     programs.niri.enable = true;
     networking.nftables.enable = true;
     
@@ -57,6 +72,15 @@ in
       };
     };
 
+    #services.networking.websockify = {
+    #  enable = true;
+    #  #sslCert = "/https-cert.pem";
+    #  #sslKey = "/https-key.pem";
+    #  portMap = {
+    #    "5959" = 5900;
+    #  };
+    #};
+
     services.syncthing = {
       enable = true;
       openDefaultPorts = true;
@@ -68,6 +92,7 @@ in
         loader.systemd-boot.consoleMode = lib.mkForce "auto";
         loader.efi.canTouchEfiVariables = true;
         initrd.kernelModules = [ "amdgpu" "kvm-intel" ];
+        kernelPackages = lib.mkForce pkgs.linuxPackages_zen;
     };
     
     networking = {
@@ -91,8 +116,10 @@ in
     hardware.amdgpu = {
       opencl.enable = true;
       initrd.enable = true;
-      amdvlk.enable = true;
-      amdvlk.support32Bit.enable = true;
+      amdvlk = {
+        enable = true;
+        support32Bit.enable = true;
+      };
     }; 
 
     services = {
@@ -129,9 +156,22 @@ in
        upower.enable = lib.mkForce false;
   
        desktopManager.plasma6.enable = true;
-    };
 
-    services.xserver.enable = true;
+      udev.packages = [ pkgs.brightnessctl ];
+      udisks2.enable = true;
+      gvfs.enable = true;
+      tumbler.enable = true;
+      blueman.enable = true;
+
+      davfs2.enable = true;
+      gnome.gnome-keyring.enable = true;
+
+      atuin = {
+        enable = true;
+      };
+
+      fstrim.enable = true;
+    };
 
     #Set your time zone.
     
@@ -141,17 +181,24 @@ in
     #services.xserver.desktopManager.plasma5.enable = false;
     #services.xserver.desktopManager.gnome.enable = true;
     
-    services.xserver.displayManager.gdm = {
-      enable = lib.mkForce false;
-      wayland = false;
-    };
+    #services.xserver.displayManager.gdm = {
+    #  enable = lib.mkForce false;
+    #  wayland = false;
+    #};
     
+    services.xserver.displayManager.gdm = {
+      enable = lib.mkForce true;
+    };
+
+    services.xserver.displayManager.lightdm = {
+      enable = lib.mkForce false;
+    };
     
     xdg.portal = {
       enable = true;
       wlr.enable = true;
       # gtk portal needed to make gtk apps happy
-      #extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
     };
     
     programs.steam = {
@@ -170,7 +217,7 @@ in
     #  }))
     #];
     
-    hardware.pulseaudio.enable = false;
+    services.pulseaudio.enable = false;
     hardware.keyboard.zsa.enable = true;
     hardware.enableAllFirmware = true;
     
@@ -180,16 +227,23 @@ in
         XDG_CONFIG_HOME = "$HOME/.config";
         XDG_DATA_HOME = "$HOME/.local/share";
         XDG_STATE_HOME = "$HOME/.local/state";
-            XDG_CACHE_HOME = "$HOME/.cache";
+        XDG_CACHE_HOME = "$HOME/.cache";
         
         XDG_BIN_HOME = "$HOME/.local/bin";
         PATH = [
         	"${XDG_BIN_HOME}"
         ];
+
+        NIXOS_OZONE_WL = "1";
+        MOZ_ENABLE_WAYLAND = "1";
+        QT_QPA_PLATFORM = "wayland";
+        GDK_BACKEND = "wayland";
+        # Atuin environment variables
+        ATUIN_SESSION = "";
+        # Cursor theme for consistency across apps
+        XCURSOR_THEME = "Bibata-Modern-Ice";
     };
 
-       
-    
     services.emacs = {
         enable = true;
         package = pkgs.emacs30-pgtk;
@@ -202,12 +256,27 @@ in
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.derek = {
       isNormalUser = true;
-      extraGroups = [ "incus-admin" "wheel" "dialout" "networkmanager" "video" "render" "dialout" "uinput" ]; 
+      extraGroups = [ "incus-admin" "wheel" "dialout" "networkmanager" "video" "render" "dialout" "uinput" "libvirtd" ]; 
       packages = with pkgs; [
       ];
     };
     
     virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu = {
+          package = pkgs.qemu_kvm;
+          runAsRoot = true;
+          swtpm.enable = true;
+          ovmf = {
+            enable = true;
+            packages = [ (pkgs.OVMF.override {
+                secureBoot = true;
+                tpmSupport = true;
+              }).fd];
+          };
+        };
+      };
       docker = {
         enable = true;
         storageDriver = "btrfs";
@@ -229,6 +298,7 @@ in
     };
     
     environment.systemPackages = with pkgs; [
+        virt-manager
         clinfo
         nix-direnv
         xwayland-satellite
@@ -277,10 +347,10 @@ in
         wayland-utils
         orca-slicer
         lact
-        comfyuiPackages.comfyui
+        #comfyuiPackages.comfyui
         unstable.nixos-rebuild-ng
         inputs.claude-desktop.packages.${system}.claude-desktop-with-fhs
-    ];
+    ]++ gaming;
     
     fonts.packages = with pkgs; [
         source-code-pro
@@ -293,7 +363,7 @@ in
         fira-code-symbols
         fira
         powerline-fonts
-        nerdfonts
+        #nerdfonts
     ]; #++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
     
     # Some programs need SUID wrappers, can be configured further or are
@@ -332,8 +402,6 @@ in
     services.openssh.enable = true;
 
     services.devmon.enable = true;
-    services.gvfs.enable = true;
-    services.udisks2.enable = true;
 
     services.btrfs.autoScrub = {
         enable = true;
@@ -348,7 +416,6 @@ in
         extraPackages = with pkgs; [
             glxinfo
             mesa
-            mesa.drivers
             vulkan-tools
             vaapiVdpau
             libva-utils
@@ -379,9 +446,8 @@ in
     };
 
 
-   security.rtkit.enable = true;
    # Open ports in the firewall.
-   networking.firewall.allowedTCPPorts = [ 22 8080 11434 ];
+   networking.firewall.allowedTCPPorts = [ 22 8080 11434 2234 ];
    # networking.firewall.allowedUDPPorts = [ ... ];
    # Or disable the firewall altogether.
    # networking.firewall.enable = false;
@@ -533,7 +599,7 @@ in
   #      extraPackages = hostCfg.hardware.opengl.extraPackages;
   #    };
   #
-  #    system.stateVersion = "25.05";
+      system.stateVersion = lib.mkForce "25.05";
 
   #    nix = {
   #      # This will add each flake input as a registry
@@ -591,21 +657,66 @@ in
 		portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 	};
 
-	services.displayManager = {
-		autoLogin.enable = true;
-		autoLogin.user = "derek";
-	};
+	#services.displayManager = {
+	#	autoLogin.enable = true;
+	#	autoLogin.user = "derek";
+	#};
 
-	services.greetd = {
+	#services.greetd = {
+  #  enable = true;
+  #  settings = rec {
+  #    initial_session = {
+  #      command = "Hyprland";
+  #      user = "derek";
+  #    };
+  #    default_session = initial_session;
+  #  };
+  #};
+
+  # Prefer Hyprland XDG portal
+  #xdg.portal = {
+  #  enable = true;
+  #  xdgOpenUsePortal = true;
+  #  # Hyprland module provides its own portal; include only GTK here to avoid duplicate units
+  #  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  #  config = {
+  #    common = {
+  #      default = [ "hyprland" "gtk" ];
+  #      "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+  #    };
+  #  };
+  #};
+
+  # Make Qt apps follow GNOME/GTK settings for closer match to GTK theme
+  qt = {
     enable = true;
-    settings = rec {
-      initial_session = {
-        command = "Hyprland";
-        user = "derek";
-      };
-      default_session = initial_session;
+    platformTheme = "gnome";
+    style = "adwaita-dark";
+  };
+
+  # Security
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    sudo.wheelNeedsPassword = false;
+    pam.services = {
+      #login.kwallet.enable = true;
+      #gdm.kwallet.enable = true;
+      #gdm-password.kwallet.enable = true;
+      hyprlock = { };
+      # Unlock GNOME Keyring on login for GVFS credentials
+      #login.enableGnomeKeyring = true;
+      #gdm-password.enableGnomeKeyring = true;
     };
   };
+
+  # Auto Tune
+  #services.bpftune.enable = true;
+  #programs.bcc.enable = true;
+
+  hardware.graphics.extraPackages32 = with pkgs; [
+    driversi686Linux.amdvlk
+  ];
 }
 
 

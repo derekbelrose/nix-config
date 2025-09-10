@@ -103,10 +103,16 @@
 	      "workspace_swipe" = false;
 	    };
 	
-	    "device" = {
-	      "name" = "epic-mouse-v1";
-	      "sensitivity" = -0.5;
-	    };
+	    "device" = [
+        #{
+        #  "name" = 
+        #  "left_handed" = true;
+        #}
+        {
+	        "name" = "epic-mouse-v1";
+	        "sensitivity" = -0.5;
+	      }
+      ];
 	
 	    "bind" = [
 				"$mod, F, fullscreen"
