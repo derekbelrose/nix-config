@@ -27,7 +27,7 @@ let
    boot.kernelParams = [
     "quiet"
     "splash"
-    "amdgpu.ppfeaturemask=0xffffffff"
+    #"amdgpu.ppfeaturemask=0xffffffff"
    ];
 
   gaming = with pkgs; [
@@ -116,6 +116,7 @@ in
     hardware.amdgpu = {
       opencl.enable = true;
       initrd.enable = true;
+      overdrive.enable = true;
       amdvlk = {
         enable = true;
         support32Bit.enable = true;
@@ -298,6 +299,7 @@ in
     };
     
     environment.systemPackages = with pkgs; [
+        openshift
         virt-manager
         clinfo
         nix-direnv
